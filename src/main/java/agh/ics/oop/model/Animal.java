@@ -28,11 +28,15 @@ public class Animal implements WorldElement{
     }
 
     public String toString() {
-        return switch (direction){
-            case NORTH -> "^";
-            case SOUTH -> "v";
-            case EAST -> ">";
-            case WEST -> "<";
+        return switch (direction) {
+            case NORTH -> "\u2191"; // strzałka w górę
+            case NORTH_WEST -> "\u2196"; // strzałka w lewo-górę
+            case WEST -> "\u2190"; // strzałka w lewo
+            case SOUTH_WEST -> "\u2199"; // strzałka w lewo-dół
+            case SOUTH -> "\u2193"; // strzałka w dół
+            case SOUTH_EAST -> "\u2198"; // strzałka w prawo-dół
+            case EAST -> "\u2192"; // strzałka w prawo
+            case NORTH_EAST -> "\u2197"; // strzałka w prawo-górę
         };
     }
 
@@ -55,7 +59,7 @@ public class Animal implements WorldElement{
             }
             case FORWARD -> {
                 Vector2d v1 = this.getPosition();
-                Vector2d v2 = this.getDirection().toUnitVector();
+                Vector2d v2 = this.getDirection().toMoveVector();
                 Vector2d newPosition = v1.add(v2);
                 if (validator.canMoveTo(newPosition)){
                     this.setPosition(newPosition);
@@ -63,7 +67,7 @@ public class Animal implements WorldElement{
             }
             case BACKWARD -> {
                 Vector2d v1 = this.getPosition();
-                Vector2d v2 = this.getDirection().toUnitVector().opposite();
+                Vector2d v2 = this.getDirection().toMoveVector().opposite();
                 Vector2d newPosition = v1.add(v2);
                 if (validator.canMoveTo(newPosition)){
                     this.setPosition(newPosition);
