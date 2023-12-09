@@ -1,7 +1,9 @@
 package agh.ics.oop;
 
+import javafx.application.Application;
+
 public class World {
     public static void main(String[] args){
-        System.out.println("test");
+        Application.launch(SimulationApp.class, args);
     }
 }
