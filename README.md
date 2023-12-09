@@ -1,6 +1,6 @@
 ---TODO---
 
-    1. Zmiana klas MoveDirection i MapDirection (możliwe poruszanie po przekątnej)
+    1. ✓ Zmiana klas MoveDirection i MapDirection (możliwe poruszanie po przekątnej)
     2. Zmiana klasy Animal:
         1. Energia
         2. Metoda eat()
