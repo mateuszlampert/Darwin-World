@@ -21,7 +21,9 @@
     </top>
 
     <center>
-        <GridPane fx:id="mapGrid" />
+        <VBox alignment="CENTER">
+            <GridPane fx:id="mapGrid" gridLinesVisible="true" />
+        </VBox>
     </center>
 
     <bottom>

@@ -2,6 +2,7 @@ package agh.ics.oop;
 
 import agh.ics.oop.model.GrassField;
 import agh.ics.oop.model.MoveDirection;
+import agh.ics.oop.model.RectangularMap;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.presenter.SimulationPresenter;
 import javafx.application.Application;
@@ -29,7 +30,7 @@ public class SimulationApp extends Application {
         configureStage(primaryStage, viewRoot);
 
         SimulationPresenter presenter = loader.getController();
-        GrassField map = new GrassField(10, "grassfield_0");
+        RectangularMap map = new RectangularMap(5,5, "rect_1");
 
         presenter.setWorldMap(map);
 
