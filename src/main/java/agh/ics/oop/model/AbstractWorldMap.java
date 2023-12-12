@@ -5,7 +5,7 @@ import agh.ics.oop.MapVisualizer;
 import java.util.*;
 
 abstract public class AbstractWorldMap implements WorldMap{
-    protected final Map<Vector2d, WorldElement> movable = new HashMap<>();
+    protected final Map<Vector2d, ArrayList<WorldElement>> movable = new HashMap<>();
     private final List<MapChangeListener> mapChangeListeners = new ArrayList<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private String mapId;
@@ -14,12 +14,39 @@ abstract public class AbstractWorldMap implements WorldMap{
         this.mapId = mapId;
     }
 
+    private void removeMovable(WorldElement obj){
+        Vector2d pos = obj.getPosition();
+        ArrayList<WorldElement> movablesAtPos = movable.get(pos);
+        movablesAtPos.remove(obj);
+        if(movablesAtPos.isEmpty()){ // freeing memory of empty list
+            movable.remove(pos);
+        }
+    }
+
+    private void putMovable(WorldElement obj){
+        Vector2d pos = obj.getPosition();
+        ArrayList<WorldElement> movablesAtPos = movable.get(pos);
+        if(movablesAtPos == null){ // could replace it with compute if absent call
+            movablesAtPos = new ArrayList<>();
+            movable.put(pos, movablesAtPos);
+        }
+        movablesAtPos.add(obj);
+    }
+
+    private WorldElement getBestMovableAt(Vector2d position){ //currently, best is the first animal to get on that position
+        ArrayList<WorldElement> movablesAtPos = movable.get(position);
+        if(movablesAtPos == null){
+            return null;
+        }
+        return movablesAtPos.get(0);
+    }
+
 
     @Override
     public void move(WorldElement obj, MoveDirection direction) {
-        movable.remove(obj.getPosition());
+        removeMovable(obj);
         obj.move(this, direction);
-        movable.put(obj.getPosition(), obj);
+        putMovable(obj);
         mapChanged("Object at " + obj.getPosition() +" moved!");
     }
 
@@ -33,7 +60,8 @@ abstract public class AbstractWorldMap implements WorldMap{
         if(!canMoveTo(pos)){
             throw new PositionAlreadyOccupiedException(pos);
         }
-        movable.put(pos, animal);
+        //movable.put(pos, animal);
+        putMovable(animal);
         mapChanged("Animal placed at " + animal.getPosition());
     }
 
@@ -44,7 +72,7 @@ abstract public class AbstractWorldMap implements WorldMap{
 
     @Override
     public WorldElement objectAt(Vector2d position) {
-        return movable.get(position);
+        return getBestMovableAt(position);
     }
 
     @Override
