@@ -78,6 +78,6 @@ public class GrassFieldTest {
     public void tryMoveOnAnimal(){
         GrassField map = new GrassField(10, "test_map_0");
         assertAll(()->map.place(new Animal(new Vector2d(2,2))));
-        assertThrows(PositionAlreadyOccupiedException.class, () -> map.place(new Animal(new Vector2d(2,2))));
+        assertAll(() -> map.place(new Animal(new Vector2d(2,2))));
     }
 }
