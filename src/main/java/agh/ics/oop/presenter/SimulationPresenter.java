@@ -3,6 +3,7 @@ package agh.ics.oop.presenter;
 import agh.ics.oop.OptionsParser;
 import agh.ics.oop.Simulation;
 import agh.ics.oop.SimulationEngine;
+import agh.ics.oop.SimulationSettings;
 import agh.ics.oop.model.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -28,6 +29,8 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private GridPane mapGrid;
     private WorldMap map;
+    private SimulationSettings configuration;
+
     private final ArrayList<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(2, 2), new Vector2d(3, 4)));
     public void setWorldMap(WorldMap map){
         this.map = map;
@@ -87,7 +90,7 @@ public class SimulationPresenter implements MapChangeListener {
             System.out.println(e.toString());
             return;
         }
-        Simulation simulation = new Simulation(map, directions, positions);
+        Simulation simulation = new Simulation(map, directions, positions, configuration);
         SimulationEngine engine = new SimulationEngine(simulation);
         engine.runAsync();
     }

@@ -22,7 +22,7 @@ public class GrassField extends AbstractWorldMap{
         for(int i = 0; i <amount; i++){
             if(generator.hasNext()){
                 Vector2d randomVector = generator.next();
-                Grass randomGrass = new Grass(randomVector);
+                Grass randomGrass = new Grass(randomVector, 10);
                 try {
                     place(randomGrass);
                 } catch(PositionAlreadyOccupiedException e){
@@ -42,7 +42,6 @@ public class GrassField extends AbstractWorldMap{
     public void place(WorldElement element) throws PositionAlreadyOccupiedException{
         super.place(element);
         if(element instanceof Grass) place((Grass) element);
-
     }
 
     private void place(Grass grass) throws PositionAlreadyOccupiedException{
@@ -61,10 +60,6 @@ public class GrassField extends AbstractWorldMap{
         }
         unmovable.put(grassPos, grass);
     }
-
-
-
-
 
     @Override
     public WorldElement objectAt(Vector2d position) {
@@ -97,5 +92,4 @@ public class GrassField extends AbstractWorldMap{
         }
         return new Boundary(lowerLeft, upperRight);
     }
-
 }

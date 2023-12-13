@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SimulationTest {
 
+    private final SimulationSettings configuration = new SimulationSettings(1, 1, 1, 1, 1, new WoodyEquator(), 1, 1, 1, 1, 1, 1, new RandomMutation(), 1, new FullPredestination());
 
     @Test
     public void testNoData() {
@@ -21,7 +22,7 @@ class SimulationTest {
         ArrayList<MoveDirection> moves = OptionsParser.Parse(in);
 
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
         List<Animal> actualAnimalList = s.getAnimals();
         assertEquals(expectedAnimalList,actualAnimalList);
@@ -42,7 +43,7 @@ class SimulationTest {
         expectedAnimalDirections.add(MapDirection.SOUTH);
 
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();
@@ -69,7 +70,7 @@ class SimulationTest {
         expectedAnimalPositions.add(new Vector2d(0,0));
         expectedAnimalDirections.add(MapDirection.NORTH);
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();
@@ -98,7 +99,7 @@ class SimulationTest {
 
         expectedAnimalDirections.add(MapDirection.EAST);
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();
@@ -126,7 +127,7 @@ class SimulationTest {
         expectedAnimalPositions.add(new Vector2d(1,2));
         expectedAnimalDirections.add(MapDirection.EAST);
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();
@@ -158,7 +159,7 @@ class SimulationTest {
         expectedAnimalDirections.add(MapDirection.WEST);
         expectedAnimalDirections.add(MapDirection.EAST);
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();
@@ -186,7 +187,7 @@ class SimulationTest {
         expectedAnimalDirections.add(MapDirection.NORTH);
 
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();
@@ -214,7 +215,7 @@ class SimulationTest {
         expectedAnimalDirections.add(MapDirection.NORTH);
 
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();
@@ -248,7 +249,7 @@ class SimulationTest {
         expectedAnimalDirections.add(MapDirection.NORTH);
 
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();
@@ -272,7 +273,7 @@ class SimulationTest {
         animalInitPositions.add(new Vector2d(1,1));
 
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
         List<Animal> animalList = s.getAnimals();
         assertEquals(1,animalList.size());
@@ -293,7 +294,7 @@ class SimulationTest {
         expectedAnimalPositions.add(new Vector2d(7,7));
         expectedAnimalDirections.add(MapDirection.NORTH_EAST);
 
-        Simulation s = new Simulation(map,moves,animalInitPositions);
+        Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();
@@ -322,7 +323,7 @@ class SimulationTest {
         expectedAnimalPositions.add(new Vector2d(5, 5));
         expectedAnimalDirections.add(MapDirection.NORTH_WEST);
 
-        Simulation s = new Simulation(map, moves, animalInitPositions);
+        Simulation s = new Simulation(map, moves, animalInitPositions, configuration);
         s.run();
 
         List<Animal> animalList = s.getAnimals();

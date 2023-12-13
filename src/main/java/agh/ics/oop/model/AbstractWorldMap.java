@@ -36,7 +36,6 @@ abstract public class AbstractWorldMap implements WorldMap{
         movable.put(pos, animal);
         mapChanged("Animal placed at " + animal.getPosition());
     }
-
     @Override
     public boolean isOccupied(Vector2d position) {
         return objectAt(position) != null;

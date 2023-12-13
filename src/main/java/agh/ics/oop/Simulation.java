@@ -11,7 +11,10 @@ public class Simulation implements Runnable{
   private final List<Animal> animals = new ArrayList<>();
   private final List<MoveDirection> moves;
   private final WorldMap map;
-  public Simulation(WorldMap map, List<MoveDirection> moves, List<Vector2d> positions){
+  private final SimulationSettings configuration;
+
+  public Simulation(WorldMap map, List<MoveDirection> moves, List<Vector2d> positions, SimulationSettings configuration){
+        this.configuration = configuration;
         this.map = map;
         this.moves = moves;
         for (Vector2d position : positions) {
