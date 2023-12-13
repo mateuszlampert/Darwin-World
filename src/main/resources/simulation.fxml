@@ -15,7 +15,6 @@
 
     <top>
         <VBox alignment="CENTER">
-            <TextField fx:id="inputMoves" />
             <Button text="Start simulation" onAction="#onSimulationStartClicked"/>
         </VBox>
     </top>
