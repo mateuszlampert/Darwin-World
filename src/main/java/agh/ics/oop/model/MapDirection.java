@@ -3,12 +3,12 @@ package agh.ics.oop.model;
 public enum MapDirection {
     NORTH,
     NORTH_WEST,
-    NORTH_EAST,
-    SOUTH,
-    SOUTH_WEST,
-    SOUTH_EAST,
     WEST,
-    EAST;
+    SOUTH_WEST,
+    SOUTH,
+    SOUTH_EAST,
+    EAST,
+    NORTH_EAST;
 
     public static final Vector2d MOVE_VECTOR_NORTH = new Vector2d(0,1);
     public static final Vector2d MOVE_VECTOR_EAST = new Vector2d(1,0);
@@ -19,6 +19,9 @@ public enum MapDirection {
     public static final Vector2d MOVE_VECTOR_SOUTH_WEST = new Vector2d(-1, -1);
     public static final Vector2d MOVE_VECTOR_SOUTH_EAST = new Vector2d(1, -1);
 
+    public MapDirection rotate(int rotation){
+        return MapDirection.values()[(ordinal() + rotation) % 8];
+    }
 
     public String toString() {
         return switch (this) {
