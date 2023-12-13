@@ -235,18 +235,18 @@ class SimulationTest {
         ArrayList<MapDirection> expectedAnimalDirections = new ArrayList<MapDirection>();
         WorldMap map = new RectangularMap(10,10,"test_map_0");
 
-        String[] in = {"b","f"};
+        String[] in = {"b","r"};
         ArrayList<MoveDirection> moves = OptionsParser.Parse(in);
         animalInitPositions.add(new Vector2d(7,8));
         animalInitPositions.add(new Vector2d(7,7));
 
 
-        expectedAnimalPositions.add(new Vector2d(7,8));
+        expectedAnimalPositions.add(new Vector2d(7,7));
         expectedAnimalPositions.add(new Vector2d(7,7));
 
 
         expectedAnimalDirections.add(MapDirection.NORTH);
-        expectedAnimalDirections.add(MapDirection.NORTH);
+        expectedAnimalDirections.add(MapDirection.NORTH_EAST);
 
 
         Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
@@ -276,7 +276,7 @@ class SimulationTest {
         Simulation s = new Simulation(map,moves,animalInitPositions, configuration);
         s.run();
         List<Animal> animalList = s.getAnimals();
-        assertEquals(1,animalList.size());
+        assertEquals(2,animalList.size());
     }
 
 

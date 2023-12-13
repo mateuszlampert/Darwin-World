@@ -6,7 +6,7 @@
         2. Metoda eat()
         3. Metoda canReproduce()
         4. Metoda Reproduce
-    3. Możliwość utrzymania wielu zwierzaków na jednym polu
+    3. ✓ Możliwość utrzymania wielu zwierzaków na jednym polu
     4. ✓ Zmiana klasy Grass:
         1. Informacja odnośnie kaloryczności
     5. Usunięcie klasy OptionsParser

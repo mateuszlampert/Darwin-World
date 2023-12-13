@@ -20,8 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SimulationPresenter implements MapChangeListener {
-    private static final double CELL_WIDTH = 25;
-    private static final double CELL_HEIGHT = 25;
+    private static final double CELL_WIDTH = 40;
+    private static final double CELL_HEIGHT = 40;
+    private static final String EMPTY_CELL_STRING = "";
     @FXML
     private TextField inputMoves;
     @FXML
@@ -39,35 +40,38 @@ public class SimulationPresenter implements MapChangeListener {
     public void drawMap(){
         clearGrid();
         Boundary mapBounds = map.getCurrentBounds();
-        int xStart = mapBounds.lowerLeft().getX();
-        int xEnd = mapBounds.upperRight().getX();
-        int yStart = mapBounds.lowerLeft().getY();
-        int yEnd = mapBounds.upperRight().getY();
 
-
-        for(int y = yEnd; y >= yStart; y--){
-            for(int x = xStart; x <= xEnd; x++){
-                String cellString;
-                WorldElement objectAtCell = map.objectAt(new Vector2d(x,y));
-                if(objectAtCell != null){
-                    cellString = objectAtCell.toString();
-                }else{
-                    cellString = " ";
-                }
-                Label label = new Label(cellString);
-                label.setStyle("-fx-border-color: black; -fx-border-width: 1 1 1 1;");
-                mapGrid.add(label, x-xStart, yEnd-y);
-                GridPane.setHalignment(label, HPos.CENTER);
-            }
-            mapGrid.getColumnConstraints().add(new ColumnConstraints(CELL_WIDTH));
-            mapGrid.getRowConstraints().add(new RowConstraints(CELL_HEIGHT));
+        for(int i = 0; i <= mapBounds.getYSpan(); i++) {
+            ColumnConstraints column = new ColumnConstraints(CELL_WIDTH);
+            mapGrid.getColumnConstraints().add(column);
         }
+
+        for(int i = 0; i <= mapBounds.getXSpan(); i++) {
+            RowConstraints row = new RowConstraints(CELL_HEIGHT);
+            mapGrid.getRowConstraints().add(row);
+        }
+
+        for(int y = mapBounds.getDownY(); y <= mapBounds.getUpY(); y++){
+            for(int x = mapBounds.getLeftX(); x <= mapBounds.getRightX(); x++){
+                WorldElement objectAtPos = map.objectAt(new Vector2d(x, y));
+                String cellString = EMPTY_CELL_STRING;
+                if(objectAtPos != null){
+                    cellString = objectAtPos.toString();
+                }
+                Label cellLabel = new Label(cellString);
+
+                int gridYPosition = mapBounds.getUpY() - y;
+                int gridXPosition = x - mapBounds.getLeftX();
+                mapGrid.add(cellLabel, gridXPosition, gridYPosition);
+                GridPane.setHalignment(cellLabel, HPos.CENTER);
+            }
+        }
+
 
     }
 
     private void clearGrid() {
-        mapGrid.getChildren().clear();
-        //mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0)); // hack to retain visible grid lines
+        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0)); // hack to retain visible grid lines
         mapGrid.getColumnConstraints().clear();
         mapGrid.getRowConstraints().clear();
     }

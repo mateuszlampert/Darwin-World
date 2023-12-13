@@ -35,7 +35,8 @@ public class GrassField extends AbstractWorldMap{
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return !(objectAt(position) instanceof Animal);
+        //return !(objectAt(position) instanceof Animal);
+        return true;
     }
 
     @Override

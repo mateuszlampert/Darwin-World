@@ -31,9 +31,6 @@ public class RectangularMap extends AbstractWorldMap{
         if(!position.follows(mapBottomLeft)){
             return false;
         }
-        if(isOccupied(position)){
-            return false;
-        }
 
         return true;
     }
