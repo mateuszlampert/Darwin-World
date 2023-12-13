@@ -32,7 +32,6 @@ public class SimulationPresenter implements MapChangeListener {
     private WorldMap map;
     private SimulationSettings configuration;
 
-    private final ArrayList<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(2, 2), new Vector2d(3, 4)));
     public void setWorldMap(WorldMap map){
         this.map = map;
     }
@@ -86,15 +85,9 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
-        String[] inputMoves = this.inputMoves.getText().split(" ");
-        ArrayList<MoveDirection> directions;
-        try {
-            directions = OptionsParser.Parse(inputMoves);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.toString());
-            return;
-        }
-        Simulation simulation = new Simulation(map, directions, positions, configuration);
+        SimulationSettings emptySettings = new SimulationSettings(0,0,0,0,0, null, 0,0,0,0,0,0,null,0,null);
+        ArrayList<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(1, 1), new Vector2d(2, 1)));
+        Simulation simulation = new Simulation(map, positions, emptySettings, 5);
         SimulationEngine engine = new SimulationEngine(simulation);
         engine.runAsync();
     }
