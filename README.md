@@ -6,11 +6,12 @@
         2. Metoda eat()
         3. Metoda canReproduce()
         4. Metoda Reproduce
+        5. ✓ Metoda rotate
     3. ✓ Możliwość utrzymania wielu zwierzaków na jednym polu
     4. ✓ Zmiana klasy Grass:
         1. Informacja odnośnie kaloryczności
-    5. Usunięcie klasy OptionsParser
-    6. Modyfikacja klasy Simulation
+    5. ✓ Usunięcie klasy OptionsParser
+    6. ✓ Modyfikacja klasy Simulation
     7. Stworzenie nowego typu mapy (w kształcie walca)
     8. ✓ Stworzenie klasy Genome
     9. Stworzenie klasy AnimalStats
@@ -22,3 +23,6 @@
     15. Implementacja klasy CrawlingJungle
     16. Implementacja klasy FullPredestination
     17. Implementacja klasy WoodyEquator
+    18. Implementacja metod MapHandler
+    19. Implementacja metod w Genome
+    20. Uzycie SimulationSettings w Simulation
