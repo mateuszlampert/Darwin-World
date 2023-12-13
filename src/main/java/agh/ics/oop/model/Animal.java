@@ -1,16 +1,22 @@
 package agh.ics.oop.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Animal implements WorldElement{
     private MapDirection direction;
     private Vector2d position;
+    private Genome genome;
 
     public Animal(){
         this.position = new Vector2d(2,2);
         this.direction = MapDirection.NORTH;
+        this.genome = new Genome(new ArrayList<>());
     }
     public Animal(Vector2d position){
         this.position = position;
         this.direction = MapDirection.NORTH;
+        this.genome = new Genome(new ArrayList<>());
     }
 
     public Vector2d getPosition() {
@@ -27,18 +33,6 @@ public class Animal implements WorldElement{
         this.direction = direction;
     }
 
-    public String toString() {
-        return switch (direction) {
-            case NORTH -> "\u2191"; // strzałka w górę
-            case NORTH_WEST -> "\u2196"; // strzałka w lewo-górę
-            case WEST -> "\u2190"; // strzałka w lewo
-            case SOUTH_WEST -> "\u2199"; // strzałka w lewo-dół
-            case SOUTH -> "\u2193"; // strzałka w dół
-            case SOUTH_EAST -> "\u2198"; // strzałka w prawo-dół
-            case EAST -> "\u2192"; // strzałka w prawo
-            case NORTH_EAST -> "\u2197"; // strzałka w prawo-górę
-        };
-    }
 
     public boolean isAt(Vector2d position){
         return this.getPosition().equals(position);
@@ -46,6 +40,12 @@ public class Animal implements WorldElement{
     public boolean isFacing(MapDirection direction){ // tej metody nie bylo w instrukcjach, ale dodalem ja aby ulatwic testowanie
         return this.getDirection().equals(direction);
     }
+
+    public void rotate(){
+        int rotationDelta = genome.getNextCode();
+        this.direction.rotate(rotationDelta);
+    }
+
 
     public void move(MoveValidator validator,MoveDirection direction){
         switch(direction){
@@ -74,5 +74,18 @@ public class Animal implements WorldElement{
                 }
             }
         }
+    }
+
+    public String toString() {
+        return switch (direction) {
+            case NORTH -> "\u2191"; // strzałka w górę
+            case NORTH_WEST -> "\u2196"; // strzałka w lewo-górę
+            case WEST -> "\u2190"; // strzałka w lewo
+            case SOUTH_WEST -> "\u2199"; // strzałka w lewo-dół
+            case SOUTH -> "\u2193"; // strzałka w dół
+            case SOUTH_EAST -> "\u2198"; // strzałka w prawo-dół
+            case EAST -> "\u2192"; // strzałka w prawo
+            case NORTH_EAST -> "\u2197"; // strzałka w prawo-górę
+        };
     }
 }

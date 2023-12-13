@@ -8,4 +8,8 @@ public class Genome {
     public Genome(List<Integer> genes) {
         this.genes = genes;
     }
+
+    public int getNextCode(){//TODO: implement this
+        return 0;
+    }
 }
