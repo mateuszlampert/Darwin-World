@@ -7,56 +7,43 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Simulation implements Runnable{
-  private final List<Animal> animals = new ArrayList<>();
-  private final List<MoveDirection> moves;
-  private final WorldMap map;
-  private final SimulationSettings configuration;
+public class Simulation implements Runnable {
 
-  public Simulation(WorldMap map, List<MoveDirection> moves, List<Vector2d> positions, SimulationSettings configuration){
+    private final int simulationSteps;
+    private final WorldMap map;
+    private final SimulationSettings configuration;
+    private final MapHandler mapHandler;
+
+    public Simulation(WorldMap map, List<Vector2d> positions, SimulationSettings configuration, int simulationSteps) {
         this.configuration = configuration;
         this.map = map;
-        this.moves = moves;
+        this.mapHandler = new MapHandler(map);
+        this.simulationSteps = simulationSteps;
+
         for (Vector2d position : positions) {
             Animal animal = new Animal(position);
-            try {
-                map.place(animal);
-                this.animals.add(animal);
-            } catch (PositionAlreadyOccupiedException e){
-                System.out.println(e.toString());
-                //continue
-            }
+            mapHandler.placeAnimal(animal);
         }
     }
 
-    public List<Animal> getAnimals(){
-        List<Animal> safeAnimals = Collections.unmodifiableList(this.animals);
-        return safeAnimals;
+    public List<Animal> getAnimals() {
+        return Collections.unmodifiableList(mapHandler.getMapAnimals());
     }
 
-    private List<MoveDirection> getMoves(){
-        return this.moves;
-    }
 
     @Override
-    public void run(){
-        List<Animal> animals = this.getAnimals();
-        List<MoveDirection> moves = this.getMoves();
-        int animal_count = animals.size();
-
-        for(int i=0; i < moves.size(); i++){
+    public void run() {
+        for (int i = 0; i < simulationSteps; i++) { // will be infinite loop later
+            //mapHandler.removeDead();
+            mapHandler.moveAnimals();
+            //mapHandler.eatGrass();
+            //mapHandler.reproduce();
+            //mapHandler.growGrass();
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                return;
+                throw new RuntimeException(e);
             }
-            int animal_index = i % animal_count;
-
-            Animal animal = animals.get(animal_index);
-            MoveDirection move = moves.get(i);
-
-            map.move(animal, move);
         }
     }
 }
