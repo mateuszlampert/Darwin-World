@@ -8,13 +8,13 @@ abstract public class AbstractWorldMap implements WorldMap{
     protected final Map<Vector2d, ArrayList<WorldElement>> movable = new HashMap<>();
     private final List<MapChangeListener> mapChangeListeners = new ArrayList<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
-    private String mapId;
+    private final String mapId;
 
     protected AbstractWorldMap(String mapId){
         this.mapId = mapId;
     }
 
-    private void removeMovable(WorldElement obj){
+    public void removeMovable(WorldElement obj){
         Vector2d pos = obj.getPosition();
         ArrayList<WorldElement> movablesAtPos = movable.get(pos);
         movablesAtPos.remove(obj);
@@ -40,7 +40,6 @@ abstract public class AbstractWorldMap implements WorldMap{
         }
         return movablesAtPos.get(0);
     }
-
 
     @Override
     public void move(WorldElement obj, MoveDirection direction) {

@@ -10,11 +10,11 @@ import java.util.List;
 public class Simulation implements Runnable {
 
     private final int simulationSteps;
-    private final WorldMap map;
+    private final AbstractWorldMap map;
     private final SimulationSettings configuration;
     private final MapHandler mapHandler;
 
-    public Simulation(WorldMap map, List<Vector2d> positions, SimulationSettings configuration, int simulationSteps) {
+    public Simulation(AbstractWorldMap map, List<Vector2d> positions, SimulationSettings configuration, int simulationSteps) {
         this.configuration = configuration;
         this.map = map;
         this.mapHandler = new MapHandler(map);
@@ -34,7 +34,7 @@ public class Simulation implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < simulationSteps; i++) { // will be infinite loop later
-            //mapHandler.removeDead();
+            mapHandler.removeDead();
             mapHandler.moveAnimals();
             //mapHandler.eatGrass();
             //mapHandler.reproduce();
