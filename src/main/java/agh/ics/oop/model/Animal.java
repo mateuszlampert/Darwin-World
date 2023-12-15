@@ -51,33 +51,13 @@ public class Animal implements WorldElement{
         this.direction.rotate(rotationDelta);
     }
 
-
     public void move(MoveValidator validator, MoveDirection direction){
-        switch(direction){
-            case RIGHT ->{ //dla RIGHT i LEFT nie trzeba walidowac ruchu bo nie zmieniamy pozycji
-                MapDirection newDirection = this.getDirection().next();
-                this.setDirection(newDirection);
-            }
-            case LEFT -> {
-                MapDirection newDirection = this.getDirection().previous();
-                this.setDirection(newDirection);
-            }
-            case FORWARD -> {
-                Vector2d v1 = this.getPosition();
-                Vector2d v2 = this.getDirection().toMoveVector();
-                Vector2d newPosition = v1.add(v2);
-                if (validator.canMoveTo(newPosition)){
-                    this.setPosition(newPosition);
-                }
-            }
-            case BACKWARD -> {
-                Vector2d v1 = this.getPosition();
-                Vector2d v2 = this.getDirection().toMoveVector().opposite();
-                Vector2d newPosition = v1.add(v2);
-                if (validator.canMoveTo(newPosition)){
-                    this.setPosition(newPosition);
-                }
-            }
+        rotate();
+        Vector2d v1 = this.getPosition();
+        Vector2d v2 = this.getDirection().toMoveVector();
+        Vector2d newPosition = v1.add(v2);
+        if (validator.canMoveTo(newPosition)) {
+            this.setPosition(newPosition);
         }
     }
 
