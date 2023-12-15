@@ -7,16 +7,22 @@ public class Animal implements WorldElement{
     private MapDirection direction;
     private Vector2d position;
     private Genome genome;
+    private int energy;
 
     public Animal(){
         this.position = new Vector2d(2,2);
         this.direction = MapDirection.NORTH;
-        this.genome = new Genome(new ArrayList<>());
+        this.genome = new Genome(new ArrayList<>(), new FullPredestination());
     }
     public Animal(Vector2d position){
         this.position = position;
         this.direction = MapDirection.NORTH;
-        this.genome = new Genome(new ArrayList<>());
+        this.genome = new Genome(new ArrayList<>(), new FullPredestination());
+    }
+
+    public Animal(Vector2d position, MapDirection direction, int startingEnergy, Genome genome){
+        this.energy = startingEnergy;
+        this.genome = genome;
     }
 
     public Vector2d getPosition() {
@@ -33,7 +39,6 @@ public class Animal implements WorldElement{
         this.direction = direction;
     }
 
-
     public boolean isAt(Vector2d position){
         return this.getPosition().equals(position);
     }
@@ -42,12 +47,12 @@ public class Animal implements WorldElement{
     }
 
     public void rotate(){
-        int rotationDelta = genome.getNextCode();
+        int rotationDelta = genome.getNextMove();
         this.direction.rotate(rotationDelta);
     }
 
 
-    public void move(MoveValidator validator,MoveDirection direction){
+    public void move(MoveValidator validator, MoveDirection direction){
         switch(direction){
             case RIGHT ->{ //dla RIGHT i LEFT nie trzeba walidowac ruchu bo nie zmieniamy pozycji
                 MapDirection newDirection = this.getDirection().next();
@@ -87,5 +92,13 @@ public class Animal implements WorldElement{
             case EAST -> "\u2192"; // strzałka w prawo
             case NORTH_EAST -> "\u2197"; // strzałka w prawo-górę
         };
+    }
+
+    public void eat(Grass plant){
+        this.energy += plant.getCalories();
+    }
+
+    public int getEnergy() {
+        return this.energy;
     }
 }
