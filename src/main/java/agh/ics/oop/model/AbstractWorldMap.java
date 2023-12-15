@@ -42,9 +42,9 @@ abstract public class AbstractWorldMap implements WorldMap{
     }
 
     @Override
-    public void move(WorldElement obj, MoveDirection direction) {
+    public void move(Animal obj, MoveDirection direction) {
         removeMovable(obj);
-        obj.move(this, direction);
+        obj.move(this);
         putMovable(obj);
         mapChanged("Object at " + obj.getPosition() +" moved!");
     }

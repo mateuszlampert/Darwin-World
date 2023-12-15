@@ -51,7 +51,7 @@ public class Animal implements WorldElement{
         this.direction.rotate(rotationDelta);
     }
 
-    public void move(MoveValidator validator, MoveDirection direction){
+    public void move(MoveValidator validator){
         rotate();
         Vector2d v1 = this.getPosition();
         Vector2d v2 = this.getDirection().toMoveVector();

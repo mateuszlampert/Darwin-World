@@ -19,11 +19,6 @@ public class Grass implements WorldElement{
         return GRASS_STRING;
     }
 
-    @Override
-    public void move(MoveValidator validator, MoveDirection direction) {
-        return; //grass shouldn't move
-    }
-
     public int getCalories(){
         return this.calories;
     }

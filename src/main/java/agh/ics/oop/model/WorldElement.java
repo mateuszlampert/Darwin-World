@@ -6,5 +6,5 @@ public interface WorldElement {
     private void setPosition(){};
 
     public String toString();
-    public void move(MoveValidator validator, MoveDirection direction);
+
 }
