@@ -18,9 +18,9 @@ public interface WorldMap extends MoveValidator {
     String getId();
 
     /**
-     * Place a animal on the map.
+     * Place an animal on the map.
      *
-     * @param animal The animal to place on the map.
+     * @param obj The animal to place on the map.
      * @return True if the animal was placed. The animal cannot be placed if the move is not valid.
      */
     void place(WorldElement obj) throws PositionAlreadyOccupiedException;
@@ -29,7 +29,7 @@ public interface WorldMap extends MoveValidator {
      * Moves an animal (if it is present on the map) according to specified direction.
      * If the move is not possible, this method has no effect.
      */
-    void move(WorldElement obj, MoveDirection direction);
+    void move(Animal obj, MoveDirection direction);
 
     /**
      * Return true if given position on the map is occupied. Should not be

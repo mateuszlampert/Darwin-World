@@ -2,6 +2,7 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.MapVisualizer;
 import agh.ics.oop.RandomVector2dGenerator;
+import agh.ics.oop.SimulationSettings;
 
 import java.util.*;
 
@@ -11,12 +12,16 @@ public class GrassField extends AbstractWorldMap{
     //private final Map<Vector2d, WorldElement> movable = new HashMap<>(); // Animal, ...
     private final int grassMaxCount;
     private final int grassUpperBound;
-    public GrassField(int grassMaxCount, String mapId){
+    private final SimulationSettings configuration;
+
+    public GrassField(int grassMaxCount, String mapId, SimulationSettings configuration){
         super(mapId);
-        this.grassMaxCount = grassMaxCount;
+        this.configuration = configuration;
+        this.grassMaxCount = configuration.startingPlants();
         this.grassUpperBound = (int) Math.sqrt(grassMaxCount * 10);;
         this.generateGrasses(grassMaxCount);
     }
+
     private void generateGrasses(int amount){
         RandomVector2dGenerator generator = new RandomVector2dGenerator(this.grassUpperBound);
         for(int i = 0; i <amount; i++){
@@ -37,6 +42,10 @@ public class GrassField extends AbstractWorldMap{
     public boolean canMoveTo(Vector2d position) {
         //return !(objectAt(position) instanceof Animal);
         return true;
+    }
+
+    public boolean canReproduce(Animal animal){
+        return animal.getEnergy() >= configuration.energyNeededToReproduce();
     }
 
     @Override
@@ -92,5 +101,9 @@ public class GrassField extends AbstractWorldMap{
             upperRight = v.upperRight(upperRight);
         }
         return new Boundary(lowerLeft, upperRight);
+    }
+
+    public SimulationSettings getConfiguration() {
+        return configuration;
     }
 }
