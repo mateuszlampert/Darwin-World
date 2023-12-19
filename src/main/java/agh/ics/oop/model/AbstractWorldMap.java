@@ -5,7 +5,8 @@ import agh.ics.oop.MapVisualizer;
 import java.util.*;
 
 abstract public class AbstractWorldMap implements WorldMap{
-    protected final Map<Vector2d, ArrayList<WorldElement>> movable = new HashMap<>();
+    protected final Map<Vector2d, ArrayList<WorldElement>> animals = new HashMap<>();
+    protected final Map<Vector2d, WorldElement> grasses = new HashMap<>();
     private final List<MapChangeListener> mapChangeListeners = new ArrayList<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final String mapId;
@@ -14,27 +15,28 @@ abstract public class AbstractWorldMap implements WorldMap{
         this.mapId = mapId;
     }
 
-    public void removeMovable(WorldElement obj){
-        Vector2d pos = obj.getPosition();
-        ArrayList<WorldElement> movablesAtPos = movable.get(pos);
-        movablesAtPos.remove(obj);
+    @Override
+    public void removeAnimal(WorldElement animal){
+        Vector2d pos = animal.getPosition();
+        ArrayList<WorldElement> movablesAtPos = animals.get(pos);
+        movablesAtPos.remove(animal);
         if(movablesAtPos.isEmpty()){ // freeing memory of empty list
-            movable.remove(pos);
+            animals.remove(pos);
         }
     }
 
-    private void putMovable(WorldElement obj){
+    private void putAnimal(WorldElement obj){
         Vector2d pos = obj.getPosition();
-        ArrayList<WorldElement> movablesAtPos = movable.get(pos);
+        ArrayList<WorldElement> movablesAtPos = animals.get(pos);
         if(movablesAtPos == null){ // could replace it with compute if absent call
             movablesAtPos = new ArrayList<>();
-            movable.put(pos, movablesAtPos);
+            animals.put(pos, movablesAtPos);
         }
         movablesAtPos.add(obj);
     }
 
-    private WorldElement getBestMovableAt(Vector2d position){ //currently, best is the first animal to get on that position
-        ArrayList<WorldElement> movablesAtPos = movable.get(position);
+    private WorldElement getBestAnimalAt(Vector2d position){ //currently, best is the first animal to get on that position
+        ArrayList<WorldElement> movablesAtPos = animals.get(position);
         if(movablesAtPos == null){
             return null;
         }
@@ -43,26 +45,36 @@ abstract public class AbstractWorldMap implements WorldMap{
 
     @Override
     public void move(Animal obj, MoveDirection direction) {
-        removeMovable(obj);
+        removeAnimal(obj);
         obj.move(this);
-        putMovable(obj);
+        putAnimal(obj);
         mapChanged("Object at " + obj.getPosition() +" moved!");
     }
 
     @Override
-    public void place(WorldElement element) throws PositionAlreadyOccupiedException {
-        if(element instanceof Animal) place((Animal) element);
+    public void placeAnimal(Animal animal) throws InvalidPositionException{
+        Vector2d animalPos = animal.getPosition();
+        if(!canMoveTo(animalPos)){
+            throw new InvalidPositionException(animalPos);
+        }
+        putAnimal(animal);
+        mapChanged("Animal placed at " + animalPos);
     }
 
-    private void place(Animal animal) throws PositionAlreadyOccupiedException {
-        Vector2d pos = animal.getPosition();
-        if(!canMoveTo(pos)){
-            throw new PositionAlreadyOccupiedException(pos);
+    @Override
+    public void placeGrass(Grass grass) throws InvalidPositionException, PositionAlreadyOccupiedException{
+        Vector2d grassPos = grass.getPosition();
+        if(grasses.get(grassPos) != null){
+            throw new PositionAlreadyOccupiedException(grassPos);
         }
-        //movable.put(pos, animal);
-        putMovable(animal);
-        mapChanged("Animal placed at " + animal.getPosition());
+        if(!canMoveTo(grassPos)){
+            throw new InvalidPositionException(grassPos);
+        }
+        grasses.put(grassPos, grass);
+        mapChanged("Grass placed at " + grassPos);
+
     }
+
     @Override
     public boolean isOccupied(Vector2d position) {
         return objectAt(position) != null;
@@ -70,13 +82,13 @@ abstract public class AbstractWorldMap implements WorldMap{
 
     @Override
     public WorldElement objectAt(Vector2d position) {
-        return getBestMovableAt(position);
+        return getBestAnimalAt(position);
     }
 
     @Override
     public List getElements() {
         List list = new ArrayList<>();
-        list.addAll(movable.values());
+        list.addAll(animals.values());
         return list;
     }
 

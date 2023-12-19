@@ -1,6 +1,5 @@
 package agh.ics.oop.presenter;
 
-import agh.ics.oop.OptionsParser;
 import agh.ics.oop.Simulation;
 import agh.ics.oop.SimulationEngine;
 import agh.ics.oop.SimulationSettings;
@@ -85,9 +84,9 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
-        SimulationSettings emptySettings = new SimulationSettings(0,0,0,0,0, null, 0,0,0,0,0,0,null,0,null);
-        ArrayList<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(1, 1), new Vector2d(2, 1)));
-        Simulation simulation = new Simulation(map, positions, emptySettings, 5);
+        SimulationSettings emptySettings = new SimulationSettings(0,0,0,0,0, null, 0,0,0,0,0,0,null,5,new FullPredestination());
+        ArrayList<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(3, 3)));
+        Simulation simulation = new Simulation(map, positions, emptySettings, 100);
         SimulationEngine engine = new SimulationEngine(simulation);
         engine.runAsync();
     }
