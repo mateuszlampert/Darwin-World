@@ -17,12 +17,14 @@ public class Animal implements WorldElement{
     public Animal(Vector2d position){
         this.position = position;
         this.direction = MapDirection.NORTH;
-        this.genome = new Genome(new ArrayList<>(), new FullPredestination());
+        this.genome = new Genome(new ArrayList<>(List.of(1,1,2,2)), new FullPredestination());
     }
 
     public Animal(Vector2d position, MapDirection direction, int startingEnergy, Genome genome){
         this.energy = startingEnergy;
         this.genome = genome;
+        this.direction = direction;
+        this.position = position;
     }
 
     public Vector2d getPosition() {
@@ -48,7 +50,7 @@ public class Animal implements WorldElement{
 
     public void rotate(){
         int rotationDelta = genome.getNextMove();
-        this.direction.rotate(rotationDelta);
+        this.direction = direction.rotate(rotationDelta);
     }
 
     public void move(MoveValidator validator){

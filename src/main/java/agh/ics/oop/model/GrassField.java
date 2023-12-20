@@ -1,6 +1,5 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.MapVisualizer;
 import agh.ics.oop.RandomVector2dGenerator;
 import agh.ics.oop.SimulationSettings;
 
@@ -48,11 +47,6 @@ public class GrassField extends AbstractWorldMap{
         return animal.getEnergy() >= configuration.energyNeededToReproduce();
     }
 
-    @Override
-    public void place(WorldElement element) throws PositionAlreadyOccupiedException{
-        super.place(element);
-        if(element instanceof Grass) place((Grass) element);
-    }
 
     private void place(Grass grass) throws PositionAlreadyOccupiedException{
         if(unmovable.size() >= grassMaxCount){
@@ -70,6 +64,7 @@ public class GrassField extends AbstractWorldMap{
         }
         unmovable.put(grassPos, grass);
     }
+
 
     @Override
     public WorldElement objectAt(Vector2d position) {
@@ -92,7 +87,7 @@ public class GrassField extends AbstractWorldMap{
     public Boundary getCurrentBounds(){
         Vector2d lowerLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
         Vector2d upperRight = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
-        for(Vector2d v : movable.keySet()){
+        for(Vector2d v : animals.keySet()){
             lowerLeft = v.lowerLeft(lowerLeft);
             upperRight = v.upperRight(upperRight);
         }

@@ -1,3 +1,7 @@
+---DODATKOWE INFORMACJE---
+    
+    1. Zwierzak traci 1 energi na kazdym ruchu, lub jest to parametr konfiguracyjny
+
 ---TODO---
 
     1. ✓ Zmiana klas MoveDirection i MapDirection (możliwe poruszanie po przekątnej)

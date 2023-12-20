@@ -41,4 +41,9 @@ public enum MapDirection {
     public Vector2d toMoveVector(){
         return this.moveVector;
     }
+
+    public MapDirection randomDirection(){
+        int result = (int) (Math.random()*8);
+        return MapDirection.values()[result];
+    }
 }
