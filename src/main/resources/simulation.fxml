@@ -3,11 +3,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
-
-
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.HBox?>
+
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             minHeight="550.0" minWidth="850.0"
@@ -29,4 +30,59 @@
         <Label fx:id="movesLabel" text="No events yet"/>
     </bottom>
 
+    <right>
+        <VBox>
+            <VBox>
+                <Label text="Width: " />
+                <Spinner fx:id="mapWidth" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Height: " />
+                <Spinner fx:id="mapHeight" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Plants at the beginning: " />
+                <Spinner fx:id="startingPlants" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Energy from eating plants: " />
+                <Spinner fx:id="plantsEnergy" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Plants growing per day: " />
+                <Spinner fx:id="plantsPerDay" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Way of growing plants: " />
+            </VBox>
+            <VBox>
+                <Label text="Animals at the beginning: " />
+                <Spinner fx:id="startingAnimals" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Starting energy of animals: " />
+                <Spinner fx:id="startingEnergy" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Minimum energy to reproduce: " />
+                <Spinner fx:id="energyNeededToReproduce" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Energy used to reproduce : " />
+                <Spinner fx:id="energyLostToReproduce" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Minimum number of mutations: " />
+                <Spinner fx:id="minMutations" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Maximum number of mutations: " />
+                <Spinner fx:id="maxMutations" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+            <VBox>
+                <Label text="Length of genome: " />
+                <Spinner fx:id="genomeLength" editable="true" initialValue="100" min="0" max="10000"/>
+            </VBox>
+        </VBox>
+    </right>
 </BorderPane>
