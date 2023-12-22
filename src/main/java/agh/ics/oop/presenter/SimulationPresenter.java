@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -28,6 +29,31 @@ public class SimulationPresenter implements MapChangeListener {
     private Label movesLabel;
     @FXML
     private GridPane mapGrid;
+    @FXML
+    private Spinner<Integer> mapWidth;
+    @FXML
+    private Spinner<Integer> mapHeight;
+    @FXML
+    private Spinner<Integer> startingPlants;
+    @FXML
+    private Spinner<Integer> plantsEnergy;
+    @FXML
+    private Spinner<Integer> plantsPerDay;
+    @FXML
+    private Spinner<Integer> startingAnimals;
+    @FXML
+    private Spinner<Integer> startingEnergy;
+    @FXML
+    private Spinner<Integer> energyNeededToReproduce;
+    @FXML
+    private Spinner<Integer> energyLostToReproduce;
+    @FXML
+    private Spinner<Integer> minMutations;
+    @FXML
+    private Spinner<Integer> maxMutations;
+    @FXML
+    private Spinner<Integer> genomeLength;
+
     private WorldMap map;
     private SimulationSettings configuration;
 
@@ -74,7 +100,6 @@ public class SimulationPresenter implements MapChangeListener {
         mapGrid.getRowConstraints().clear();
     }
 
-
     @Override
     public void mapChanged(WorldMap worldMap,String message) {
         Platform.runLater(() -> {
@@ -84,11 +109,30 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
-        SimulationSettings emptySettings = new SimulationSettings(0,0,0,0,0, null, 0,0,0,0,0,0,null,5,new FullPredestination());
+        setConfiguration();
         ArrayList<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(3, 3)));
-        Simulation simulation = new Simulation(map, positions, emptySettings, 100);
+        Simulation simulation = new Simulation(map, positions, configuration, 100);
         SimulationEngine engine = new SimulationEngine(simulation);
         engine.runAsync();
     }
 
+    private void setConfiguration(){
+        this.configuration = new SimulationSettings(
+                mapWidth.getValue(),
+                mapHeight.getValue(),
+                startingPlants.getValue(),
+                plantsEnergy.getValue(),
+                plantsPerDay.getValue(),
+                new WoodyEquator(),
+                startingAnimals.getValue(),
+                startingEnergy.getValue(),
+                energyNeededToReproduce.getValue(),
+                energyLostToReproduce.getValue(),
+                minMutations.getValue(),
+                maxMutations.getValue(),
+                new RandomMutation(),
+                genomeLength.getValue(),
+                new FullPredestination()
+        );
+    }
 }
