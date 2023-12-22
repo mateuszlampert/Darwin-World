@@ -8,10 +8,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -53,6 +51,12 @@ public class SimulationPresenter implements MapChangeListener {
     private Spinner<Integer> maxMutations;
     @FXML
     private Spinner<Integer> genomeLength;
+    @FXML
+    private ChoiceBox<String> animalBehavior;
+    @FXML
+    private ChoiceBox<String> plantsGrowing;
+    @FXML
+    private ChoiceBox<String> mutation;
 
     private WorldMap map;
     private SimulationSettings configuration;
@@ -90,8 +94,6 @@ public class SimulationPresenter implements MapChangeListener {
                 GridPane.setHalignment(cellLabel, HPos.CENTER);
             }
         }
-
-
     }
 
     private void clearGrid() {
@@ -123,16 +125,34 @@ public class SimulationPresenter implements MapChangeListener {
                 startingPlants.getValue(),
                 plantsEnergy.getValue(),
                 plantsPerDay.getValue(),
-                new WoodyEquator(),
+                getPlantGrowing(),
                 startingAnimals.getValue(),
                 startingEnergy.getValue(),
                 energyNeededToReproduce.getValue(),
                 energyLostToReproduce.getValue(),
                 minMutations.getValue(),
                 maxMutations.getValue(),
-                new RandomMutation(),
+                getMutation(),
                 genomeLength.getValue(),
-                new FullPredestination()
+                getAnimalBehavior()
         );
+    }
+
+    private PlantGrowing getPlantGrowing(){
+        return switch (plantsGrowing.getValue()){
+            case "Crawling Jungle" -> new CrawlingJungle();
+            default -> new WoodyEquator();
+        };
+    }
+
+    private Mutation getMutation(){
+        return new RandomMutation();
+    }
+
+    private AnimalBehavior getAnimalBehavior(){
+        return switch (animalBehavior.getValue()){
+            case "Little Madness" -> new LittleMadness();
+            default -> new FullPredestination();
+        };
     }
 }
