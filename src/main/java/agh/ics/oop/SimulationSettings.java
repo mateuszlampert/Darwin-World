@@ -8,7 +8,7 @@ public record SimulationSettings(
         int width,
         int height,
         int startingPlants,
-        int plantEnergy,
+        int plantsEnergy,
         int plantsPerDay,
         PlantGrowing plantsGrowing,
         int startingAnimals,
