@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,14 +14,17 @@ public class Animal implements WorldElement{
     private List<DeathListener> deathListeners = new ArrayList<>();
 
     public Animal(){
+        //DEBUG CONSTRUCTOR
         this.position = new Vector2d(2,2);
         this.direction = MapDirection.NORTH;
         this.genome = new Genome(new ArrayList<>(), new FullPredestination());
     }
     public Animal(Vector2d position){
+        //DEBUG CONSTRUCTOR
         this.position = position;
         this.direction = MapDirection.NORTH;
         this.genome = new Genome(new ArrayList<>(List.of(1,1,2,2)), new FullPredestination());
+        this.energy = 5;
     }
 
     public Animal(Vector2d position, MapDirection direction, int startingEnergy, Genome genome){

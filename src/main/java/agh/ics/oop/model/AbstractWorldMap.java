@@ -18,11 +18,12 @@ abstract public class AbstractWorldMap implements WorldMap{
     @Override
     public void removeAnimal(WorldElement animal){
         Vector2d pos = animal.getPosition();
-        ArrayList<WorldElement> movablesAtPos = animals.get(pos);
-        movablesAtPos.remove(animal);
-        if(movablesAtPos.isEmpty()){ // freeing memory of empty list
+        ArrayList<WorldElement> animalsAtPos = animals.get(pos);
+        animalsAtPos.remove(animal);
+        if(animalsAtPos.isEmpty()){ // freeing memory of empty list
             animals.remove(pos);
         }
+        mapChanged("Animal at " + animal.getPosition() +" removed(died)!");
     }
 
     private void putAnimal(WorldElement obj){
@@ -48,7 +49,7 @@ abstract public class AbstractWorldMap implements WorldMap{
         removeAnimal(obj);
         obj.move(this);
         putAnimal(obj);
-        mapChanged("Object at " + obj.getPosition() +" moved!");
+        mapChanged("Animal at " + obj.getPosition() +" moved!");
     }
 
     @Override
