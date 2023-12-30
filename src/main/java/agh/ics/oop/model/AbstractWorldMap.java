@@ -26,6 +26,17 @@ abstract public class AbstractWorldMap implements WorldMap{
         mapChanged("Animal at " + animal.getPosition() +" removed(died)!");
     }
 
+    @Override
+    public void placeAnimal(Animal animal) throws InvalidPositionException{
+        Vector2d animalPos = animal.getPosition();
+        if(!canMoveTo(animalPos)){
+            throw new InvalidPositionException(animalPos);
+        }
+        putAnimal(animal);
+        mapChanged("Animal placed at " + animalPos);
+    }
+
+
     private void putAnimal(WorldElement obj){
         Vector2d pos = obj.getPosition();
         ArrayList<WorldElement> movablesAtPos = animals.get(pos);
@@ -53,16 +64,6 @@ abstract public class AbstractWorldMap implements WorldMap{
     }
 
     @Override
-    public void placeAnimal(Animal animal) throws InvalidPositionException{
-        Vector2d animalPos = animal.getPosition();
-        if(!canMoveTo(animalPos)){
-            throw new InvalidPositionException(animalPos);
-        }
-        putAnimal(animal);
-        mapChanged("Animal placed at " + animalPos);
-    }
-
-    @Override
     public void placeGrass(Grass grass) throws InvalidPositionException, PositionAlreadyOccupiedException{
         Vector2d grassPos = grass.getPosition();
         if(grasses.get(grassPos) != null){
@@ -73,7 +74,11 @@ abstract public class AbstractWorldMap implements WorldMap{
         }
         grasses.put(grassPos, grass);
         mapChanged("Grass placed at " + grassPos);
+    }
 
+    public void removeGrass(Grass grass){
+        Vector2d grassPos = grass.getPosition();
+        grasses.remove(grassPos);
     }
 
     @Override
@@ -87,10 +92,20 @@ abstract public class AbstractWorldMap implements WorldMap{
     }
 
     @Override
-    public List getElements() {
+    public List getAnimals() {
         List list = new ArrayList<>();
         list.addAll(animals.values());
         return list;
+    }
+
+    @Override
+    public Map<Grass, Animal> getAnimalOnGrasses(){
+        HashMap<Grass, Animal> animalOnGrasses = new HashMap<>();
+        for(WorldElement grass : grasses.values()){
+            WorldElement topAnimal = getBestAnimalAt(grass.getPosition());
+            animalOnGrasses.put((Grass) grass, (Animal) topAnimal);
+        }
+        return animalOnGrasses;
     }
 
     public String getId(){

@@ -1,8 +1,6 @@
 package agh.ics.oop.model;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static agh.ics.oop.model.MoveDirection.FORWARD;
 
@@ -42,6 +40,12 @@ public class MapHandler implements DeathListener{
     }
 
     public void eatGrass(){
+        Map<Grass, Animal> animalOnGrasses = map.getAnimalOnGrasses();
+        animalOnGrasses.forEach((grass, animal) -> {
+            animal.eat(grass);
+            map.removeGrass(grass);
+        });
+
     }
 
     public void reproduce(){
