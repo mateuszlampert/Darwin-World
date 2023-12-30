@@ -1,13 +1,16 @@
 package agh.ics.oop.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static agh.ics.oop.model.MoveDirection.FORWARD;
 
-public class MapHandler {
+public class MapHandler implements DeathListener{
     private final WorldMap map;
-    private List<Animal> mapAnimals = new ArrayList<Animal>();
+    private List<Animal> aliveAnimals = new ArrayList<Animal>();
+    private List<Animal> dyingAnimals = new LinkedList<>(); // animals that have <0 energy, but not yet removed
+    private List<Animal> deadAnimals = new ArrayList<>();
 
     public MapHandler(WorldMap map){
         this.map = map;
@@ -16,24 +19,24 @@ public class MapHandler {
     public void placeAnimal(Animal animal){
         try {
             map.placeAnimal(animal);
-            mapAnimals.add(animal);
+            aliveAnimals.add(animal);
+            animal.listenForDeath(this);
         } catch (InvalidPositionException e){
             System.out.println(e.toString());
-            return;
         }
     }
 
     public void removeDead(){
-        for (Animal animal: mapAnimals){
-            if (animal.getEnergy() <= 0){
-                //map.removeAnimal(animal);
-                //mapAnimals.remove(animal);
-            }
+        for (Animal animal: dyingAnimals){
+            aliveAnimals.remove(animal);
+            map.removeAnimal(animal);
+            deadAnimals.add(animal);
         }
+        dyingAnimals.clear();
     }
 
     public void moveAnimals(){
-        for(Animal animal : mapAnimals){
+        for(Animal animal : aliveAnimals){
             map.move(animal, FORWARD);
         }
     }
@@ -47,7 +50,12 @@ public class MapHandler {
     public void growGrass(){
     }
 
+    @Override
+    public void animalDied(Animal animal) {
+        dyingAnimals.add(animal);
+    }
+
     public List<Animal> getMapAnimals(){
-        return this.mapAnimals;
+        return this.aliveAnimals;
     }
 }

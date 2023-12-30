@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Animal implements WorldElement{
+    private static final int MOVEMENT_ENERGY_LOSS = 1;
     private MapDirection direction;
     private Vector2d position;
     private Genome genome;
     private int energy;
+
+    private List<DeathListener> deathListeners = new ArrayList<>();
 
     public Animal(){
         this.position = new Vector2d(2,2);
@@ -27,40 +30,60 @@ public class Animal implements WorldElement{
         this.position = position;
     }
 
+
+    public void move(MoveValidator validator){
+        rotate();
+        Vector2d v1 = this.position;
+        Vector2d v2 = this.direction.toMoveVector();
+        Vector2d newPosition = v1.add(v2);
+        if (validator.canMoveTo(newPosition)) {
+            this.position = newPosition;
+            decreaseEnergy(MOVEMENT_ENERGY_LOSS);
+        }
+    }
+
+    private void rotate(){
+        int rotationDelta = genome.getNextMove();
+        this.direction = direction.rotate(rotationDelta);
+    }
+
+    private void decreaseEnergy(int amount){
+        this.energy -= amount;
+        checkIfAlive();
+    }
+
+    private void checkIfAlive(){
+        if(this.energy < 0){
+            for(DeathListener listener : deathListeners){
+                listener.animalDied(this);
+            }
+        }
+    }
+
+
+    public void eat(Grass plant){
+        this.energy += plant.getCalories();
+    }
+
+    public int getEnergy() {
+        return this.energy;
+    }
+
+    public void listenForDeath(DeathListener listener){
+        deathListeners.add(listener);
+    }
+
     public Vector2d getPosition() {
         return this.position;
     }
-    private void setPosition(Vector2d position) { // walidacja jest robiona przez validator w metodzie move
-        this.position = position;
-    }
-
     public MapDirection getDirection() {
         return this.direction;
     }
-    private void setDirection(MapDirection direction) {
-        this.direction = direction;
-    }
-
     public boolean isAt(Vector2d position){
         return this.getPosition().equals(position);
     }
     public boolean isFacing(MapDirection direction){ // tej metody nie bylo w instrukcjach, ale dodalem ja aby ulatwic testowanie
         return this.getDirection().equals(direction);
-    }
-
-    public void rotate(){
-        int rotationDelta = genome.getNextMove();
-        this.direction = direction.rotate(rotationDelta);
-    }
-
-    public void move(MoveValidator validator){
-        rotate();
-        Vector2d v1 = this.getPosition();
-        Vector2d v2 = this.getDirection().toMoveVector();
-        Vector2d newPosition = v1.add(v2);
-        if (validator.canMoveTo(newPosition)) {
-            this.setPosition(newPosition);
-        }
     }
 
     public String toString() {
@@ -74,13 +97,5 @@ public class Animal implements WorldElement{
             case EAST -> "\u2192"; // strzałka w prawo
             case NORTH_EAST -> "\u2197"; // strzałka w prawo-górę
         };
-    }
-
-    public void eat(Grass plant){
-        this.energy += plant.getCalories();
-    }
-
-    public int getEnergy() {
-        return this.energy;
     }
 }
