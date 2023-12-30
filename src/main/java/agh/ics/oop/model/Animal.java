@@ -47,7 +47,7 @@ public class Animal implements WorldElement{
     }
 
     private void rotate(){
-        int rotationDelta = genome.getNextMove();
+        int rotationDelta = genome.next();
         this.direction = direction.rotate(rotationDelta);
     }
 
