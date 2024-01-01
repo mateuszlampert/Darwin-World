@@ -103,7 +103,9 @@ abstract public class AbstractWorldMap implements WorldMap{
         HashMap<Grass, Animal> animalOnGrasses = new HashMap<>();
         for(WorldElement grass : grasses.values()){
             WorldElement topAnimal = getBestAnimalAt(grass.getPosition());
-            animalOnGrasses.put((Grass) grass, (Animal) topAnimal);
+            if(topAnimal != null){
+                animalOnGrasses.put((Grass) grass, (Animal) topAnimal);
+            }
         }
         return animalOnGrasses;
     }
