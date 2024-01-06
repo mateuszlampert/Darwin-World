@@ -14,7 +14,7 @@ public class GrassFieldTest {
             map.place(new Grass(new Vector2d(4, 4), 10));
             map.place(new Grass(new Vector2d(7, 7), 10));
         });
-        assertEquals(10, map.getElements().size());
+        assertEquals(10, map.getAnimals().size());
 
 
     }
