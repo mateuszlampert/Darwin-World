@@ -140,8 +140,8 @@ public class SimulationPresenter implements MapChangeListener {
 
     private PlantGrowing getPlantGrowing(){
         return switch (plantsGrowing.getValue()){
-            case "Crawling Jungle" -> new CrawlingJungle();
-            default -> new WoodyEquator();
+            case "Crawling Jungle" -> new CrawlingJungle(configuration.width(), configuration.height(), configuration.plantsPerDay());
+            default -> new WoodyEquator(configuration.width(), configuration.height(), configuration.plantsPerDay());
         };
     }
 

@@ -4,7 +4,7 @@ import java.util.*;
 
 public class CrawlingJungle extends AbstractPlantGrowing{
 
-    protected CrawlingJungle(int width, int height, int plantsToGrow) {
+    public CrawlingJungle(int width, int height, int plantsToGrow) {
         super(width, height, plantsToGrow);
     }
 
