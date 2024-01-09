@@ -10,6 +10,7 @@ public class Animal implements WorldElement{
     private Vector2d position;
     private Genome genome;
     private int energy;
+    private final AnimalStatistics animalStatistics = new AnimalStatistics();
 
     private List<DeathListener> deathListeners = new ArrayList<>();
 
@@ -88,6 +89,9 @@ public class Animal implements WorldElement{
     }
     public boolean isFacing(MapDirection direction){ // tej metody nie bylo w instrukcjach, ale dodalem ja aby ulatwic testowanie
         return this.getDirection().equals(direction);
+    }
+    public AnimalStatistics getStatistics(){
+        return this.animalStatistics;
     }
 
     public String toString() {
