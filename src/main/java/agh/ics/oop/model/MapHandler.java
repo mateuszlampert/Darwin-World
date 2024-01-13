@@ -54,10 +54,12 @@ public class MapHandler implements DeathListener{
 
     public void reproduce(){
         List<ReproductionPair> pairs = map.getAnimalsToReproduce();
+
         for(ReproductionPair pair : pairs){
-            if(pair.bothParentsFed(simulationSettings.energyNeededToReproduce())){
+            if(pair.parentEnergyAbove(simulationSettings.energyNeededToReproduce())){
                 handleReproduction(pair);
             }
+
         }
     }
 
@@ -66,7 +68,17 @@ public class MapHandler implements DeathListener{
     }
 
     private void handleReproduction(ReproductionPair pair){
+        int reproductionEnergy = simulationSettings.energyLostToReproduce();
 
+        pair.decreaseParentsEnergy(reproductionEnergy);
+
+        Vector2d childPosition = pair.getChildPosition();
+        MapDirection childDirection = MapDirection.randomDirection();
+        int childEnergy = 2*reproductionEnergy;
+        Genome childGenome = new Genome(pair.generateChildGenomeList(), simulationSettings.animalBehavior());
+
+        Animal child = new Animal(childPosition, childDirection, childEnergy, childGenome);
+        placeAnimal(child);
     }
 
     @Override

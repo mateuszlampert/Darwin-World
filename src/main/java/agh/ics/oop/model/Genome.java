@@ -44,4 +44,9 @@ public class Genome implements Iterator<Integer> {
         prevMove = currMove;
         return genes.get(currMove);
     }
+
+    @Override
+    public String toString(){
+        return genes.toString();
+    }
 }

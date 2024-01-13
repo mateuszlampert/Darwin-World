@@ -112,7 +112,7 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
         setConfiguration();
-        ArrayList<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(3, 3)));
+        ArrayList<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(3, 3), new Vector2d(3, 2)));
         Simulation simulation = new Simulation(map, positions, configuration, 100);
         SimulationEngine engine = new SimulationEngine(simulation);
         engine.runAsync();

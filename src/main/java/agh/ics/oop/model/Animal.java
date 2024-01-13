@@ -25,7 +25,7 @@ public class Animal implements WorldElement{
         this.position = position;
         this.direction = MapDirection.NORTH;
         this.genome = new Genome(new ArrayList<>(List.of(1,1,2,2)), new FullPredestination());
-        this.energy = 5;
+        this.energy = 60;
     }
 
     public Animal(Vector2d position, MapDirection direction, int startingEnergy, Genome genome){
@@ -52,7 +52,7 @@ public class Animal implements WorldElement{
         this.direction = direction.rotate(rotationDelta);
     }
 
-    private void decreaseEnergy(int amount){
+    public void decreaseEnergy(int amount){
         this.energy -= amount;
         checkIfAlive();
     }

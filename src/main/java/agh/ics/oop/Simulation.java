@@ -42,7 +42,7 @@ public class Simulation implements Runnable {
             mapHandler.removeDead();
             mapHandler.moveAnimals();
             mapHandler.eatGrass();
-            //mapHandler.reproduce();
+            mapHandler.reproduce();
             //mapHandler.growGrass();
         }
     }

@@ -11,11 +11,11 @@ public class ReproductionPair {
         this.animal2 = animal2;
     }
 
-    public List<Integer> generateChildGenomeValues(){
+    public List<Integer> generateChildGenomeList(){
         int a1Energy = animal1.getEnergy();
         int a2Energy = animal2.getEnergy();
 
-        float genomeSplit = (float) (a1Energy + a2Energy) / a1Energy; // percent share of animal 1 genes
+        float genomeSplit = a1Energy / (float)(a1Energy + a2Energy); // percent share of animal 1 genes
 
         List<Integer> childGenomesValues = new ArrayList<>();
 
@@ -35,8 +35,17 @@ public class ReproductionPair {
         return childGenomesValues;
     }
 
-    public boolean bothParentsFed(int requiredEnergy){
+    public boolean parentEnergyAbove(int requiredEnergy){
         return (animal1.getEnergy() >= requiredEnergy && animal2.getEnergy() >= requiredEnergy);
+    }
+
+    public void decreaseParentsEnergy(int amount){
+        animal1.decreaseEnergy(amount);
+        animal2.decreaseEnergy(amount);
+    }
+
+    public Vector2d getChildPosition(){
+        return animal1.getPosition();
     }
 
 }
