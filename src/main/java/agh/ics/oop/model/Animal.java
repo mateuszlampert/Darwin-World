@@ -13,14 +13,14 @@ public class Animal implements WorldElement{
 
     private List<DeathListener> deathListeners = new ArrayList<>();
 
-    public Animal(){
-        //DEBUG CONSTRUCTOR
+    public Animal(int startingEnergy){
         this.position = new Vector2d(2,2);
         this.direction = MapDirection.NORTH;
         this.genome = new Genome(new ArrayList<>(), new FullPredestination());
+        this.energy = startingEnergy;
     }
 
-    public Animal(Vector2d position, int genomeLength){
+    public Animal(Vector2d position, int genomeLength, int startingEnergy){
         this.position = position;
         this.direction = MapDirection.NORTH;
         this.genome = new Genome(genomeLength, new FullPredestination());
@@ -76,22 +76,17 @@ public class Animal implements WorldElement{
         this.direction = direction.rotate(rotationDelta);
     }
 
-    public void move(MoveValidator validator){
+    public void move(MoveDeterminer determiner){
         rotate();
-        Vector2d v1 = this.getPosition();
-        Vector2d v2 = this.getDirection().toMoveVector();
-        Vector2d newPosition = v1.add(v2);
-        if (validator.canMoveTo(newPosition)) {
-            this.setPosition(newPosition);
-        }
-        else {
-            this.direction = direction.rotate(4);
-        }
+        AnimalState afterMove = determiner.determineMove(position, direction);
+        setPosition(afterMove.position());
+        setDirection(afterMove.direction());
     }
 
     private void setPosition(Vector2d newPosition){
         this.position = newPosition;
     }
+    private void setDirection(MapDirection newDirection){this.direction = newDirection; }
 
     public String toString() {
         return switch (direction) {

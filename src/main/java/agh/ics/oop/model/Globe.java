@@ -1,6 +1,5 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.RandomVector2dGenerator;
 import agh.ics.oop.SimulationSettings;
 
 import java.util.*;
@@ -9,8 +8,6 @@ public class Globe extends AbstractWorldMap{
 
     private final SimulationSettings configuration;
     private final Boundary bounds;
-    private final Map<Vector2d, Animal> animals = new HashMap<>();
-    private final Map<Vector2d, Grass> grasses = new HashMap<>();
 
     public Globe(String mapId, SimulationSettings configuration){
         super(mapId);
@@ -19,36 +16,16 @@ public class Globe extends AbstractWorldMap{
         int height = configuration.height();
         this.bounds = new Boundary(new Vector2d(0, 0), new Vector2d(width - 1, height - 1));
         this.configuration = configuration;
-        generateGrass();
-        System.out.print(this.toString());
+        this.plantGrowing = configuration.plantsGrowing();
+        this.plantGrowing.setPlantsToGrow(this.configuration.startingPlants());
+        this.plantGrowing.setGrasses(this.grasses);
+        this.plantGrowing.growGrass(this);
+        this.plantGrowing.setPlantsToGrow(this.configuration.plantsPerDay());
     }
 
     @Override
     public boolean canMoveTo(Vector2d position) {
         return position.getY() >= bounds.getDownY() && position.getY() <= bounds.getUpY();
-    }
-
-    public void generateGrass(){
-        Set<Vector2d> positions = configuration.plantsGrowing().generateGrassPositions(grasses);
-        System.out.println(positions);
-        for (Vector2d pos: positions){
-            grasses.put(pos, new Grass(pos, configuration.plantsEnergy()));
-//            try{
-//                placeGrass(new Grass(pos, configuration.plantsEnergy()));
-//                System.out.println(1);
-//            }
-//            catch (PositionAlreadyOccupiedException PAOE){
-//                PAOE.printStackTrace();
-//                System.out.println("PAOE");
-//                // to modify later
-//            }
-//            catch (InvalidPositionException IPE){
-//                IPE.printStackTrace();
-//                System.out.println("IPE");
-//                // to modify later
-//            }
-        }
-        System.out.println(grasses);
     }
 
     @Override
@@ -86,5 +63,27 @@ public class Globe extends AbstractWorldMap{
 
     public SimulationSettings getConfiguration() {
         return configuration;
+    }
+
+    @Override
+    public AnimalState determineMove(Vector2d position, MapDirection direction) {
+        Vector2d newPosition = position.add(direction.toMoveVector());
+        MapDirection newDirection = direction;
+
+        if (!(newPosition.follows(bounds.lowerLeft()) && newPosition.precedes(bounds.upperRight()))){
+            return new AnimalState(position, direction);
+        }
+        else if (newPosition.getY() > bounds.getUpY() || newPosition.getY() < bounds.getDownY()) {
+            return new AnimalState(position, direction.rotate(4));
+        }
+        else{
+            if (newPosition.getX() > bounds.getRightX()){
+                newPosition = new Vector2d(bounds.getLeftX(), newPosition.getY());
+            }
+            else if (newPosition.getX() < bounds.getLeftX()){
+                newPosition = new Vector2d(bounds.getRightX(), newPosition.getY());
+            }
+            return new AnimalState(newPosition, direction);
+        }
     }
 }
