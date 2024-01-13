@@ -10,8 +10,8 @@ public class RandomVector2dGenerator implements Iterable<Vector2d>{
     public RandomVector2dGenerator(int maxWidth, int maxHeight, int count){
         cache = new ArrayList<>(maxWidth*maxHeight);
 
-        for (int i = 0; i <= maxWidth; i++) {
-            for (int j = 0; j <= maxHeight; j++) {
+        for (int i = 0; i < maxWidth; i++) {
+            for (int j = 0; j < maxHeight; j++) {
                 cache.add(new Vector2d(i, j));
             }
         }

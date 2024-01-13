@@ -6,13 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RectangularMap extends AbstractWorldMap{
-
-
     private final Vector2d mapBottomLeft;
     private final Vector2d mapTopRight;
     private final Boundary mapBoundary;
-
-
 
     public RectangularMap(int width, int height, String mapId){
         super(mapId);
@@ -20,8 +16,6 @@ public class RectangularMap extends AbstractWorldMap{
         this.mapTopRight = new Vector2d(width-1, height-1);
         this.mapBoundary = new Boundary(this.mapBottomLeft, this.mapTopRight);
     }
-
-
 
     @Override
     public boolean canMoveTo(Vector2d position) {
@@ -40,4 +34,8 @@ public class RectangularMap extends AbstractWorldMap{
         return this.mapBoundary;
     }
 
+    @Override
+    public AnimalState determineMove(Vector2d position, MapDirection direction) {
+        return null;
+    }
 }

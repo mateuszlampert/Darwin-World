@@ -24,6 +24,7 @@ public class Animal implements WorldElement{
         this.position = position;
         this.direction = MapDirection.NORTH;
         this.genome = new Genome(genomeLength, new FullPredestination());
+        this.energy = startingEnergy;
     }
 
     public Animal(Vector2d position, MapDirection direction, int startingEnergy, Genome genome){
@@ -81,6 +82,7 @@ public class Animal implements WorldElement{
         AnimalState afterMove = determiner.determineMove(position, direction);
         setPosition(afterMove.position());
         setDirection(afterMove.direction());
+        decreaseEnergy(MOVEMENT_ENERGY_LOSS);
     }
 
     private void setPosition(Vector2d newPosition){
