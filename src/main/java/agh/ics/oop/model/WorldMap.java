@@ -14,7 +14,7 @@ public interface WorldMap extends MoveValidator {
     String getId();
 
     void placeAnimal(Animal animal) throws InvalidPositionException;
-    void removeAnimal(WorldElement animal);
+    void removeAnimal(Animal animal);
     void placeGrass(Grass grass) throws PositionAlreadyOccupiedException, InvalidPositionException;
     void removeGrass(Grass grass);
 
