@@ -4,41 +4,41 @@ import agh.ics.oop.model.Vector2d;
 
 import java.util.*;
 
-//dziala dla liczb n<1000
-public class RandomVector2dGenerator implements Iterator<Vector2d> {
+public class RandomVector2dGenerator implements Iterable<Vector2d>{
+    private final List<Vector2d> cache;
+    int taken = 0;
+    public RandomVector2dGenerator(int maxWidth, int maxHeight, int count){
+        cache = new ArrayList<>(maxWidth*maxHeight);
 
-    private final int size;
-    private int currentIndex;
-    private List<Integer> list1D;
-    public RandomVector2dGenerator(int size){
-        this.size = size;
-        this.currentIndex = 0;
-        this.list1D = this.GenerateShuffled1DList();
-    }
-
-    private List<Integer> GenerateShuffled1DList(){
-        List<Integer> list = new ArrayList<>(this.size);
-        for(int i=0; i < this.size; i++){
-            for(int j=0; j < this.size; j++){
-                list.add(i*this.size + j);
+        for (int i = 0; i <= maxWidth; i++) {
+            for (int j = 0; j <= maxHeight; j++) {
+                cache.add(new Vector2d(i, j));
             }
         }
-        Collections.shuffle(list);
-        return list;
-    }
-
-
-    @Override
-    public boolean hasNext() {
-        return this.currentIndex < this.size*this.size;
+        while (taken < count){
+            int toSwap = (int) (Math.random()*(maxHeight*maxWidth - taken) + taken);
+            Collections.swap(cache, toSwap, taken);
+            taken++;
+        }
     }
 
     @Override
-    public Vector2d next() {
-        int randomVector2d = this.list1D.get(currentIndex);
-        int randomX = randomVector2d % this.size;
-        int randomY = randomVector2d / this.size;
-        this.currentIndex++;
-        return new Vector2d(randomX, randomY);
+    public Iterator<Vector2d> iterator() {
+        return new CustomIterator();
+    }
+
+    public class CustomIterator implements Iterator<Vector2d>{
+        @Override
+        public boolean hasNext() {
+            return taken > 0;
+        }
+        @Override
+        public Vector2d next() {
+            if (hasNext()){
+                taken--;
+                return cache.get(taken);
+            }
+            return null;
+        }
     }
 }
