@@ -84,6 +84,9 @@ public class Animal implements WorldElement{
     public MapDirection getDirection() {
         return this.direction;
     }
+    public Genome getGenome(){
+        return this.genome;
+    }
     public boolean isAt(Vector2d position){
         return this.getPosition().equals(position);
     }
