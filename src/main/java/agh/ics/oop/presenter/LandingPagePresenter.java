@@ -73,13 +73,13 @@ public class LandingPagePresenter {
 
     private AbstractWorldMap createMap(SimulationSettings configuration){
         count += 1;
-        return new Globe("a" + count, configuration);
+        return new Globe("_globe_" + count, configuration);
     }
 
     private PlantGrowing getPlantGrowing(){
         return switch (plantsGrowing.getValue()){
-            case "Crawling Jungle" -> new CrawlingJungle(mapWidth.getValue(), mapHeight.getValue(), plantsPerDay.getValue());
-            default -> new WoodyEquator(mapWidth.getValue(), mapHeight.getValue(), plantsPerDay.getValue());
+            case "Crawling Jungle" -> new CrawlingJungle(mapWidth.getValue(), mapHeight.getValue(), plantsPerDay.getValue(), plantsEnergy.getValue());
+            default -> new WoodyEquator(mapWidth.getValue(), mapHeight.getValue(), plantsPerDay.getValue(), plantsEnergy.getValue());
         };
     }
 

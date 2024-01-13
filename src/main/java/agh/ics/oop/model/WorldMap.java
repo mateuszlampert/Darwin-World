@@ -9,13 +9,13 @@ import java.util.Map;
  *
  * @author apohllo, idzik
  */
-public interface WorldMap extends MoveValidator {
+public interface WorldMap extends MoveDeterminer {
 
     String getId();
 
     void placeAnimal(Animal animal) throws InvalidPositionException;
     void removeAnimal(WorldElement animal);
-    void placeGrass(Grass grass) throws PositionAlreadyOccupiedException, InvalidPositionException;
+//    void placeGrass(Grass grass) throws PositionAlreadyOccupiedException, InvalidPositionException;
     void removeGrass(Grass grass);
 
     void move(Animal obj, MoveDirection direction);
@@ -29,4 +29,5 @@ public interface WorldMap extends MoveValidator {
 
     Boundary getCurrentBounds();
 
+    void growGrass();
 }

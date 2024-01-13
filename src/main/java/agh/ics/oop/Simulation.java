@@ -21,7 +21,7 @@ public class Simulation implements Runnable {
         this.simulationSteps = simulationSteps;
 
         for (Vector2d position : positions) {
-            Animal animal = new Animal(position, configuration.genomeLength());
+            Animal animal = new Animal(position, configuration.genomeLength(), configuration.startingEnergy());
             mapHandler.placeAnimal(animal);
         }
     }
@@ -34,15 +34,15 @@ public class Simulation implements Runnable {
     public void run() {
         for (int i = 0; i < simulationSteps; i++) { // will be infinite loop later
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             mapHandler.removeDead();
             mapHandler.moveAnimals();
-            //mapHandler.eatGrass();
-            //mapHandler.reproduce();
-            //mapHandler.growGrass();
+            mapHandler.eatGrass();
+//            mapHandler.reproduce();
+            mapHandler.growGrass();
         }
     }
 }
