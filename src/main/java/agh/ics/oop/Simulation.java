@@ -17,7 +17,7 @@ public class Simulation implements Runnable {
     public Simulation(WorldMap map, List<Vector2d> positions, SimulationSettings configuration, int simulationSteps) {
         this.configuration = configuration;
         this.map = map;
-        this.mapHandler = new MapHandler(map);
+        this.mapHandler = new MapHandler(map, configuration);
         this.simulationSteps = simulationSteps;
 
         for (Vector2d position : positions) {
