@@ -15,6 +15,7 @@ public class AnimalComparator implements Comparator<Animal> {
         if(a1.equals(a2)){
             return 0;
         }
+
         int condition1 = Integer.compare(a1.getEnergy(), a2.getEnergy());
         if(condition1 != 0){
             return condition1;

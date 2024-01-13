@@ -44,13 +44,15 @@ abstract public class AbstractWorldMap implements WorldMap{
         animalsAtPosition.add(obj);
     }
 
-    private Animal getBestAnimalAt(Vector2d position){ //currently, best is the first animal to get on that position
+    private Animal getBestAnimalAt(Vector2d position){
         TreeSet<Animal> animalsAtPosition = animals.get(position);
         if(animalsAtPosition == null){
             return null;
         }
         return animalsAtPosition.first();
     }
+
+
 
     @Override
     public void move(Animal animal, MoveDirection direction) {
@@ -105,6 +107,17 @@ abstract public class AbstractWorldMap implements WorldMap{
             }
         }
         return animalOnGrasses;
+    }
+
+    public List<List<Animal>> getAnimalsToReproduce(){
+        List<List<Animal>>  animalsToReproduce = new ArrayList<>();
+        for(TreeSet<Animal> animalsAtPos : animals.values()){
+            List<Animal> topTwoAnimals = animalsAtPos.stream().limit(2).toList();
+            if(topTwoAnimals.size() == 2){
+                animalsToReproduce.add(topTwoAnimals);
+            }
+        }
+        return animalsToReproduce;
     }
 
     public String getId(){
