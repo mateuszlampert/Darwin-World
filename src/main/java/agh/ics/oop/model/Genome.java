@@ -23,6 +23,15 @@ public class Genome implements Iterator<Integer> {
         this.animalBehavior = animalBehavior;
     }
 
+    public List<Integer> getGenesBefore(float percent){
+        int n = (int) percent * genes.size();
+        return genes.subList(0, n);
+    }
+
+    public List<Integer> getGenesAfter(float percent){
+        int n = (int) percent * genes.size();
+        return genes.subList(n, genes.size());
+    }
 
     @Override
     public boolean hasNext() { // using the logic we have, it only doesnt have next when genes.size is equal to 0 which should not happen

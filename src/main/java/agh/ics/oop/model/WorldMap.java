@@ -29,4 +29,5 @@ public interface WorldMap extends MoveValidator {
 
     Boundary getCurrentBounds();
 
+    List<ReproductionPair> getAnimalsToReproduce();
 }
