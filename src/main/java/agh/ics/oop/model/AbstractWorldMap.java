@@ -18,12 +18,24 @@ abstract public class AbstractWorldMap implements WorldMap{
     @Override
     public void removeAnimal(WorldElement animal){
         Vector2d pos = animal.getPosition();
-        ArrayList<WorldElement> movablesAtPos = animals.get(pos);
-        movablesAtPos.remove(animal);
-        if(movablesAtPos.isEmpty()){ // freeing memory of empty list
+        ArrayList<WorldElement> animalsAtPos = animals.get(pos);
+        animalsAtPos.remove(animal);
+        if(animalsAtPos.isEmpty()){ // freeing memory of empty list
             animals.remove(pos);
         }
+        mapChanged("Animal at " + animal.getPosition() +" removed(died)!");
     }
+
+    @Override
+    public void placeAnimal(Animal animal) throws InvalidPositionException{
+        Vector2d animalPos = animal.getPosition();
+        if(!canMoveTo(animalPos)){
+            throw new InvalidPositionException(animalPos);
+        }
+        putAnimal(animal);
+        mapChanged("Animal placed at " + animalPos);
+    }
+
 
     private void putAnimal(WorldElement obj){
         Vector2d pos = obj.getPosition();
@@ -48,17 +60,7 @@ abstract public class AbstractWorldMap implements WorldMap{
         removeAnimal(obj);
         obj.move(this);
         putAnimal(obj);
-        mapChanged("Object at " + obj.getPosition() +" moved!");
-    }
-
-    @Override
-    public void placeAnimal(Animal animal) throws InvalidPositionException{
-        Vector2d animalPos = animal.getPosition();
-        if(!canMoveTo(animalPos)){
-            throw new InvalidPositionException(animalPos);
-        }
-        putAnimal(animal);
-        mapChanged("Animal placed at " + animalPos);
+        mapChanged("Animal at " + obj.getPosition() +" moved!");
     }
 
     @Override
@@ -72,7 +74,11 @@ abstract public class AbstractWorldMap implements WorldMap{
         }
         grasses.put(grassPos, grass);
         mapChanged("Grass placed at " + grassPos);
+    }
 
+    public void removeGrass(Grass grass){
+        Vector2d grassPos = grass.getPosition();
+        grasses.remove(grassPos);
     }
 
     @Override
@@ -86,10 +92,22 @@ abstract public class AbstractWorldMap implements WorldMap{
     }
 
     @Override
-    public List getElements() {
+    public List getAnimals() {
         List list = new ArrayList<>();
         list.addAll(animals.values());
         return list;
+    }
+
+    @Override
+    public Map<Grass, Animal> getAnimalOnGrasses(){
+        HashMap<Grass, Animal> animalOnGrasses = new HashMap<>();
+        for(WorldElement grass : grasses.values()){
+            WorldElement topAnimal = getBestAnimalAt(grass.getPosition());
+            if(topAnimal != null){
+                animalOnGrasses.put((Grass) grass, (Animal) topAnimal);
+            }
+        }
+        return animalOnGrasses;
     }
 
     public String getId(){

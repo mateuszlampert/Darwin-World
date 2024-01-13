@@ -1,9 +1,10 @@
 package agh.ics.oop.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Genome {
+public class Genome implements Iterator<Integer> {
     private final List<Integer> genes;
     private int prevMove = -1;
     private final AnimalBehavior animalBehavior;
@@ -22,7 +23,14 @@ public class Genome {
         this.animalBehavior = animalBehavior;
     }
 
-    public int getNextMove(){
+
+    @Override
+    public boolean hasNext() { // using the logic we have, it only doesnt have next when genes.size is equal to 0 which should not happen
+        return true;
+    }
+
+    @Override
+    public Integer next() {
         int currMove = animalBehavior.nextMove(prevMove, genes.size());
         prevMove = currMove;
         return genes.get(currMove);

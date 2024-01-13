@@ -31,4 +31,4 @@
     19. ✓ Implementacja metod w Genome
     20. Uzycie SimulationSettings w Simulation
     21. ✓ Imlementacja klasy LittleMadness
-    22. Usuwanie roślin z mapy po zjedzeniu
+    22. ✓ Usuwanie roślin z mapy po zjedzeniu
