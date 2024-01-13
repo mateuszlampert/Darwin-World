@@ -9,7 +9,7 @@ public class CrawlingJungle extends AbstractPlantGrowing{
     }
 
     @Override
-    public Set<Vector2d> getFavourablePositions(){
+    public Set<Vector2d> getFavourablePositions(MoveValidator validator){
         Set<Vector2d> favourablePositions = new HashSet<>();
         MapDirection currDirection = MapDirection.NORTH;
 
@@ -17,7 +17,7 @@ public class CrawlingJungle extends AbstractPlantGrowing{
             for (int i = 0; i < 8; i++){
                 Vector2d nextPosition = position.add(currDirection.toMoveVector());
                 currDirection = currDirection.next();
-                if (!grasses.containsKey(nextPosition)){
+                if (!grasses.containsKey(nextPosition) && validator.canMoveTo(nextPosition)){
                     favourablePositions.add(nextPosition);
                 }
             }

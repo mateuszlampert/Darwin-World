@@ -26,9 +26,9 @@ public abstract class AbstractPlantGrowing implements PlantGrowing {
         this.grasses = grasses;
     }
 
-    public Set<Vector2d> determineGrassPositions() {
+    public Set<Vector2d> determineGrassPositions(MoveValidator validator) {
         Set<Vector2d> newGrassPositions = new HashSet<>();
-        Set<Vector2d> favourablePositions = getFavourablePositions();
+        Set<Vector2d> favourablePositions = getFavourablePositions(validator);
 
         List<Vector2d> favourablePositionsList = new ArrayList<>(favourablePositions);
         int taken = 0;
@@ -61,8 +61,8 @@ public abstract class AbstractPlantGrowing implements PlantGrowing {
     }
 
     public Set<Vector2d> growGrass(MoveValidator validator){
-        Set<Vector2d> newGrassPositions = determineGrassPositions();
-        for (Vector2d pos: determineGrassPositions()){
+        Set<Vector2d> newGrassPositions = determineGrassPositions(validator);
+        for (Vector2d pos: newGrassPositions){
             try{
                 placeGrass(new Grass(pos, calories), validator);
             }
@@ -77,7 +77,7 @@ public abstract class AbstractPlantGrowing implements PlantGrowing {
                 // to modify later
             }
         }
-        System.out.println(grasses);
+//        System.out.println(grasses);
         return newGrassPositions;
     }
 
