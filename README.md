@@ -22,11 +22,11 @@
     10. Stworzenie klasy SimualtionStats
     11. Stworzenie klasy ReproductionHandler
     12. ✓ Stworzenie klasy SimulationSettings
-    13. Uzupełnienie interfejsów: AnimalBehavior, Mutation, PlantGrowing
+    13. Uzupełnienie interfejsów: ✓ AnimalBehavior, Mutation, ✓ PlantGrowing
     14. Implementacja klasy RandomMutation
-    15. Implementacja klasy CrawlingJungle
+    15. ✓ Implementacja klasy CrawlingJungle
     16. ✓ Implementacja klasy FullPredestination
-    17. Implementacja klasy WoodyEquator
+    17. ✓ Implementacja klasy WoodyEquator
     18. Implementacja metod MapHandler
     19. ✓ Implementacja metod w Genome
     20. Uzycie SimulationSettings w Simulation
