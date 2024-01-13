@@ -109,12 +109,13 @@ abstract public class AbstractWorldMap implements WorldMap{
         return animalOnGrasses;
     }
 
-    public List<List<Animal>> getAnimalsToReproduce(){
-        List<List<Animal>>  animalsToReproduce = new ArrayList<>();
+    public List<ReproductionPair> getAnimalsToReproduce(){
+        List<ReproductionPair>  animalsToReproduce = new ArrayList<>();
         for(TreeSet<Animal> animalsAtPos : animals.values()){
-            List<Animal> topTwoAnimals = animalsAtPos.stream().limit(2).toList();
-            if(topTwoAnimals.size() == 2){
-                animalsToReproduce.add(topTwoAnimals);
+            if(animalsAtPos.size() >= 2){
+                Iterator<Animal> it = animalsAtPos.iterator();
+                ReproductionPair pair = new ReproductionPair(it.next(), it.next());
+                animalsToReproduce.add(pair);
             }
         }
         return animalsToReproduce;
