@@ -5,12 +5,10 @@
 ---TODO---
 
     1. ✓ Zmiana klas MoveDirection i MapDirection (możliwe poruszanie po przekątnej)
-    2. Zmiana klasy Animal:
+    2. ✓ Zmiana klasy Animal:
         1. ✓ Energia
         2. ✓ Metoda eat()
-        3. Metoda canReproduce()
-        4. Metoda Reproduce
-        5. ✓ Metoda rotate
+        3. ✓ Metoda rotate
     3. ✓ Możliwość utrzymania wielu zwierzaków na jednym polu
     4. ✓ Zmiana klasy Grass:
         ✓ 1. Informacja odnośnie kaloryczności

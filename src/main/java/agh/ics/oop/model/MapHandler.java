@@ -16,6 +16,7 @@ public class MapHandler implements DeathListener{
     public MapHandler(WorldMap map, SimulationSettings simulationSettings){
         this.map = map;
         this.simulationSettings = simulationSettings;
+        simulationSettings.mutation().setMutationRange(simulationSettings.minMutations(), simulationSettings.maxMutations());
     }
 
     public void placeAnimal(Animal animal){
@@ -68,16 +69,18 @@ public class MapHandler implements DeathListener{
     }
 
     private void handleReproduction(ReproductionPair pair){
-        int reproductionEnergy = simulationSettings.energyLostToReproduce();
+        int reproductionCost = simulationSettings.energyLostToReproduce();
 
-        pair.decreaseParentsEnergy(reproductionEnergy);
+        pair.decreaseParentsEnergy(reproductionCost);
 
         Vector2d childPosition = pair.getChildPosition();
         MapDirection childDirection = MapDirection.randomDirection();
-        int childEnergy = 2*reproductionEnergy;
+        int childEnergy = 2*reproductionCost;
         Genome childGenome = new Genome(pair.generateChildGenomeList(), simulationSettings.animalBehavior());
+        simulationSettings.mutation().mutate(childGenome);
 
         Animal child = new Animal(childPosition, childDirection, childEnergy, childGenome);
+
         placeAnimal(child);
     }
 

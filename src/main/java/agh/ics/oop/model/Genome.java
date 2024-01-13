@@ -23,6 +23,10 @@ public class Genome implements Iterator<Integer> {
         this.animalBehavior = animalBehavior;
     }
 
+    public List<Integer> getGenesList(){
+        return genes;
+    }
+
     public List<Integer> getGenesBefore(float percent){
         int n = (int) percent * genes.size();
         return genes.subList(0, n);
