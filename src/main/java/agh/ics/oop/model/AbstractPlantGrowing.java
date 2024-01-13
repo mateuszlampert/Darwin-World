@@ -7,12 +7,11 @@ public abstract class AbstractPlantGrowing implements PlantGrowing {
     protected final int height;
     protected final int favourablePlantsToGrow;
     protected final int plantsToGrow;
-    protected MapDirection currDirection = MapDirection.NORTH;
 
     protected AbstractPlantGrowing(int width, int height, int plantsToGrow) {
         this.width = width;
         this.height = height;
-        this.favourablePlantsToGrow = (int) (Math.random() * plantsToGrow);
+        this.favourablePlantsToGrow = (int) (0.8 * plantsToGrow);
         this.plantsToGrow = plantsToGrow;
     }
 

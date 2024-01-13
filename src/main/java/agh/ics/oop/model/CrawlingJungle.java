@@ -11,12 +11,15 @@ public class CrawlingJungle extends AbstractPlantGrowing{
     @Override
     public Set<Vector2d> getFavourablePositions(Map<Vector2d, Grass> grasses){
         Set<Vector2d> favourablePositions = new HashSet<>();
+        MapDirection currDirection = MapDirection.NORTH;
 
         for (Vector2d position: grasses.keySet()){
             for (int i = 0; i < 8; i++){
                 Vector2d nextPosition = position.add(currDirection.toMoveVector());
                 currDirection = currDirection.next();
-                favourablePositions.add(nextPosition);
+                if (!grasses.containsKey(nextPosition)){
+                    favourablePositions.add(nextPosition);
+                }
             }
         }
 

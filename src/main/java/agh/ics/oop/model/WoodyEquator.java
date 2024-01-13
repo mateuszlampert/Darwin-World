@@ -7,7 +7,7 @@ public class WoodyEquator extends AbstractPlantGrowing{
 
     public WoodyEquator(int width, int height, int plantsToGrow){
         super(width, height, plantsToGrow);
-        this.equatorHeight = (int) (0.1 * height);
+        this.equatorHeight = (int) (0.2 * height);
     }
 
     @Override
