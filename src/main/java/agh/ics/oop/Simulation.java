@@ -21,7 +21,7 @@ public class Simulation implements Runnable {
         this.simulationSteps = simulationSteps;
 
         for (Vector2d position : positions) {
-            Animal animal = new Animal(position);
+            Animal animal = new Animal(position, configuration.genomeLength());
             mapHandler.placeAnimal(animal);
         }
     }
@@ -30,12 +30,11 @@ public class Simulation implements Runnable {
         return Collections.unmodifiableList(mapHandler.getMapAnimals());
     }
 
-
     @Override
     public void run() {
         for (int i = 0; i < simulationSteps; i++) { // will be infinite loop later
             try {
-                Thread.sleep(3000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
