@@ -1,6 +1,7 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.MapVisualizer;
+import agh.ics.oop.SimulationSettings;
 
 import java.util.*;
 
@@ -69,10 +70,11 @@ abstract public class AbstractWorldMap implements WorldMap{
         if(grasses.get(grassPos) != null){
             throw new PositionAlreadyOccupiedException(grassPos);
         }
-        if(!canMoveTo(grassPos)){
+        else if(!canMoveTo(grassPos)){
             throw new InvalidPositionException(grassPos);
         }
         grasses.put(grassPos, grass);
+        System.out.println(grasses);
         mapChanged("Grass placed at " + grassPos);
     }
 
@@ -125,7 +127,6 @@ abstract public class AbstractWorldMap implements WorldMap{
             listener.mapChanged(this, message);
         }
     }
-
 
     public void addListener(MapChangeListener listener){
         this.mapChangeListeners.add(listener);

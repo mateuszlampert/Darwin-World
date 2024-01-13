@@ -13,7 +13,7 @@ public class GrassField extends AbstractWorldMap{
     private final int grassUpperBound;
     private final SimulationSettings configuration;
 
-    public GrassField(int grassMaxCount, String mapId, SimulationSettings configuration){
+    public GrassField(String mapId, SimulationSettings configuration){
         super(mapId);
         this.configuration = configuration;
         this.grassMaxCount = configuration.startingPlants();
@@ -21,18 +21,15 @@ public class GrassField extends AbstractWorldMap{
         this.generateGrasses(grassMaxCount);
     }
 
-    private void generateGrasses(int amount){
-        RandomVector2dGenerator generator = new RandomVector2dGenerator(this.grassUpperBound);
-        for(int i = 0; i <amount; i++){
-            if(generator.hasNext()){
-                Vector2d randomVector = generator.next();
-                Grass randomGrass = new Grass(randomVector, 10);
-                try {
-                    place(randomGrass);
-                } catch(PositionAlreadyOccupiedException e){
-                    System.out.println(e.toString());
-                    //continue
-                }
+    private void generateGrasses(int amount) {
+        RandomVector2dGenerator generator = new RandomVector2dGenerator(configuration.width(), configuration.height(), configuration.startingPlants());
+
+        for (Vector2d pos : generator) {
+            try {
+                placeGrass(new Grass(pos, configuration.plantsEnergy()));
+            } catch (PositionAlreadyOccupiedException | InvalidPositionException PAOE) {
+                PAOE.printStackTrace();
+                // to modify later
             }
         }
     }
