@@ -12,6 +12,9 @@ public class AnimalComparator implements Comparator<Animal> {
 //    jeżeli to nie pozwala rozstrzygnąć, to wśród remisujących organizmów wybieramy losowo.
     @Override
     public int compare(Animal a1,Animal a2) {
+        if(a1.equals(a2)){
+            return 0;
+        }
         int condition1 = Integer.compare(a1.getEnergy(), a2.getEnergy());
         if(condition1 != 0){
             return condition1;
