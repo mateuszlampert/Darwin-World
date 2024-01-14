@@ -52,6 +52,7 @@ public class MapHandler implements DeathListener{
     }
 
     public void growGrass(){
+        map.growGrass();
     }
 
     @Override

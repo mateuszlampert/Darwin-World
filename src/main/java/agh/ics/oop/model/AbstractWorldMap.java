@@ -6,13 +6,25 @@ import java.util.*;
 
 abstract public class AbstractWorldMap implements WorldMap{
     protected final Map<Vector2d, ArrayList<WorldElement>> animals = new HashMap<>();
-    protected final Map<Vector2d, WorldElement> grasses = new HashMap<>();
+    protected final Map<Vector2d, Grass> grasses = new HashMap<Vector2d, Grass>();
     private final List<MapChangeListener> mapChangeListeners = new ArrayList<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final String mapId;
+    protected PlantGrowing plantGrowing;
 
     protected AbstractWorldMap(String mapId){
         this.mapId = mapId;
+    }
+
+    public void setPlantGrowing(PlantGrowing plantGrowing) {
+        this.plantGrowing = plantGrowing;
+    }
+
+    public void growGrass(){
+        Set<Vector2d> newGrassPositions = plantGrowing.growGrass(this);
+        if (!newGrassPositions.isEmpty()){
+            mapChanged("Grass generated at positions: ");
+        }
     }
 
     @Override
@@ -39,12 +51,12 @@ abstract public class AbstractWorldMap implements WorldMap{
 
     private void putAnimal(WorldElement obj){
         Vector2d pos = obj.getPosition();
-        ArrayList<WorldElement> movablesAtPos = animals.get(pos);
-        if(movablesAtPos == null){ // could replace it with compute if absent call
-            movablesAtPos = new ArrayList<>();
-            animals.put(pos, movablesAtPos);
+        ArrayList<WorldElement> animalsAtPos = animals.get(pos);
+        if(animalsAtPos == null){ // could replace it with compute if absent call
+            animalsAtPos = new ArrayList<>();
+            animals.put(pos, animalsAtPos);
         }
-        movablesAtPos.add(obj);
+        animalsAtPos.add(obj);
     }
 
     private WorldElement getBestAnimalAt(Vector2d position){ //currently, best is the first animal to get on that position
@@ -61,19 +73,6 @@ abstract public class AbstractWorldMap implements WorldMap{
         obj.move(this);
         putAnimal(obj);
         mapChanged("Animal at " + obj.getPosition() +" moved!");
-    }
-
-    @Override
-    public void placeGrass(Grass grass) throws InvalidPositionException, PositionAlreadyOccupiedException{
-        Vector2d grassPos = grass.getPosition();
-        if(grasses.get(grassPos) != null){
-            throw new PositionAlreadyOccupiedException(grassPos);
-        }
-        if(!canMoveTo(grassPos)){
-            throw new InvalidPositionException(grassPos);
-        }
-        grasses.put(grassPos, grass);
-        mapChanged("Grass placed at " + grassPos);
     }
 
     public void removeGrass(Grass grass){
@@ -125,7 +124,6 @@ abstract public class AbstractWorldMap implements WorldMap{
             listener.mapChanged(this, message);
         }
     }
-
 
     public void addListener(MapChangeListener listener){
         this.mapChangeListeners.add(listener);
