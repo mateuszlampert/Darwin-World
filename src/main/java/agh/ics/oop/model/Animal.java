@@ -1,6 +1,5 @@
 package agh.ics.oop.model;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +9,7 @@ public class Animal implements WorldElement{
     private Vector2d position;
     private final Genome genome;
     private int energy;
+    private final AnimalStatistics animalStatistics = new AnimalStatistics();
 
     private List<DeathListener> deathListeners = new ArrayList<>();
 
@@ -34,7 +34,7 @@ public class Animal implements WorldElement{
         this.position = position;
     }
 
-    private void decreaseEnergy(int amount){
+public void decreaseEnergy(int amount){
         this.energy -= amount;
         checkIfAlive();
     }
@@ -50,26 +50,30 @@ public class Animal implements WorldElement{
     public void eat(Grass plant){
         this.energy += plant.getCalories();
     }
-
-    public int getEnergy() {
-        return this.energy;
-    }
-
     public void listenForDeath(DeathListener listener){
         deathListeners.add(listener);
     }
 
+    public int getEnergy() {
+        return this.energy;
+    }
     public Vector2d getPosition() {
         return this.position;
     }
     public MapDirection getDirection() {
         return this.direction;
     }
+    public Genome getGenome(){
+        return this.genome;
+    }
     public boolean isAt(Vector2d position){
         return this.getPosition().equals(position);
     }
     public boolean isFacing(MapDirection direction){ // tej metody nie bylo w instrukcjach, ale dodalem ja aby ulatwic testowanie
         return this.getDirection().equals(direction);
+    }
+    public AnimalStatistics getStatisticsHandler(){
+        return this.animalStatistics;
     }
 
     public void rotate(){

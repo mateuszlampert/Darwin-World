@@ -5,8 +5,9 @@ import agh.ics.oop.MapVisualizer;
 import java.util.*;
 
 abstract public class AbstractWorldMap implements WorldMap{
-    protected final Map<Vector2d, ArrayList<WorldElement>> animals = new HashMap<>();
-    protected final Map<Vector2d, Grass> grasses = new HashMap<Vector2d, Grass>();
+    private static final AnimalComparator ANIMAL_COMPARATOR = new AnimalComparator();
+    protected final Map<Vector2d, TreeSet<Animal>> animals = new HashMap<>();
+    protected final Map<Vector2d, Grass> grasses = new HashMap<>();
     private final List<MapChangeListener> mapChangeListeners = new ArrayList<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final String mapId;
@@ -28,9 +29,9 @@ abstract public class AbstractWorldMap implements WorldMap{
     }
 
     @Override
-    public void removeAnimal(WorldElement animal){
+    public void removeAnimal(Animal animal){
         Vector2d pos = animal.getPosition();
-        ArrayList<WorldElement> animalsAtPos = animals.get(pos);
+        TreeSet<Animal> animalsAtPos = animals.get(pos);
         animalsAtPos.remove(animal);
         if(animalsAtPos.isEmpty()){ // freeing memory of empty list
             animals.remove(pos);
@@ -49,30 +50,28 @@ abstract public class AbstractWorldMap implements WorldMap{
     }
 
 
-    private void putAnimal(WorldElement obj){
+    private void putAnimal(Animal obj){
         Vector2d pos = obj.getPosition();
-        ArrayList<WorldElement> animalsAtPos = animals.get(pos);
-        if(animalsAtPos == null){ // could replace it with compute if absent call
-            animalsAtPos = new ArrayList<>();
-            animals.put(pos, animalsAtPos);
-        }
-        animalsAtPos.add(obj);
+        TreeSet<Animal> animalsAtPosition = animals.computeIfAbsent(pos,k -> new TreeSet<Animal>(ANIMAL_COMPARATOR));
+        animalsAtPosition.add(obj);
     }
 
-    private WorldElement getBestAnimalAt(Vector2d position){ //currently, best is the first animal to get on that position
-        ArrayList<WorldElement> movablesAtPos = animals.get(position);
-        if(movablesAtPos == null){
+    private Animal getBestAnimalAt(Vector2d position){
+        TreeSet<Animal> animalsAtPosition = animals.get(position);
+        if(animalsAtPosition == null){
             return null;
         }
-        return movablesAtPos.get(0);
+        return animalsAtPosition.first();
     }
 
+
+
     @Override
-    public void move(Animal obj, MoveDirection direction) {
-        removeAnimal(obj);
-        obj.move(this);
-        putAnimal(obj);
-        mapChanged("Animal at " + obj.getPosition() +" moved!");
+    public void move(Animal animal, MoveDirection direction) {
+        removeAnimal(animal);
+        animal.move(this);
+        putAnimal(animal);
+        mapChanged("Animal at " + animal.getPosition() +" moved!");
     }
 
     public void removeGrass(Grass grass){
@@ -107,6 +106,18 @@ abstract public class AbstractWorldMap implements WorldMap{
             }
         }
         return animalOnGrasses;
+    }
+
+    public List<ReproductionPair> getAnimalsToReproduce(){
+        List<ReproductionPair>  animalsToReproduce = new ArrayList<>();
+        for(TreeSet<Animal> animalsAtPos : animals.values()){
+            if(animalsAtPos.size() >= 2){
+                Iterator<Animal> it = animalsAtPos.iterator();
+                ReproductionPair pair = new ReproductionPair(it.next(), it.next());
+                animalsToReproduce.add(pair);
+            }
+        }
+        return animalsToReproduce;
     }
 
     public String getId(){

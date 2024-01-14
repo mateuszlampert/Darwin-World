@@ -42,7 +42,7 @@ public enum MapDirection {
         return this.moveVector;
     }
 
-    public MapDirection randomDirection(){
+    public static MapDirection randomDirection(){
         int result = (int) (Math.random()*8);
         return MapDirection.values()[result];
     }
