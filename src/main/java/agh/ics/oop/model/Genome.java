@@ -3,6 +3,7 @@ package agh.ics.oop.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class Genome implements Iterator<Integer> {
     private final List<Integer> genes;
@@ -52,5 +53,18 @@ public class Genome implements Iterator<Integer> {
     @Override
     public String toString(){
         return genes.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Genome genome = (Genome) o;
+        return Objects.equals(genes, genome.genes) && Objects.equals(animalBehavior, genome.animalBehavior);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(genes, animalBehavior);
     }
 }

@@ -61,6 +61,8 @@ public class Simulation implements Runnable {
         mapHandler.reproduce();
         mapHandler.growGrass();
         mapHandler.updateStatistics();
+        System.out.println("step");
+        System.out.println(java.time.LocalTime.now());
     }
 
 //    public boolean isRunning() {return running; }
