@@ -78,8 +78,8 @@ public class LandingPagePresenter {
 
     private PlantGrowing getPlantGrowing(){
         return switch (plantsGrowing.getValue()){
-            case "Crawling Jungle" -> new CrawlingJungle(mapWidth.getValue(), mapHeight.getValue(), plantsPerDay.getValue(), plantsEnergy.getValue());
-            default -> new WoodyEquator(mapWidth.getValue(), mapHeight.getValue(), plantsPerDay.getValue(), plantsEnergy.getValue());
+            case "Crawling Jungle" -> new CrawlingJungle(mapWidth.getValue(), mapHeight.getValue(), startingPlants.getValue(), plantsEnergy.getValue());
+            default -> new WoodyEquator(mapWidth.getValue(), mapHeight.getValue(), startingPlants.getValue(), plantsEnergy.getValue());
         };
     }
 

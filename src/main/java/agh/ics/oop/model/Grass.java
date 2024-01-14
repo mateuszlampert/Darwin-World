@@ -2,7 +2,7 @@ package agh.ics.oop.model;
 
 public class Grass implements WorldElement{
     private final Vector2d position;
-    private static final String GRASS_STRING = "*";
+    private static final String GRASS_STRING = "\uD83C\uDF33";
     private final int calories;
 
     public Grass(Vector2d pos, int calories){

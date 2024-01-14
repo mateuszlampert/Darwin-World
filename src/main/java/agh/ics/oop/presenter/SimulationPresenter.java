@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ import java.util.List;
 public class SimulationPresenter implements MapChangeListener {
     private WorldMap map;
     private SimulationSettings configuration;
+    private Simulation simulation;
+    private Thread simulationThread;
+    private final Object lock = new Object(); // Monitor object
     @FXML
     private GridPane mapGrid;
     @FXML
@@ -26,7 +30,7 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private Button playButton;
     @FXML
-    private Button stopButton;
+    private Button pauseButton;
 
     public void setWorldMap(WorldMap map){
         this.map = map;
@@ -103,21 +107,44 @@ public class SimulationPresenter implements MapChangeListener {
         mapGrid.getRowConstraints().clear();
     }
 
-    public void onSimulationStartClicked(){
+    public void onSimulationStartClicked() {
         RandomVector2dGenerator generator = new RandomVector2dGenerator(configuration.width(), configuration.height(), configuration.startingAnimals());
         List<Vector2d> positions = new ArrayList<>(configuration.startingAnimals());
-        for (Vector2d pos: generator){
+        for (Vector2d pos : generator) {
             positions.add(pos);
         }
 
-        Thread simulationThread = new Thread(() -> {
-            Simulation simulation = new Simulation(map, positions, configuration, 100);
+        this.simulation = new Simulation(map, positions, configuration, 1000);
+
+        simulationThread = new Thread(() -> {
             simulation.run();
         });
         simulationThread.start();
+        pauseButton.setDisable(false);
+        playButton.setDisable(true);
     }
 
-    public void onPlayClicked(){}
+    public void onPlayClicked(){
+//        synchronized (lock) {
+//            simulation.play();
+//            lock.notify();
+//        }
+//        pauseButton.setDisable(false);
+//        playButton.setDisable(true);
+    }
 
-    public void onPauseClicked(){}
+    public void onPauseClicked(){
+//        pauseButton.setDisable(true);
+//        playButton.setDisable(false);
+//        synchronized (lock) {
+//            simulation.play();
+//        }
+    }
+
+    public void onStopClicked() {
+//        simulation.kill();
+//        simulationThread.interrupt();
+//        pauseButton.setDisable(true);
+//        playButton.setDisable(true);
+    }
 }
