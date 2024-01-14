@@ -58,13 +58,11 @@ abstract public class AbstractWorldMap implements WorldMap{
 
     private Animal getBestAnimalAt(Vector2d position){
         TreeSet<Animal> animalsAtPosition = animals.get(position);
-        if(animalsAtPosition == null){
+        if(animalsAtPosition == null || animalsAtPosition.isEmpty()){
             return null;
         }
         return animalsAtPosition.first();
     }
-
-
 
     @Override
     public void move(Animal animal, MoveDirection direction) {

@@ -22,8 +22,8 @@
         <VBox alignment="CENTER">
             <HBox>
                 <Button text="START" onAction="#onSimulationStartClicked" fx:id="startButton"/>
-                <Button text="&#x23F5;" onAction="#onPlayClicked" fx:id="playButton" />
-                <Button text="&#x23F8;" onAction="#onPauseClicked" fx:id="stopButton" />
+                <Button text="&#x23F5;" onAction="#onPlayClicked" fx:id="playButton" disable="true"/>
+                <Button text="&#x23F8;" onAction="#onPauseClicked" fx:id="pauseButton" disable="true"/>
             </HBox>
         </VBox>
     </bottom>

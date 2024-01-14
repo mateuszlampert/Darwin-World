@@ -38,12 +38,30 @@ public class Simulation implements Runnable {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            mapHandler.removeDead();
-            mapHandler.moveAnimals();
-            mapHandler.eatGrass();
-            mapHandler.reproduce();
-            mapHandler.growGrass();
-            mapHandler.updateStatistics();
+            singleDay();
         }
     }
+
+//    public void pause(){
+//        this.running = false;
+//    }
+//
+//    public void play(){
+//        this.running = true;
+//    }
+//
+//    public void kill(){
+//        this.killed = true;
+//    }
+
+    private void singleDay(){
+        mapHandler.removeDead();
+        mapHandler.moveAnimals();
+        mapHandler.eatGrass();
+        mapHandler.reproduce();
+        mapHandler.growGrass();
+        mapHandler.updateStatistics();
+    }
+
+//    public boolean isRunning() {return running; }
 }

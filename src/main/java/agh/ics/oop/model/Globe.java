@@ -11,13 +11,11 @@ public class Globe extends AbstractWorldMap{
 
     public Globe(String mapId, SimulationSettings configuration){
         super(mapId);
-
         int width = configuration.width();
         int height = configuration.height();
         this.bounds = new Boundary(new Vector2d(0, 0), new Vector2d(width - 1, height - 1));
         this.configuration = configuration;
         this.plantGrowing = configuration.plantsGrowing();
-        this.plantGrowing.setPlantsToGrow(this.configuration.startingPlants());
         this.plantGrowing.setGrasses(this.grasses);
         this.plantGrowing.growGrass(this);
         this.plantGrowing.setPlantsToGrow(this.configuration.plantsPerDay());
