@@ -15,7 +15,7 @@ public class RandomMutation implements Mutation{
     public void mutate(Genome genome){
         List<Integer> genomeList = genome.getGenesList();
 
-        int mutationCount = (int) (Math.random() * (maxMutations - minMutations)) + maxMutations;
+        int mutationCount = (int) (Math.random() * (maxMutations - minMutations)) + minMutations;
         for(int i=0; i < mutationCount; i++){
             int mutationIndex = (int) (Math.random() * genomeList.size());
             int newGene = (int) (Math.random() * 8);
