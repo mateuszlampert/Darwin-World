@@ -7,24 +7,24 @@ public class Animal implements WorldElement{
     private static final int MOVEMENT_ENERGY_LOSS = 1;
     private MapDirection direction;
     private Vector2d position;
-    private Genome genome;
+    private final Genome genome;
     private int energy;
     private final AnimalStatistics animalStatistics = new AnimalStatistics();
 
     private List<DeathListener> deathListeners = new ArrayList<>();
 
-    public Animal(){
-        //DEBUG CONSTRUCTOR
+    public Animal(int startingEnergy){
         this.position = new Vector2d(2,2);
         this.direction = MapDirection.NORTH;
         this.genome = new Genome(new ArrayList<>(), new FullPredestination());
+        this.energy = startingEnergy;
     }
-    public Animal(Vector2d position){
-        //DEBUG CONSTRUCTOR
+
+    public Animal(Vector2d position, int genomeLength, int startingEnergy){
         this.position = position;
         this.direction = MapDirection.NORTH;
-        this.genome = new Genome(new ArrayList<>(List.of(1,1,2,2)), new FullPredestination());
-        this.energy = 60;
+        this.genome = new Genome(genomeLength, new FullPredestination());
+        this.energy = startingEnergy;
     }
 
     public Animal(Vector2d position, MapDirection direction, int startingEnergy, Genome genome){
@@ -34,24 +34,7 @@ public class Animal implements WorldElement{
         this.position = position;
     }
 
-
-    public void move(MoveValidator validator){
-        rotate();
-        Vector2d v1 = this.position;
-        Vector2d v2 = this.direction.toMoveVector();
-        Vector2d newPosition = v1.add(v2);
-        if (validator.canMoveTo(newPosition)) {
-            this.position = newPosition;
-            decreaseEnergy(MOVEMENT_ENERGY_LOSS);
-        }
-    }
-
-    private void rotate(){
-        int rotationDelta = genome.next();
-        this.direction = direction.rotate(rotationDelta);
-    }
-
-    public void decreaseEnergy(int amount){
+public void decreaseEnergy(int amount){
         this.energy -= amount;
         checkIfAlive();
     }
@@ -93,6 +76,24 @@ public class Animal implements WorldElement{
         return this.animalStatistics;
     }
 
+    public void rotate(){
+        int rotationDelta = genome.next();
+        this.direction = direction.rotate(rotationDelta);
+    }
+
+    public void move(MoveDeterminer determiner){
+        rotate();
+        AnimalState afterMove = determiner.determineMove(position, direction);
+        setPosition(afterMove.position());
+        setDirection(afterMove.direction());
+        decreaseEnergy(MOVEMENT_ENERGY_LOSS);
+    }
+
+    private void setPosition(Vector2d newPosition){
+        this.position = newPosition;
+    }
+    private void setDirection(MapDirection newDirection){this.direction = newDirection; }
+
     public String toString() {
         return switch (direction) {
             case NORTH -> "\u2191"; // strzałka w górę
@@ -105,4 +106,6 @@ public class Animal implements WorldElement{
             case NORTH_EAST -> "\u2197"; // strzałka w prawo-górę
         };
     }
+
 }
+

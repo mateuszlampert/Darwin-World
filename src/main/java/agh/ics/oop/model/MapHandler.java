@@ -69,7 +69,7 @@ public class MapHandler implements DeathListener{
     }
 
     public void growGrass(){
-
+        map.growGrass();
     }
 
     public void updateStatistics(){
@@ -79,7 +79,7 @@ public class MapHandler implements DeathListener{
         }
     }
 
-    private void handleReproduction(ReproductionPair pair){
+    private void handleReproduction(ReproductionPair pair){ //could be moved to separate class to keep code clean
         int reproductionCost = simulationSettings.energyLostToReproduce();
 
         Vector2d childPosition = pair.getChildPosition();
