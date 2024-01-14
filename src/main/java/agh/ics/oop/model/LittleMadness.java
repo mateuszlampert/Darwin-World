@@ -1,7 +1,5 @@
 package agh.ics.oop.model;
 
-import java.util.Random;
-
 public class LittleMadness implements AnimalBehavior{
 
     @Override
