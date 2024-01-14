@@ -7,7 +7,7 @@ import java.util.*;
 abstract public class AbstractWorldMap implements WorldMap{
     private static final AnimalComparator ANIMAL_COMPARATOR = new AnimalComparator();
     protected final Map<Vector2d, TreeSet<Animal>> animals = new HashMap<>();
-    protected final Map<Vector2d, WorldElement> grasses = new HashMap<>();
+    protected final Map<Vector2d, Grass> grasses = new HashMap<>();
     private final List<MapChangeListener> mapChangeListeners = new ArrayList<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final String mapId;
