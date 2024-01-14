@@ -44,6 +44,11 @@ public class ReproductionPair {
         animal2.decreaseEnergy(amount);
     }
 
+    public void updateParentStatistics(Animal child){
+        animal1.getStatisticsHandler().updateStatistics(AnimalStatsUpdate.CHILD_BORN, child);
+        animal2.getStatisticsHandler().updateStatistics(AnimalStatsUpdate.CHILD_BORN, child);
+    }
+
     public Vector2d getChildPosition(){
         return animal1.getPosition();
     }

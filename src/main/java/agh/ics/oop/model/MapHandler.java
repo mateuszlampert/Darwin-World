@@ -7,6 +7,7 @@ import java.util.*;
 import static agh.ics.oop.model.MoveDirection.FORWARD;
 
 public class MapHandler implements DeathListener{
+    private int mapAge = 0;
     private final WorldMap map;
     private final SimulationSettings simulationSettings;
     private List<Animal> aliveAnimals = new ArrayList<Animal>();
@@ -24,6 +25,7 @@ public class MapHandler implements DeathListener{
             map.placeAnimal(animal);
             aliveAnimals.add(animal);
             animal.listenForDeath(this);
+            animal.getStatisticsHandler().updateStatistics(AnimalStatsUpdate.BORN, mapAge);
         } catch (InvalidPositionException e){
             System.out.println(e.toString());
         }
@@ -34,6 +36,7 @@ public class MapHandler implements DeathListener{
             aliveAnimals.remove(animal);
             map.removeAnimal(animal);
             deadAnimals.add(animal);
+            animal.getStatisticsHandler().updateStatistics(AnimalStatsUpdate.DIED, mapAge);
         }
         dyingAnimals.clear();
     }
@@ -49,6 +52,7 @@ public class MapHandler implements DeathListener{
         animalOnGrasses.forEach((grass, animal) -> {
             animal.eat(grass);
             map.removeGrass(grass);
+            animal.getStatisticsHandler().updateStatistics(AnimalStatsUpdate.EATEN_GRASS);
         });
 
     }
@@ -68,10 +72,15 @@ public class MapHandler implements DeathListener{
 
     }
 
+    public void updateStatistics(){
+        mapAge+=1;
+        for(Animal animal : aliveAnimals){
+            animal.getStatisticsHandler().updateStatistics(AnimalStatsUpdate.SURVIVED_DAY);
+        }
+    }
+
     private void handleReproduction(ReproductionPair pair){
         int reproductionCost = simulationSettings.energyLostToReproduce();
-
-        pair.decreaseParentsEnergy(reproductionCost);
 
         Vector2d childPosition = pair.getChildPosition();
         MapDirection childDirection = MapDirection.randomDirection();
@@ -80,6 +89,9 @@ public class MapHandler implements DeathListener{
         simulationSettings.mutation().mutate(childGenome);
 
         Animal child = new Animal(childPosition, childDirection, childEnergy, childGenome);
+        pair.decreaseParentsEnergy(reproductionCost);
+
+        pair.updateParentStatistics(child);
 
         placeAnimal(child);
     }

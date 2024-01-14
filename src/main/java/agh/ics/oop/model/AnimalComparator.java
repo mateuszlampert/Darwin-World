@@ -1,7 +1,6 @@
 package agh.ics.oop.model;
 
 import java.util.Comparator;
-import java.util.Random;
 
 public class AnimalComparator implements Comparator<Animal> {
 //    Jeżeli na jednym polu kilka zwierzaków rywalizuje o roślinę (albo o możliwość rozmnażania),
@@ -21,8 +20,8 @@ public class AnimalComparator implements Comparator<Animal> {
             return condition1;
         }
 
-        AnimalStatistics a1Stats = a1.getStatistics();
-        AnimalStatistics a2Stats = a2.getStatistics();
+        AnimalStatistics a1Stats = a1.getStatisticsHandler();
+        AnimalStatistics a2Stats = a2.getStatisticsHandler();
 
         int condition2 = Integer.compare(a1Stats.getAge(), a2Stats.getAge());
         if(condition2 != 0){

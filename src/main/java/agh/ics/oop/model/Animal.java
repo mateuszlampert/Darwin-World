@@ -1,6 +1,5 @@
 package agh.ics.oop.model;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,19 +64,16 @@ public class Animal implements WorldElement{
         }
     }
 
-
     public void eat(Grass plant){
         this.energy += plant.getCalories();
+    }
+    public void listenForDeath(DeathListener listener){
+        deathListeners.add(listener);
     }
 
     public int getEnergy() {
         return this.energy;
     }
-
-    public void listenForDeath(DeathListener listener){
-        deathListeners.add(listener);
-    }
-
     public Vector2d getPosition() {
         return this.position;
     }
@@ -93,7 +89,7 @@ public class Animal implements WorldElement{
     public boolean isFacing(MapDirection direction){ // tej metody nie bylo w instrukcjach, ale dodalem ja aby ulatwic testowanie
         return this.getDirection().equals(direction);
     }
-    public AnimalStatistics getStatistics(){
+    public AnimalStatistics getStatisticsHandler(){
         return this.animalStatistics;
     }
 
