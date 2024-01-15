@@ -12,12 +12,14 @@ public class MapStatisticsHandler {
     private RunningAverage averageEnergyLevel = new RunningAverage();
     private RunningAverage averageChildrenCount = new RunningAverage();
     private Map<Genome, Integer> usedGenomeCounter = new HashMap<>();
+    private Genome topGenome = null;
+    private int topGenomeCounter = -1;
 
     public void animalBorn(Animal animal){
         aliveAnimals += 1;
         aliveAndDeadAnimals +=1;
         averageChildrenCount.addNumber(0);
-        usedGenomeCounter.compute(animal.getGenome(), (key, count) -> (count == null) ? 1 : count + 1);
+        changeGenomeFrequency(animal.getGenome(), 1);
         animal.getStatisticsHandler().updateStatistics(AnimalStatsUpdate.BORN, simulationAge);
     }
 
@@ -25,7 +27,7 @@ public class MapStatisticsHandler {
         aliveAnimals-=1;
         averageChildrenCount.removeNumber(animal.getStatisticsHandler().getChildrenCount());
         averageDeadLifeSpan.addNumber(animal.getStatisticsHandler().getAge());
-        usedGenomeCounter.compute(animal.getGenome(), (key, count) -> count - 1);
+        changeGenomeFrequency(animal.getGenome(), -1);
         animal.getStatisticsHandler().updateStatistics(AnimalStatsUpdate.DIED, simulationAge);
     }
 
@@ -47,5 +49,53 @@ public class MapStatisticsHandler {
         simulationAge+=1;
         averageEnergyLevel.reset();
     }
+
+    private void changeGenomeFrequency(Genome genome, int val){
+        Integer genomeCount = usedGenomeCounter.get(genome);
+        if(genomeCount == null){
+            genomeCount = 1;
+            usedGenomeCounter.put(genome, 0);
+        }
+        int newCount = genomeCount + val;
+        usedGenomeCounter.replace(genome, newCount);
+
+        if(topGenome.equals(genome)){
+            topGenomeCounter = newCount;
+        }
+
+        if(newCount > topGenomeCounter){
+            topGenomeCounter = newCount;
+            topGenome = genome;
+        }
+    }
+
+    public int getSimulationAge(){
+        return simulationAge;
+    }
+
+    public int getAliveAnimals(){
+        return aliveAnimals;
+    }
+
+    public int getAliveAndDeadAnimals() {
+        return aliveAndDeadAnimals;
+    }
+
+    public double getAverageLifeSpan(){
+        return averageDeadLifeSpan.getAverage();
+    }
+
+    public double getAverageEnergyLevel(){
+        return averageEnergyLevel.getAverage();
+    }
+
+    public double getAverageChildrenCount(){
+        return averageChildrenCount.getAverage();
+    }
+
+    public Genome getMostUsedGenome(){
+        return topGenome;
+    }
+
 
 }
