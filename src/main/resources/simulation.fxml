@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             minHeight="550.0" minWidth="850.0"
@@ -20,12 +21,23 @@
 
     <bottom>
         <VBox alignment="CENTER">
-            <HBox>
-                <Button text="START" onAction="#onSimulationStartClicked" fx:id="startButton"/>
-                <Button text="&#x23F5;" onAction="#onPlayClicked" fx:id="playButton" disable="true"/>
-                <Button text="&#x23F8;" onAction="#onPauseClicked" fx:id="pauseButton" disable="true"/>
+            <HBox alignment="CENTER">
+                <Button text="START" onAction="#onSimulationStartClicked" fx:id="startButton" minWidth="45"/>
+                <Button text="STOP" onAction="#onStopClicked" fx:id="stopButton" minWidth="45"/>
+            </HBox>
+            <HBox alignment="CENTER">
+                <Button text="&#x23F5;" onAction="#onPlayClicked" fx:id="playButton" disable="true" minWidth="30"/>
+                <Button text="&#x23F8;" onAction="#onPauseClicked" fx:id="pauseButton" disable="true" minWidth="30"/>
+                <Button text="&#x21E8;" onAction="#onNextClicked" fx:id="nextButton" disable="true" minWidth="30"/>
+            </HBox>
+            <HBox alignment="CENTER">
+                <Button text="HIGHLIGHT" fx:id="favourableButton" onAction="#highlightFavourablePositions" disable="true" minWidth="90"/>
             </HBox>
         </VBox>
     </bottom>
+
+    <right>
+        <VBox fx:id="animalStats" />
+    </right>
 
 </BorderPane>

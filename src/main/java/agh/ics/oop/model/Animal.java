@@ -8,6 +8,7 @@ public class Animal implements WorldElement{
     private MapDirection direction;
     private Vector2d position;
     private final Genome genome;
+    private final int maxEnergy;
     private int energy;
     private final AnimalStatistics animalStatistics = new AnimalStatistics();
 
@@ -17,6 +18,7 @@ public class Animal implements WorldElement{
         this.position = new Vector2d(2,2);
         this.direction = MapDirection.NORTH;
         this.genome = new Genome(new ArrayList<>(), new FullPredestination());
+        this.maxEnergy = startingEnergy;
         this.energy = startingEnergy;
     }
 
@@ -25,6 +27,7 @@ public class Animal implements WorldElement{
         this.direction = MapDirection.NORTH;
         this.genome = new Genome(genomeLength, new FullPredestination());
         this.energy = startingEnergy;
+        this.maxEnergy = startingEnergy;
     }
 
     public Animal(Vector2d position, MapDirection direction, int startingEnergy, Genome genome){
@@ -32,6 +35,7 @@ public class Animal implements WorldElement{
         this.genome = genome;
         this.direction = direction;
         this.position = position;
+        this.maxEnergy = startingEnergy;
     }
 
 public void decreaseEnergy(int amount){
@@ -95,18 +99,15 @@ public void decreaseEnergy(int amount){
     private void setDirection(MapDirection newDirection){this.direction = newDirection; }
 
     public String toString() {
-//        return switch (direction) {
-//            case NORTH -> "\u2191"; // strzałka w górę
-//            case NORTH_WEST -> "\u2196"; // strzałka w lewo-górę
-//            case WEST -> "\u2190"; // strzałka w lewo
-//            case SOUTH_WEST -> "\u2199"; // strzałka w lewo-dół
-//            case SOUTH -> "\u2193"; // strzałka w dół
-//            case SOUTH_EAST -> "\u2198"; // strzałka w prawo-dół
-//            case EAST -> "\u2192"; // strzałka w prawo
-//            case NORTH_EAST -> "\u2197"; // strzałka w prawo-górę
-//        };
         return "\uD83D\uDC12";
     }
 
+    public AnimalStatistics getAnimalStatistics(){
+        return animalStatistics;
+    }
+
+    public double getTransparency(){
+        return (double) Math.max(energy, maxEnergy) / maxEnergy;
+    }
 }
 

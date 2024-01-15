@@ -8,10 +8,12 @@ public class Genome implements Iterator<Integer> {
     private final List<Integer> genes;
     private int prevMove = -1;
     private final AnimalBehavior animalBehavior;
+    private final int genomeLength;
 
     public Genome(int genomeLength, AnimalBehavior animalBehavior){
         this.animalBehavior = animalBehavior;
         genes = new ArrayList<>(genomeLength);
+        this.genomeLength = genomeLength;
 
         for (int i = 0; i < genomeLength; i++){
             genes.add( (int) (Math.random() * 8));
@@ -21,6 +23,7 @@ public class Genome implements Iterator<Integer> {
     public Genome(List<Integer> genes, AnimalBehavior animalBehavior) {
         this.genes = genes;
         this.animalBehavior = animalBehavior;
+        this.genomeLength = genes.size();
     }
 
     public List<Integer> getGenesList(){
@@ -28,13 +31,13 @@ public class Genome implements Iterator<Integer> {
     }
 
     public List<Integer> getGenesBefore(float percent){
-        int n = (int) percent * genes.size();
+        int n = (int) percent * genomeLength;
         return genes.subList(0, n);
     }
 
     public List<Integer> getGenesAfter(float percent){
-        int n = (int) percent * genes.size();
-        return genes.subList(n, genes.size());
+        int n = (int) percent * genomeLength;
+        return genes.subList(n, genomeLength);
     }
 
     @Override
@@ -44,7 +47,7 @@ public class Genome implements Iterator<Integer> {
 
     @Override
     public Integer next() {
-        int currMove = animalBehavior.nextMove(prevMove, genes.size());
+        int currMove = animalBehavior.nextMove(prevMove, genomeLength);
         prevMove = currMove;
         return genes.get(currMove);
     }
@@ -52,5 +55,9 @@ public class Genome implements Iterator<Integer> {
     @Override
     public String toString(){
         return genes.toString();
+    }
+
+    public Integer peekNext(){
+        return genes.get(animalBehavior.nextMove(prevMove, genomeLength));
     }
 }

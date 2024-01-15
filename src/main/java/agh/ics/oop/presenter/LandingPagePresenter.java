@@ -5,8 +5,15 @@ import agh.ics.oop.model.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LandingPagePresenter {
     private int count = 0;
@@ -40,14 +47,50 @@ public class LandingPagePresenter {
     private ChoiceBox<String> plantsGrowing;
     @FXML
     private ChoiceBox<String> mutation;
+    @FXML
+    private Spinner<Integer> dayTime;
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
         SimulationSettings configuration = createConfiguration();
         AbstractWorldMap map = createMap(configuration);
+        RandomVector2dGenerator generator = new RandomVector2dGenerator(configuration.width(), configuration.height(), configuration.startingAnimals());
+
+        List<Vector2d> positions = new ArrayList<>(configuration.startingAnimals());
+        for (Vector2d pos : generator) {
+            positions.add(pos);
+        }
+
+        Simulation simulation = new Simulation(map, positions, configuration, dayTime.getValue());
 
         Platform.runLater(() -> {
-            SimulationApp simulationApp = new SimulationApp(map, configuration);
-            simulationApp.start(new Stage());
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
+            BorderPane viewRoot;
+
+            try {
+                viewRoot = loader.load();
+            } catch (IOException e) {
+                System.out.println("Couldn't load the file!");
+                e.printStackTrace();
+                return;
+            }
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(viewRoot);
+            stage.setScene(scene);
+            stage.setTitle("Simulation app");
+            stage.minWidthProperty().bind(viewRoot.minWidthProperty());
+            stage.minHeightProperty().bind(viewRoot.minHeightProperty());
+
+            SimulationPresenter presenter = loader.getController();
+
+            presenter.setSimulation(simulation);
+            presenter.setWorldMap(map);
+            presenter.setConfiguration(configuration);
+
+            map.addListener(presenter);
+
+            stage.show();
         });
     }
 

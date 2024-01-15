@@ -7,22 +7,27 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Text;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class SimulationPresenter implements MapChangeListener {
+public class SimulationPresenter implements MapChangeListener, StatsChangeListener {
     private WorldMap map;
     private SimulationSettings configuration;
     private Simulation simulation;
-    private Thread simulationThread;
-    private final Object lock = new Object(); // Monitor object
+    private boolean paused = false;
+    private final Map<Vector2d, Node> nodes = new HashMap<>();
+    private AnimalLabel trackedAnimal;
+
     @FXML
     private GridPane mapGrid;
     @FXML
@@ -31,6 +36,14 @@ public class SimulationPresenter implements MapChangeListener {
     private Button playButton;
     @FXML
     private Button pauseButton;
+    @FXML
+    private Button stopButton;
+    @FXML
+    private Button nextButton;
+    @FXML
+    private Button favourableButton;
+    @FXML
+    private VBox animalStats;
 
     public void setWorldMap(WorldMap map){
         this.map = map;
@@ -40,17 +53,21 @@ public class SimulationPresenter implements MapChangeListener {
         this.configuration = configuration;
     }
 
+    public void setSimulation(Simulation simulation){
+        this.simulation = simulation;
+    }
+
     public void drawMap(){
         clearGrid();
         Boundary bounds = map.getCurrentBounds();
 
         for (int i = -1; i <= bounds.getXSpan(); i++){
-            ColumnConstraints col = new ColumnConstraints(30);
+            ColumnConstraints col = new ColumnConstraints(25);
             mapGrid.getColumnConstraints().add(col);
         }
 
         for (int j = -1; j <= bounds.getYSpan(); j++){
-            RowConstraints row = new RowConstraints(30);
+            RowConstraints row = new RowConstraints(25);
             mapGrid.getRowConstraints().add(row);
         }
 
@@ -83,11 +100,29 @@ public class SimulationPresenter implements MapChangeListener {
                 Label cell = new Label();
 
                 if (map.isOccupied(pos)){
-                    cell.setText(map.objectAt(pos).toString());
+                    if (map.animalAt(pos) != null){
+                        if (trackedAnimal != null && map.animalAt(pos).equals(trackedAnimal.getAnimal())){
+                            cell = trackedAnimal;
+                            highlightAnimal();
+                        }
+                        else{
+                            cell = new AnimalLabel(map.animalAt(pos).getAnimalStatistics(), map.animalAt(pos));
+                            cell.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> trackAnimal((AnimalLabel) e.getSource()));
+                            cell.setText(map.animalAt(pos).toString());
+                            cell.setTextFill(Color.BROWN);
+                        }
+                    }
+                    else{
+                        cell.setText(map.grassAt(pos).toString());
+                        cell.setTextFill(Color.GREEN);
+                    }
                 }
 
+                cell.setMinSize(24, 24);
+                cell.setTextAlignment(TextAlignment.RIGHT);
                 int gridYPos = bounds.getUpY() - y + 1;
                 int gridXPos = x - bounds.getLeftX() + 1;
+                nodes.put(pos, cell);
 
                 GridPane.setHalignment(cell, HPos.CENTER);
                 GridPane.setValignment(cell, VPos.CENTER);
@@ -98,7 +133,10 @@ public class SimulationPresenter implements MapChangeListener {
 
     @Override
     public void mapChanged(WorldMap worldMap, String message) {
-        Platform.runLater(this::drawMap);
+        Platform.runLater(() -> {
+            drawMap();
+            highlightAnimal();
+        });
     }
 
     private void clearGrid() {
@@ -108,43 +146,97 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void onSimulationStartClicked() {
-        RandomVector2dGenerator generator = new RandomVector2dGenerator(configuration.width(), configuration.height(), configuration.startingAnimals());
-        List<Vector2d> positions = new ArrayList<>(configuration.startingAnimals());
-        for (Vector2d pos : generator) {
-            positions.add(pos);
-        }
-
-        this.simulation = new Simulation(map, positions, configuration, 1000);
-
-        simulationThread = new Thread(() -> {
+        Thread simulationThread = new Thread(() -> {
             simulation.run();
         });
         simulationThread.start();
+        startButton.setDisable(true);
         pauseButton.setDisable(false);
         playButton.setDisable(true);
     }
 
     public void onPlayClicked(){
-//        synchronized (lock) {
-//            simulation.play();
-//            lock.notify();
-//        }
-//        pauseButton.setDisable(false);
-//        playButton.setDisable(true);
+        simulation.play();
+        pauseButton.setDisable(false);
+        playButton.setDisable(true);
+        nextButton.setDisable(true);
+        favourableButton.setDisable(true);
+        paused = false;
     }
 
     public void onPauseClicked(){
-//        pauseButton.setDisable(true);
-//        playButton.setDisable(false);
-//        synchronized (lock) {
-//            simulation.play();
-//        }
+        pauseButton.setDisable(true);
+        playButton.setDisable(false);
+        nextButton.setDisable(false);
+        favourableButton.setDisable(false);
+        simulation.pause();
+        paused = true;
     }
 
     public void onStopClicked() {
-//        simulation.kill();
-//        simulationThread.interrupt();
-//        pauseButton.setDisable(true);
-//        playButton.setDisable(true);
+        simulation.kill();
+        pauseButton.setDisable(true);
+        playButton.setDisable(true);
+        nextButton.setDisable(true);
     }
+
+    public void onNextClicked() {
+        simulation.singleDay();
+    }
+
+    public void highlightFavourablePositions(){
+        favourableButton.setText("FADE");
+        Set<Vector2d> favourablePositions = map.getPlantGrowing().getFavourablePositions(map);
+        for (Vector2d pos: favourablePositions){
+            int x = pos.getX();
+            int y = pos.getY();
+            nodes.get(new Vector2d(x, y)).setStyle("-fx-background-color: rgba(36,183,178,0.96)");
+        }
+        favourableButton.setOnAction(e -> fadeFavourablePositions(favourablePositions));
+    }
+    
+    public void fadeFavourablePositions(Set<Vector2d> favourablePositions){
+        favourableButton.setText("HIGHLIGHT");
+        for (Vector2d pos: favourablePositions){
+            int x = pos.getX();
+            int y = pos.getY();
+            nodes.get(new Vector2d(x, y)).setStyle(null);
+        }
+        if (this.trackedAnimal != null){
+            highlightAnimal();
+        }
+        favourableButton.setOnAction(e -> highlightFavourablePositions());
+    }
+
+    public void trackAnimal(AnimalLabel animalLabel){
+        if (paused){
+            if (this.trackedAnimal != null){
+                this.trackedAnimal.removeListener(this);
+                this.trackedAnimal.setStyle(null);
+            }
+            this.trackedAnimal = animalLabel;
+            animalLabel.registerListener(this);
+            generateTrackedAnimalStats(animalLabel);
+        }
+    }
+
+    public void highlightAnimal(){
+        if (trackedAnimal != null){
+            trackedAnimal.setStyle("-fx-font-weight: bold; -fx-background-color: black; -fx-text-fill: yellow ");
+        }
+    }
+
+    @Override
+    public void statsChanged(AnimalStatistics animalStatistics) {
+        generateTrackedAnimalStats(trackedAnimal);
+    }
+
+    public void generateTrackedAnimalStats(AnimalLabel animalLabel){
+        Platform.runLater(() -> {
+            animalStats.getChildren().clear();
+            animalStats.getChildren().add(animalLabel.showStats());
+            highlightAnimal();
+        });
+    }
+
 }

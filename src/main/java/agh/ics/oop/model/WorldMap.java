@@ -2,6 +2,7 @@ package agh.ics.oop.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * The interface responsible for interacting with the map of the world.
@@ -25,7 +26,7 @@ public interface WorldMap extends MoveDeterminer {
 
     WorldElement objectAt(Vector2d position);
 
-    List getAnimals();
+    List<TreeSet<Animal>> getAnimals();
   
     Map<Grass, Animal> getAnimalOnGrasses();
 
@@ -35,4 +36,8 @@ public interface WorldMap extends MoveDeterminer {
   
     void growGrass();
 
+    PlantGrowing getPlantGrowing();
+
+    Grass grassAt(Vector2d position);
+    Animal animalAt(Vector2d position);
 }
