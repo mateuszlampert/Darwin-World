@@ -37,6 +37,7 @@ public class MapStatisticsHandler {
 
     public void pairReproduced(ReproductionPair pair, Animal child){
         pair.getParent1().getStatisticsHandler().updateStatistics(AnimalStatsUpdate.CHILD_BORN, child);
+        pair.getParent2().getStatisticsHandler().updateStatistics(AnimalStatsUpdate.CHILD_BORN, child);
         averageChildrenCount.increaseSum(2); // adding two, because each parent child count increased by 1
     }
 
