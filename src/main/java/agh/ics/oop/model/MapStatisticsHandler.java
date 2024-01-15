@@ -54,7 +54,7 @@ public class MapStatisticsHandler {
     private void changeGenomeFrequency(Genome genome, int val){
         Integer genomeCount = usedGenomeCounter.get(genome);
         if(genomeCount == null){
-            genomeCount = 1;
+            genomeCount = 0;
             usedGenomeCounter.put(genome, 0);
         }
         int newCount = genomeCount + val;
