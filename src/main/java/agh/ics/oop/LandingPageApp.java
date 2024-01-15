@@ -32,7 +32,7 @@ public class LandingPageApp extends Application {
     private void configureStage(Stage primaryStage, BorderPane viewRoot) {
         var scene = new Scene(viewRoot);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Simulation app");
+        primaryStage.setTitle("Landing page");
         primaryStage.minWidthProperty().bind(viewRoot.minWidthProperty());
         primaryStage.minHeightProperty().bind(viewRoot.minHeightProperty());
         primaryStage.setOnCloseRequest(this::handleCloseRequest);
@@ -41,5 +41,6 @@ public class LandingPageApp extends Application {
     private void handleCloseRequest(WindowEvent event) {
         System.out.println("Closing the application...");
         Platform.exit();
+        System.exit(0);
     }
 }
