@@ -3,7 +3,7 @@ package agh.ics.oop.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimalStatistics {
+public class AnimalStatistics{
 
     private int bornOn = 0;
     private int age = 0;
@@ -11,6 +11,7 @@ public class AnimalStatistics {
     private int childrenCount = 0;
     private int eatenGrass = 0;
     private final List<Animal> children = new ArrayList<>();
+    private final List<StatsChangeListener> statsChangedListeners = new ArrayList<>();
 
     public void updateStatistics(AnimalStatsUpdate update){
         switch(update) {
@@ -18,6 +19,7 @@ public class AnimalStatistics {
             case SURVIVED_DAY -> age += 1;
             default -> throw new IllegalArgumentException("Called invalid AnimalStatsUpdate method with status: " + update);
         }
+        statsChanged();
     }
 
     public void updateStatistics(AnimalStatsUpdate update, int ageInformation){
@@ -26,6 +28,7 @@ public class AnimalStatistics {
             case DIED -> diedOn = ageInformation;
             default -> throw new IllegalArgumentException("Called invalid AnimalStatsUpdate method with status: " + update);
         }
+        statsChanged();
     }
 
     public void updateStatistics(AnimalStatsUpdate update, Animal animalInformation){
@@ -37,8 +40,8 @@ public class AnimalStatistics {
             default -> throw new IllegalArgumentException("Called invalid AnimalStatsUpdate method with status: " + update);
 
         }
+        statsChanged();
     }
-
 
     public int calculateDescendants(){
         int descendants = getChildrenCount();
@@ -64,5 +67,16 @@ public class AnimalStatistics {
         return eatenGrass;
     }
 
+    protected void statsChanged(){
+        for(StatsChangeListener listener : this.statsChangedListeners){
+            listener.statsChanged(this);
+        }
+    }
 
+    public void addListener(StatsChangeListener listener){
+        this.statsChangedListeners.add(listener);
+    }
+    public void removeListener(StatsChangeListener listener){
+        this.statsChangedListeners.remove(listener);
+    }
 }

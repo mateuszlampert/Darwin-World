@@ -5,7 +5,7 @@ import java.util.*;
 public abstract class AbstractPlantGrowing implements PlantGrowing {
     protected final int width;
     protected final int height;
-    protected final int favourablePlantsToGrow;
+    protected int favourablePlantsToGrow;
     protected int plantsToGrow;
     protected Map<Vector2d, Grass> grasses;
     private final int calories;
@@ -20,6 +20,7 @@ public abstract class AbstractPlantGrowing implements PlantGrowing {
 
     public void setPlantsToGrow(int plantsToGrow){
         this.plantsToGrow = plantsToGrow;
+        this.favourablePlantsToGrow = (int) (0.8 * plantsToGrow);
     }
 
     public void setGrasses(Map<Vector2d, Grass> grasses){

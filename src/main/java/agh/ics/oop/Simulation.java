@@ -2,23 +2,18 @@ package agh.ics.oop;
 
 import agh.ics.oop.model.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Simulation implements Runnable {
-
-    private final int simulationSteps;
-    private final WorldMap map;
-    private final SimulationSettings configuration;
     private final MapHandler mapHandler;
+    private boolean running = true;
+    private boolean killed = false;
+    private final int dayTime;
 
-    public Simulation(WorldMap map, List<Vector2d> positions, SimulationSettings configuration, int simulationSteps) {
-        this.configuration = configuration;
-        this.map = map;
+    public Simulation(WorldMap map, List<Vector2d> positions, SimulationSettings configuration, int dayTime) {
         this.mapHandler = new MapHandler(map, configuration);
-        this.simulationSteps = simulationSteps;
+        this.dayTime = dayTime;
 
         for (Vector2d position : positions) {
             Animal animal = new Animal(position, configuration.genomeLength(), configuration.startingEnergy());
@@ -32,9 +27,18 @@ public class Simulation implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < simulationSteps; i++) { // will be infinite loop later
-            try {
-                Thread.sleep(1500);
+        while (!killed) {
+            synchronized (this) {
+                while (!running) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            try{
+                Thread.sleep(dayTime);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -42,19 +46,22 @@ public class Simulation implements Runnable {
         }
     }
 
-//    public void pause(){
-//        this.running = false;
-//    }
-//
-//    public void play(){
-//        this.running = true;
-//    }
-//
-//    public void kill(){
-//        this.killed = true;
-//    }
+    public void pause() {
+        this.running = false;
+    }
 
-    private void singleDay(){
+    public void play() {
+        synchronized (this) {
+            this.running = true;
+            notify();
+        }
+    }
+
+    public void kill() {
+        this.killed = true;
+    }
+
+    public  void singleDay() {
         mapHandler.removeDead();
         mapHandler.moveAnimals();
         mapHandler.eatGrass();
@@ -64,6 +71,4 @@ public class Simulation implements Runnable {
         System.out.println("step");
         System.out.println(java.time.LocalTime.now());
     }
-
-//    public boolean isRunning() {return running; }
 }
