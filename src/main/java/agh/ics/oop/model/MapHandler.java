@@ -106,4 +106,8 @@ public class MapHandler implements DeathListener{
     public List<Animal> getMapAnimals(){
         return this.aliveAnimals;
     }
+
+    public MapStatisticsHandler getStatisticsHandler(){
+        return this.statisticsHandler;
+    }
 }

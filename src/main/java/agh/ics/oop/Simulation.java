@@ -21,6 +21,10 @@ public class Simulation implements Runnable {
         }
     }
 
+    public MapHandler getMapHandler(){
+        return this.mapHandler;
+    }
+
     public List<Animal> getAnimals() {
         return Collections.unmodifiableList(mapHandler.getMapAnimals());
     }

@@ -1,19 +1,19 @@
 package agh.ics.oop.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapStatisticsHandler {
 
     private int simulationAge = 0;
     private int aliveAnimals = 0;
     private int aliveAndDeadAnimals = 0;
-    private RunningAverage averageDeadLifeSpan = new RunningAverage();
-    private RunningAverage averageEnergyLevel = new RunningAverage();
-    private RunningAverage averageChildrenCount = new RunningAverage();
-    private Map<Genome, Integer> usedGenomeCounter = new HashMap<>();
+    private final RunningAverage averageDeadLifeSpan = new RunningAverage();
+    private final RunningAverage averageEnergyLevel = new RunningAverage();
+    private final RunningAverage averageChildrenCount = new RunningAverage();
+    private final Map<Genome, Integer> usedGenomeCounter = new HashMap<>();
     private Genome topGenome = null;
     private int topGenomeCounter = -1;
+    private final List<MostFrequentGenotypeChangedListener> mostFrequentGenotypeChangedListeners = new ArrayList<>();
 
     public void animalBorn(Animal animal){
         aliveAnimals += 1;
@@ -67,6 +67,7 @@ public class MapStatisticsHandler {
         if(newCount > topGenomeCounter){
             topGenomeCounter = newCount;
             topGenome = genome;
+            mostFrequentGenotypeChanged();
         }
     }
 
@@ -99,4 +100,16 @@ public class MapStatisticsHandler {
     }
 
 
+    protected void mostFrequentGenotypeChanged(){
+        for(MostFrequentGenotypeChangedListener listener : this.mostFrequentGenotypeChangedListeners){
+            listener.mostFrequentGenotypeChanged(this);
+        }
+    }
+
+    public void addListener(MostFrequentGenotypeChangedListener listener){
+        this.mostFrequentGenotypeChangedListeners.add(listener);
+    }
+    public void removeListener(MostFrequentGenotypeChangedListener listener){
+        this.mostFrequentGenotypeChangedListeners.remove(listener);
+    }
 }
