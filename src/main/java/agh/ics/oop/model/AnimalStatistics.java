@@ -17,7 +17,7 @@ public class AnimalStatistics{
         switch(update) {
             case EATEN_GRASS -> eatenGrass += 1;
             case SURVIVED_DAY -> age += 1;
-            default -> throw new IllegalArgumentException("Invalid AnimalStatsUpdate: " + update);
+            default -> throw new IllegalArgumentException("Called invalid AnimalStatsUpdate method with status: " + update);
         }
         statsChanged();
     }
@@ -26,7 +26,7 @@ public class AnimalStatistics{
         switch(update){
             case BORN -> bornOn = ageInformation;
             case DIED -> diedOn = ageInformation;
-            default -> throw new IllegalArgumentException("Invalid AnimalStatsUpdate: " + update);
+            default -> throw new IllegalArgumentException("Called invalid AnimalStatsUpdate method with status: " + update);
         }
         statsChanged();
     }
@@ -37,7 +37,7 @@ public class AnimalStatistics{
                 childrenCount+=1;
                 children.add(animalInformation);
             }
-            default -> throw new IllegalArgumentException("Invalid AnimalStatsUpdate: " + update);
+            default -> throw new IllegalArgumentException("Called invalid AnimalStatsUpdate method with status: " + update);
 
         }
         statsChanged();
