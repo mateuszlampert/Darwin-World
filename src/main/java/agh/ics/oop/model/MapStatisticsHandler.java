@@ -59,7 +59,7 @@ public class MapStatisticsHandler {
         int newCount = genomeCount + val;
         usedGenomeCounter.replace(genome, newCount);
 
-        if(topGenome.equals(genome)){
+        if(genome.equals(topGenome)){
             topGenomeCounter = newCount;
         }
 
