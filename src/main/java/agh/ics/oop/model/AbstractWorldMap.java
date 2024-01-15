@@ -83,15 +83,29 @@ abstract public class AbstractWorldMap implements WorldMap{
     }
 
     @Override
-    public WorldElement objectAt(Vector2d position) {
+    public WorldElement objectAt(Vector2d position){
+        if (animalAt(position) != null){
+            return animalAt(position);
+        }
+        else if (grassAt(position) != null) {
+            return grassAt(position);
+        }
+        else return null;
+    }
+
+    @Override
+    public Animal animalAt(Vector2d position){
         return getBestAnimalAt(position);
     }
 
     @Override
-    public List getAnimals() {
-        List list = new ArrayList<>();
-        list.addAll(animals.values());
-        return list;
+    public Grass grassAt(Vector2d position){
+        return grasses.get(position);
+    }
+
+    @Override
+    public List<TreeSet<Animal>> getAnimals() {
+        return new ArrayList<>(animals.values());
     }
 
     @Override
@@ -141,4 +155,5 @@ abstract public class AbstractWorldMap implements WorldMap{
         this.mapChangeListeners.remove(listener);
     }
 
+    public PlantGrowing getPlantGrowing(){return plantGrowing;}
 }
