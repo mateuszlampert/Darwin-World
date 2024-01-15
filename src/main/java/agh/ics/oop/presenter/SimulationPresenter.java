@@ -1,5 +1,4 @@
 package agh.ics.oop.presenter;
-import agh.ics.oop.RandomVector2dGenerator;
 import agh.ics.oop.Simulation;
 import agh.ics.oop.SimulationSettings;
 import agh.ics.oop.model.*;
@@ -20,13 +19,16 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.*;
 
-public class SimulationPresenter implements MapChangeListener, StatsChangeListener {
+public class SimulationPresenter implements MapChangeListener, StatsChangeListener, MostFrequentGenotypeChangedListener {
     private WorldMap map;
     private SimulationSettings configuration;
     private Simulation simulation;
     private boolean paused = false;
     private final Map<Vector2d, Node> nodes = new HashMap<>();
     private AnimalLabel trackedAnimal;
+    private final Set<Animal> animalsWithMostFrequentGenotype = new HashSet<>();
+    private Genome mostFrequentGenotype = null;
+
 
     @FXML
     private GridPane mapGrid;
@@ -44,6 +46,8 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     private Button favourableButton;
     @FXML
     private VBox animalStats;
+    @FXML
+    private Button mostFrequentGenotypeButton;
 
     public void setWorldMap(WorldMap map){
         this.map = map;
@@ -103,13 +107,16 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
                     if (map.animalAt(pos) != null){
                         if (trackedAnimal != null && map.animalAt(pos).equals(trackedAnimal.getAnimal())){
                             cell = trackedAnimal;
-                            highlightAnimal();
+                            highlightTrackedAnimal();
                         }
                         else{
                             cell = new AnimalLabel(map.animalAt(pos).getAnimalStatistics(), map.animalAt(pos));
                             cell.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> trackAnimal((AnimalLabel) e.getSource()));
                             cell.setText(map.animalAt(pos).toString());
                             cell.setTextFill(Color.BROWN);
+                        }
+                        if (animalsWithMostFrequentGenotype.contains(map.animalAt(pos))){
+                            addBorder(cell);
                         }
                     }
                     else{
@@ -135,7 +142,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     public void mapChanged(WorldMap worldMap, String message) {
         Platform.runLater(() -> {
             drawMap();
-            highlightAnimal();
+            highlightTrackedAnimal();
         });
     }
 
@@ -153,6 +160,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         startButton.setDisable(true);
         pauseButton.setDisable(false);
         playButton.setDisable(true);
+        mostFrequentGenotypeButton.setDisable(false);
     }
 
     public void onPlayClicked(){
@@ -160,8 +168,10 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         pauseButton.setDisable(false);
         playButton.setDisable(true);
         nextButton.setDisable(true);
-        favourableButton.setDisable(true);
         paused = false;
+        favourableButton.setDisable(true);
+        favourableButton.setText("SHOW MOST LIKELY GRASS POSITIONS");
+        favourableButton.setOnAction(e -> highlightTrackedAnimal());
     }
 
     public void onPauseClicked(){
@@ -185,7 +195,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     }
 
     public void highlightFavourablePositions(){
-        favourableButton.setText("FADE");
+        favourableButton.setText("FADE MOST LIKELY GRASS POSITIONS");
         Set<Vector2d> favourablePositions = map.getPlantGrowing().getFavourablePositions(map);
         for (Vector2d pos: favourablePositions){
             int x = pos.getX();
@@ -195,24 +205,26 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         favourableButton.setOnAction(e -> fadeFavourablePositions(favourablePositions));
     }
     
-    public void fadeFavourablePositions(Set<Vector2d> favourablePositions){
-        favourableButton.setText("HIGHLIGHT");
+    private void fadeFavourablePositions(Set<Vector2d> favourablePositions){
+        favourableButton.setText("SHOW MOST LIKELY GRASS POSITIONS");
         for (Vector2d pos: favourablePositions){
-            int x = pos.getX();
-            int y = pos.getY();
-            nodes.get(new Vector2d(x, y)).setStyle(null);
+            clearNode(getNodeAtPos(pos));
         }
+        showAnimalsWithMostFrequentGenotype();
         if (this.trackedAnimal != null){
-            highlightAnimal();
+            highlightTrackedAnimal();
         }
         favourableButton.setOnAction(e -> highlightFavourablePositions());
     }
 
-    public void trackAnimal(AnimalLabel animalLabel){
+    private void trackAnimal(AnimalLabel animalLabel){
         if (paused){
             if (this.trackedAnimal != null){
                 this.trackedAnimal.removeListener(this);
                 this.trackedAnimal.setStyle(null);
+                if (animalsWithMostFrequentGenotype.contains(this.trackedAnimal.getAnimal())){
+                    addBorder(getNodeAtPos(trackedAnimal.getAnimal().getPosition()));
+                }
             }
             this.trackedAnimal = animalLabel;
             animalLabel.registerListener(this);
@@ -220,9 +232,13 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         }
     }
 
-    public void highlightAnimal(){
+    private void highlightTrackedAnimal(){
         if (trackedAnimal != null){
             trackedAnimal.setStyle("-fx-font-weight: bold; -fx-background-color: black; -fx-text-fill: yellow ");
+            if (animalsWithMostFrequentGenotype.contains(trackedAnimal.getAnimal())){
+                System.out.println("aaa");
+                trackedAnimal.setStyle("-fx-font-weight: bold; -fx-background-color: black; -fx-text-fill: yellow; -fx-border-color: red; -fx-border-width: 2;");
+            }
         }
     }
 
@@ -231,12 +247,78 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         generateTrackedAnimalStats(trackedAnimal);
     }
 
-    public void generateTrackedAnimalStats(AnimalLabel animalLabel){
+    private void generateTrackedAnimalStats(AnimalLabel animalLabel){
         Platform.runLater(() -> {
             animalStats.getChildren().clear();
             animalStats.getChildren().add(animalLabel.showStats());
-            highlightAnimal();
+            highlightTrackedAnimal();
         });
     }
 
+    public void highlightMostFrequentGenotype(){
+        if (mostFrequentGenotype != null){
+            System.out.println(1);
+            mostFrequentGenotype = null;
+            this.simulation.getMapHandler().getStatisticsHandler().removeListener(this);
+            mostFrequentGenotypeButton.setText("FADE STRONGEST ANIMALS");
+            for (Animal animal: animalsWithMostFrequentGenotype){
+                clearNode(getNodeAtPos(animal.getPosition()));
+            }
+            animalsWithMostFrequentGenotype.clear();
+            highlightTrackedAnimal();
+        }
+        else{
+            System.out.println(2);
+            this.mostFrequentGenotype = this.simulation.getMapHandler().getStatisticsHandler().getMostUsedGenome();
+            this.simulation.getMapHandler().getStatisticsHandler().addListener(this);
+            setAnimalsWithMostFrequentGenotype(this.mostFrequentGenotype);
+            showAnimalsWithMostFrequentGenotype();
+            mostFrequentGenotypeButton.setText("SHOW STRONGEST ANIMALS");
+        }
+    }
+
+    private void setAnimalsWithMostFrequentGenotype(Genome genome){
+        animalsWithMostFrequentGenotype.clear();
+        for (Animal animal: simulation.getAnimals()){
+            if (animal.getGenome().equals(genome)){
+                animalsWithMostFrequentGenotype.add(animal);
+            }
+        }
+    }
+
+    private void showAnimalsWithMostFrequentGenotype(){
+        System.out.println(3);
+        Platform.runLater(() -> {
+            for (Animal animal: animalsWithMostFrequentGenotype){
+                addBorder(getNodeAtPos(animal.getPosition()));
+            }
+        });
+    }
+
+    private void addBorder(Node node){
+        node.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+    }
+
+    @Override
+    public void mostFrequentGenotypeChanged(MapStatisticsHandler mapStatisticsHandler) {
+        System.out.println("init");
+        mostFrequentGenotype = mapStatisticsHandler.getMostUsedGenome();
+        animalsWithMostFrequentGenotype.clear();
+
+        for  (Animal animal: simulation.getAnimals()){
+            if (animal.getGenome().equals(mostFrequentGenotype)){
+                animalsWithMostFrequentGenotype.add(animal);
+                System.out.println("eq");
+            }
+        }
+        showAnimalsWithMostFrequentGenotype();
+    }
+
+    private Node getNodeAtPos(Vector2d pos){
+        return nodes.get(pos);
+    }
+
+    private void clearNode(Node node){
+        node.setStyle(null);
+    }
 }
