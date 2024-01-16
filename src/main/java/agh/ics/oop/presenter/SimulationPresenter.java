@@ -251,7 +251,6 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         Platform.runLater(() -> {
             simulationStats.getChildren().clear();
             simulationStats.getChildren().add(SimulationLabel.showStats(statisticsHandler));
-            highlightAnimal();
         });
     }
 
