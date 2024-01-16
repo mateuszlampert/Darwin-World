@@ -69,7 +69,7 @@ public class Simulation implements Runnable {
         mapHandler.growGrass();
         mapHandler.updateStatistics();
         mapHandler.notifyListeners("DAY PASSED");
-        System.out.println("step");
+
         System.out.println(java.time.LocalTime.now());
     }
 

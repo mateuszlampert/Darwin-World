@@ -10,13 +10,8 @@ import javax.swing.*;
 
 public class SimulationLabel extends Label {
 
-    private final MapStatisticsHandler mapStatistics;
 
-    public SimulationLabel(MapStatisticsHandler mapStatistics){
-        this.mapStatistics = mapStatistics;
-    }
-
-    public VBox showStats(){
+    public static VBox showStats(MapStatisticsHandler mapStatistics){
         VBox stats = new VBox();
         stats.setAlignment(Pos.CENTER);
 
@@ -25,24 +20,15 @@ public class SimulationLabel extends Label {
         Label aliveAndDead = new Label("Every animal count: " + mapStatistics.getAliveAndDeadAnimals());
         Label freeSpace = new Label("Free grass fields: " + "TODO");
         Label mostPopularGenotype = new Label("Most popular genotype: " + mapStatistics.getMostUsedGenome());
-        Label averageEnergy = new Label("Average energy: " + mapStatistics.getAverageEnergyLevel());
-        Label averageLifespan = new Label("Average lifespan: " + mapStatistics.getAverageLifeSpan());
-        Label averageChildrenCount = new Label("Average children count: " + mapStatistics.getAverageChildrenCount());
+        ScrollPane genotypeScroller = new ScrollPane(mostPopularGenotype);
+        genotypeScroller.setPrefWidth(30);
+        Label averageEnergy = new Label("Average energy: " + String.format("%.2f", mapStatistics.getAverageEnergyLevel()));
+        Label averageLifespan = new Label("Average lifespan: " + String.format("%.2f", mapStatistics.getAverageLifeSpan()));
+        Label averageChildrenCount = new Label("Average children count: " + String.format("%.2f", mapStatistics.getAverageChildrenCount()));
 
-        stats.getChildren().addAll(age, alive, aliveAndDead, freeSpace, mostPopularGenotype, averageEnergy, averageLifespan, averageChildrenCount);
+        stats.getChildren().addAll(age, alive, aliveAndDead, freeSpace, genotypeScroller, averageEnergy, averageLifespan, averageChildrenCount);
 
         return stats;
     }
 
-//    public void registerListener(StatsChangeListener listener){
-//        animalStatistics.addListener(listener);
-//    }
-//
-//    public void removeListener(StatsChangeListener listener){
-//        animalStatistics.removeListener(listener);
-//    }
-//
-//    public Animal getAnimal(){
-//        return this.animal;
-//    }
 }

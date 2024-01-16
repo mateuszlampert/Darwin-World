@@ -27,6 +27,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     private boolean paused = false;
     private final Map<Vector2d, Node> nodes = new HashMap<>();
     private AnimalLabel trackedAnimal;
+    private SimulationLabel simulationStatsLabel;
 
     @FXML
     private GridPane mapGrid;
@@ -44,6 +45,8 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     private Button favourableButton;
     @FXML
     private VBox animalStats;
+    @FXML
+    private VBox simulationStats;
 
     public void setWorldMap(WorldMap map){
         this.map = map;
@@ -139,6 +142,11 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         });
     }
 
+    @Override
+    public void simulationStatsUpdated(MapStatisticsHandler statisticsHandler,String message) {
+        generateSimulationStats(statisticsHandler);
+    }
+
     private void clearGrid() {
         mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0)); // hack to retain visible grid lines
         mapGrid.getColumnConstraints().clear();
@@ -231,10 +239,18 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         generateTrackedAnimalStats(trackedAnimal);
     }
 
-    public void generateTrackedAnimalStats(AnimalLabel animalLabel){
+    private void generateTrackedAnimalStats(AnimalLabel animalLabel){
         Platform.runLater(() -> {
             animalStats.getChildren().clear();
             animalStats.getChildren().add(animalLabel.showStats());
+            highlightAnimal();
+        });
+    }
+
+    private void generateSimulationStats(MapStatisticsHandler statisticsHandler){
+        Platform.runLater(() -> {
+            simulationStats.getChildren().clear();
+            simulationStats.getChildren().add(SimulationLabel.showStats(statisticsHandler));
             highlightAnimal();
         });
     }
