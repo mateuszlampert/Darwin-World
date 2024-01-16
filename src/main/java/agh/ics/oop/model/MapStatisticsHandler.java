@@ -49,6 +49,9 @@ public class MapStatisticsHandler {
     public void nextDay(){
         simulationAge+=1;
         averageEnergyLevel.reset();
+        System.out.println(usedGenomeCounter);
+        System.out.println(topGenome);
+        System.out.println(topGenomeCounter);
     }
 
     private void changeGenomeFrequency(Genome genome, int val){

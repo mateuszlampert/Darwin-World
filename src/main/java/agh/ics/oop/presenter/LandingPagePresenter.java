@@ -88,7 +88,8 @@ public class LandingPagePresenter {
             presenter.setWorldMap(map);
             presenter.setConfiguration(configuration);
 
-            map.addListener(presenter);
+            simulation.addMapListener(presenter);
+            //map.addListener(presenter);
 
             stage.show();
         });

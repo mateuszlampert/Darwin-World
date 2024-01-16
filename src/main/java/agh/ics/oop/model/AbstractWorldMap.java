@@ -8,7 +8,6 @@ abstract public class AbstractWorldMap implements WorldMap{
     private static final AnimalComparator ANIMAL_COMPARATOR = new AnimalComparator();
     protected final Map<Vector2d, TreeSet<Animal>> animals = new HashMap<>();
     protected final Map<Vector2d, Grass> grasses = new HashMap<>();
-    private final List<MapChangeListener> mapChangeListeners = new ArrayList<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final String mapId;
     protected PlantGrowing plantGrowing;
@@ -23,9 +22,6 @@ abstract public class AbstractWorldMap implements WorldMap{
 
     public void growGrass(){
         Set<Vector2d> newGrassPositions = plantGrowing.growGrass(this);
-        if (!newGrassPositions.isEmpty()){
-            mapChanged("Grass generated at positions: ");
-        }
     }
 
     @Override
@@ -36,7 +32,6 @@ abstract public class AbstractWorldMap implements WorldMap{
         if(animalsAtPos.isEmpty()){ // freeing memory of empty list
             animals.remove(pos);
         }
-        mapChanged("Animal at " + animal.getPosition() +" removed(died)!");
     }
 
     @Override
@@ -46,7 +41,6 @@ abstract public class AbstractWorldMap implements WorldMap{
             throw new InvalidPositionException(animalPos);
         }
         putAnimal(animal);
-        mapChanged("Animal placed at " + animalPos);
     }
 
 
@@ -69,7 +63,6 @@ abstract public class AbstractWorldMap implements WorldMap{
         removeAnimal(animal);
         animal.move(this);
         putAnimal(animal);
-        mapChanged("Animal at " + animal.getPosition() +" moved!");
     }
 
     public void removeGrass(Grass grass){
@@ -140,19 +133,6 @@ abstract public class AbstractWorldMap implements WorldMap{
     public String toString(){
         Boundary bounds = this.getCurrentBounds();
         return this.visualizer.draw(bounds.lowerLeft(), bounds.upperRight());
-    }
-
-    protected void mapChanged(String message){
-        for(MapChangeListener listener : this.mapChangeListeners){
-            listener.mapChanged(this, message);
-        }
-    }
-
-    public void addListener(MapChangeListener listener){
-        this.mapChangeListeners.add(listener);
-    }
-    public void removeListener(MapChangeListener listener){
-        this.mapChangeListeners.remove(listener);
     }
 
     public PlantGrowing getPlantGrowing(){return plantGrowing;}

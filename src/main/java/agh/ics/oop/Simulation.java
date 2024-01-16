@@ -61,14 +61,19 @@ public class Simulation implements Runnable {
         this.killed = true;
     }
 
-    public  void singleDay() {
+    public void singleDay() {
         mapHandler.removeDead();
         mapHandler.moveAnimals();
         mapHandler.eatGrass();
         mapHandler.reproduce();
         mapHandler.growGrass();
         mapHandler.updateStatistics();
+        mapHandler.notifyListeners("DAY PASSED");
         System.out.println("step");
         System.out.println(java.time.LocalTime.now());
+    }
+
+    public void addMapListener(MapChangeListener listener){
+        mapHandler.addListener(listener);
     }
 }

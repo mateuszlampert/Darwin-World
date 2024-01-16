@@ -2,7 +2,11 @@ package agh.ics.oop.model;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
+import javax.swing.*;
 
 public class AnimalLabel extends Label {
 
@@ -19,6 +23,8 @@ public class AnimalLabel extends Label {
         stats.setAlignment(Pos.CENTER);
 
         Label genotype = new Label("Genotype: " + animal.getGenome());
+        ScrollPane genotypeScroller = new ScrollPane(genotype);
+        genotypeScroller.setPrefWidth(30);
         Label genome = new Label("Current genome: " + animal.getGenome().peekNext());
         Label bornOn = new Label("Born on day: " + animalStatistics.getBornOn());
         Label energy = new Label("Current energy: " + animal.getEnergy());
@@ -26,7 +32,7 @@ public class AnimalLabel extends Label {
         Label diedOn = new Label("Died on day: " + animalStatistics.getDiedOn());
         Label childrenCount = new Label("Number of children: " + animalStatistics.getChildrenCount());
         Label eatenGrass = new Label("Total eaten grass: " + animalStatistics.getEatenGrass());
-        stats.getChildren().addAll(genotype, genome, energy, bornOn, age, diedOn, childrenCount, eatenGrass);
+        stats.getChildren().addAll(genotypeScroller, genome, energy, bornOn, age, diedOn, childrenCount, eatenGrass);
 
         return stats;
     }

@@ -39,7 +39,7 @@ public class SimulationApp extends Application {
         presenter.setWorldMap(map);
         presenter.setConfiguration(configuration);
 
-        map.addListener(presenter);
+        //map.addListener(presenter);
 
         primaryStage.show();
     }
