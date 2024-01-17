@@ -19,7 +19,8 @@ public record SimulationSettings(
         int maxMutations,
         Mutation mutation,
         int genomeLength,
-        AnimalBehavior animalBehavior
+        AnimalBehavior animalBehavior,
+        boolean saveToFile
 ) {
     public SimulationSettings{
         mutation.setMutationRange(minMutations, maxMutations);

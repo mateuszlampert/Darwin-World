@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.shape.Box?>
+<?import javafx.scene.control.CheckBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             minHeight="550.0" minWidth="850.0"
@@ -58,6 +59,10 @@
                 <VBox>
                     <Label text="Duration of the day (ms): " style="-fx-font-weight: bold"/>
                     <Spinner fx:id="dayTime" editable="true" initialValue="500" min="100" max="5000"/>
+                </VBox>
+                <VBox>
+                    <Label text="Save simulation data to file: " style="-fx-font-weight: bold"/>
+                    <CheckBox fx:id="shouldSave" />
                 </VBox>
             </VBox>
             <VBox spacing="30">

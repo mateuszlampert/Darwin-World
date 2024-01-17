@@ -49,6 +49,8 @@ public class LandingPagePresenter {
     private ChoiceBox<String> mutation;
     @FXML
     private Spinner<Integer> dayTime;
+    @FXML
+    private CheckBox shouldSave;
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
         SimulationSettings configuration = createConfiguration();
@@ -111,7 +113,8 @@ public class LandingPagePresenter {
                 maxMutations.getValue(),
                 getMutation(),
                 genomeLength.getValue(),
-                getAnimalBehavior()
+                getAnimalBehavior(),
+                 shouldSave.isSelected()
         );
     }
 
