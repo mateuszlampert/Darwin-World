@@ -17,8 +17,9 @@ public class SimulationLabel extends Label {
 
         Label age = new Label("Simulation age: " + mapStatistics.getSimulationAge());
         Label alive = new Label("Alive animal count: " + mapStatistics.getAliveAnimals());
-        Label aliveAndDead = new Label("Every animal count: " + mapStatistics.getAliveAndDeadAnimals());
-        Label freeSpace = new Label("Free grass fields: " + "TODO");
+        Label aliveAndDead = new Label("Dead and alive animal count: " + mapStatistics.getAliveAndDeadAnimals());
+        Label grassCount = new Label("Grass count: " + mapStatistics.getGrassCount());
+        Label freeSpace = new Label("Free fields: " + mapStatistics.getFreeSpace());
         Label mostPopularGenotype = new Label("Most popular genotype: " + mapStatistics.getMostUsedGenome());
         ScrollPane genotypeScroller = new ScrollPane(mostPopularGenotype);
         genotypeScroller.setPrefWidth(30);
@@ -26,7 +27,7 @@ public class SimulationLabel extends Label {
         Label averageLifespan = new Label("Average lifespan: " + String.format("%.2f", mapStatistics.getAverageLifeSpan()));
         Label averageChildrenCount = new Label("Average children count: " + String.format("%.2f", mapStatistics.getAverageChildrenCount()));
 
-        stats.getChildren().addAll(age, alive, aliveAndDead, freeSpace, genotypeScroller, averageEnergy, averageLifespan, averageChildrenCount);
+        stats.getChildren().addAll(age, alive, aliveAndDead,grassCount, freeSpace, genotypeScroller, averageEnergy, averageLifespan, averageChildrenCount);
 
         return stats;
     }
