@@ -50,6 +50,11 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     @FXML
     private VBox simulationStatsChart;
 
+    @FXML
+    public void initialize(){
+        simulationStatsChart.getChildren().add(statsChart.getChart());
+    }
+
     public void setWorldMap(WorldMap map){
         this.map = map;
     }
@@ -260,8 +265,6 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     private void generateSimulationStatsChart(MapStatisticsHandler statisticsHandler){
         Platform.runLater(() -> {
             statsChart.updateSeries(statisticsHandler);
-            simulationStatsChart.getChildren().clear();
-            simulationStatsChart.getChildren().add(statsChart.getChart());
         });
     }
 
