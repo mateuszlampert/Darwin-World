@@ -18,7 +18,6 @@ public class MapHandler implements DeathListener{
     public MapHandler(WorldMap map, SimulationSettings simulationSettings){
         this.map = map;
         this.simulationSettings = simulationSettings;
-        simulationSettings.mutation().setMutationRange(simulationSettings.minMutations(), simulationSettings.maxMutations());
     }
 
     public void placeAnimal(Animal animal){

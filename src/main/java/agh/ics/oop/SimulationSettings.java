@@ -20,4 +20,8 @@ public record SimulationSettings(
         Mutation mutation,
         int genomeLength,
         AnimalBehavior animalBehavior
-) {}
+) {
+    public SimulationSettings{
+        mutation.setMutationRange(minMutations, maxMutations);
+    }
+}

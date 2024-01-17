@@ -21,10 +21,6 @@ public class Simulation implements Runnable {
         }
     }
 
-    public List<Animal> getAnimals() {
-        return Collections.unmodifiableList(mapHandler.getMapAnimals());
-    }
-
     @Override
     public void run() {
         while (!killed) {
@@ -67,6 +63,7 @@ public class Simulation implements Runnable {
         mapHandler.eatGrass();
         mapHandler.reproduce();
         mapHandler.growGrass();
+
         mapHandler.updateStatistics();
         mapHandler.notifyListeners("DAY PASSED");
 
