@@ -76,6 +76,8 @@ public class MapHandler implements DeathListener{
     }
 
     public void updateStatistics(){
+        statisticsHandler.setGrassCount(map.getGrassCount());
+        statisticsHandler.setFreeSpaceCount(map.getFreeSpaceCount());
         statisticsHandler.nextDay();
         for(Animal animal : aliveAnimals){
             statisticsHandler.survivedDay(animal);

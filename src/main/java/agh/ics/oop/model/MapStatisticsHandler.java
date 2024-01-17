@@ -8,6 +8,8 @@ public class MapStatisticsHandler {
     private int simulationAge = 0;
     private int aliveAnimals = 0;
     private int aliveAndDeadAnimals = 0;
+    private int grassCount = 0;
+    private int freeSpace = 0;
     private RunningAverage averageDeadLifeSpan = new RunningAverage();
     private RunningAverage averageEnergyLevel = new RunningAverage();
     private RunningAverage averageChildrenCount = new RunningAverage();
@@ -49,6 +51,14 @@ public class MapStatisticsHandler {
     public void nextDay(){
         simulationAge+=1;
         averageEnergyLevel.reset();
+    }
+
+    public void setGrassCount(int grassCount){
+        this.grassCount = grassCount;
+    }
+
+    public void setFreeSpaceCount(int freeSpaceCount){
+        this.freeSpace = freeSpaceCount;
     }
 
     private void changeGenomeFrequency(Genome genome, int val){
@@ -96,6 +106,14 @@ public class MapStatisticsHandler {
 
     public Genome getMostUsedGenome(){
         return topGenome;
+    }
+
+    public int getGrassCount(){
+        return grassCount;
+    }
+
+    public int getFreeSpace(){
+        return freeSpace;
     }
 
 

@@ -40,4 +40,6 @@ public interface WorldMap extends MoveDeterminer {
 
     Grass grassAt(Vector2d position);
     Animal animalAt(Vector2d position);
+    int getGrassCount();
+    int getFreeSpaceCount();
 }

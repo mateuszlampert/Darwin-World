@@ -18,20 +18,24 @@ public class SimulationStatsChart extends Label {
     private final XYChart.Series averageEnergySeries = new XYChart.Series();
     private final XYChart.Series averageLifespanSeries = new XYChart.Series();
     private final XYChart.Series averageChildrenCountSeries = new XYChart.Series();
+    private final XYChart.Series grassCount = new XYChart.Series();
+    private final XYChart.Series emptySpaceCount = new XYChart.Series();
 
 
 
     public SimulationStatsChart() {
-        xAxis.setLabel("Simulation Age");
+        xAxis.setLabel("Day of simulation");
 
         statsChart.setTitle("Simulation statistics chart");
         animalCountSeries.setName("Animal count");
         averageEnergySeries.setName("Average energy");
         averageLifespanSeries.setName("Average lifespan");
         averageChildrenCountSeries.setName("Average children count");
+        grassCount.setName("Grass count");
+        emptySpaceCount.setName("Empty space count");
 
-        statsChart.getData().addAll(animalCountSeries, averageEnergySeries, averageLifespanSeries, averageChildrenCountSeries);
-        statsChart.setCreateSymbols(false);
+        statsChart.getData().addAll(animalCountSeries, averageEnergySeries, averageLifespanSeries, averageChildrenCountSeries, grassCount, emptySpaceCount);
+        statsChart.setCreateSymbols(false); // disabling drawing dots on data points
     }
 
     public void updateSeries(MapStatisticsHandler currentStats){
@@ -40,6 +44,8 @@ public class SimulationStatsChart extends Label {
         averageEnergySeries.getData().add(new XYChart.Data(simulationAge, currentStats.getAverageEnergyLevel()));
         averageLifespanSeries.getData().add(new XYChart.Data(simulationAge, currentStats.getAverageLifeSpan()));
         averageChildrenCountSeries.getData().add(new XYChart.Data(simulationAge, currentStats.getAverageChildrenCount()));
+        grassCount.getData().add(new XYChart.Data(simulationAge, currentStats.getGrassCount()));
+        emptySpaceCount.getData().add(new XYChart.Data(simulationAge, currentStats.getFreeSpace()));
     }
 
     public LineChart getChart(){
