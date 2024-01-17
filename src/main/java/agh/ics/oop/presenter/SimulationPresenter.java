@@ -27,7 +27,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     private boolean paused = false;
     private final Map<Vector2d, Node> nodes = new HashMap<>();
     private AnimalLabel trackedAnimal;
-    private SimulationLabel simulationStatsLabel;
+    private SimulationStatsChart statsChart = new SimulationStatsChart();
 
     @FXML
     private GridPane mapGrid;
@@ -47,6 +47,8 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     private VBox animalStats;
     @FXML
     private VBox simulationStats;
+    @FXML
+    private VBox simulationStatsChart;
 
     public void setWorldMap(WorldMap map){
         this.map = map;
@@ -145,6 +147,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     @Override
     public void simulationStatsUpdated(MapStatisticsHandler statisticsHandler,String message) {
         generateSimulationStats(statisticsHandler);
+        generateSimulationStatsChart(statisticsHandler);
     }
 
     private void clearGrid() {
@@ -251,6 +254,14 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         Platform.runLater(() -> {
             simulationStats.getChildren().clear();
             simulationStats.getChildren().add(SimulationLabel.showStats(statisticsHandler));
+        });
+    }
+
+    private void generateSimulationStatsChart(MapStatisticsHandler statisticsHandler){
+        Platform.runLater(() -> {
+            statsChart.updateSeries(statisticsHandler);
+            simulationStatsChart.getChildren().clear();
+            simulationStatsChart.getChildren().add(statsChart.getChart());
         });
     }
 
