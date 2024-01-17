@@ -23,6 +23,6 @@ public record Boundary(Vector2d lowerLeft, Vector2d upperRight) {
         return getUpY() - getDownY();
     }
     public int getBoundarySize(){
-        return getXSpan()*getYSpan();
+        return (getXSpan()+1)*(getYSpan()+1);
     }
 }
