@@ -1,7 +1,7 @@
 package agh.ics.oop.model;
 
 public class InvalidDataTypeException extends Exception{
-    private String datatype;
+    private final String datatype;
 
     public InvalidDataTypeException(String datatype){
         this.datatype = datatype;
