@@ -7,6 +7,8 @@ public class MapStatisticsHandler {
     private int simulationAge = 0;
     private int aliveAnimals = 0;
     private int aliveAndDeadAnimals = 0;
+    private int grassCount = 0;
+    private int freeSpace = 0;
     private final RunningAverage averageDeadLifeSpan = new RunningAverage();
     private final RunningAverage averageEnergyLevel = new RunningAverage();
     private final RunningAverage averageChildrenCount = new RunningAverage();
@@ -49,6 +51,14 @@ public class MapStatisticsHandler {
     public void nextDay(){
         simulationAge+=1;
         averageEnergyLevel.reset();
+    }
+
+    public void setGrassCount(int grassCount){
+        this.grassCount = grassCount;
+    }
+
+    public void setFreeSpaceCount(int freeSpaceCount){
+        this.freeSpace = freeSpaceCount;
     }
 
     private void changeGenomeFrequency(Genome genome, int val){
@@ -104,7 +114,35 @@ public class MapStatisticsHandler {
         return topGenome;
     }
 
+    public int getGrassCount(){
+        return grassCount;
+    }
 
+    public int getFreeSpace(){
+        return freeSpace;
+    }
+
+    public String serialize() {
+        StringBuilder serializedStats = new StringBuilder();
+        serializedStats.append(simulationAge);
+        serializedStats.append(",");
+        serializedStats.append(aliveAnimals);
+        serializedStats.append(",");
+        serializedStats.append(aliveAndDeadAnimals);
+        serializedStats.append(",");
+        serializedStats.append(grassCount);
+        serializedStats.append(",");
+        serializedStats.append(freeSpace);
+        serializedStats.append(",");
+        serializedStats.append(averageDeadLifeSpan.getAverage());
+        serializedStats.append(",");
+        serializedStats.append(averageEnergyLevel.getAverage());
+        serializedStats.append(",");
+        serializedStats.append(averageChildrenCount.getAverage());
+        serializedStats.append(",");
+        serializedStats.append(topGenome);
+        return serializedStats.toString();
+    }
     protected void strongestGenotypeChanged(){
         for(StrongestGenotypeChangedListener listener : this.strongestGenotypeChangedListeners){
             listener.strongestGenotypeChanged(this);
@@ -116,5 +154,6 @@ public class MapStatisticsHandler {
     }
     public void removeListener(StrongestGenotypeChangedListener listener){
         this.strongestGenotypeChangedListeners.remove(listener);
+
     }
 }

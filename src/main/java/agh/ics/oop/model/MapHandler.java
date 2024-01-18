@@ -9,15 +9,15 @@ import static agh.ics.oop.model.MoveDirection.FORWARD;
 public class MapHandler implements DeathListener{
     private final WorldMap map;
     private final SimulationSettings simulationSettings;
-    private List<Animal> aliveAnimals = new ArrayList<Animal>();
-    private List<Animal> dyingAnimals = new LinkedList<>(); // animals that have <0 energy, but not yet removed
-    private List<Animal> deadAnimals = new ArrayList<>();
-    private MapStatisticsHandler statisticsHandler = new MapStatisticsHandler();
+    private final List<Animal> aliveAnimals = new ArrayList<Animal>();
+    private final List<Animal> dyingAnimals = new LinkedList<>(); // animals that have <0 energy, but not yet removed
+    private final List<Animal> deadAnimals = new ArrayList<>();
+    private final MapStatisticsHandler statisticsHandler = new MapStatisticsHandler();
+    private final List<MapChangeListener> mapChangeListeners = new ArrayList<>();
 
     public MapHandler(WorldMap map, SimulationSettings simulationSettings){
         this.map = map;
         this.simulationSettings = simulationSettings;
-        simulationSettings.mutation().setMutationRange(simulationSettings.minMutations(), simulationSettings.maxMutations());
     }
 
     public void placeAnimal(Animal animal){
@@ -75,11 +75,25 @@ public class MapHandler implements DeathListener{
     }
 
     public void updateStatistics(){
+        statisticsHandler.setGrassCount(map.getGrassCount());
+        statisticsHandler.setFreeSpaceCount(map.getFreeSpaceCount());
         statisticsHandler.nextDay();
         for(Animal animal : aliveAnimals){
             statisticsHandler.survivedDay(animal);
         }
     }
+
+    public String getSerializedStatistics(){
+        return statisticsHandler.serialize();
+    }
+
+    public void notifyListeners(String message){
+        for(MapChangeListener listener : this.mapChangeListeners){
+            listener.mapChanged(map, message);
+            listener.simulationStatsUpdated(statisticsHandler, message);
+        }
+    }
+
 
     private Animal generateChild(ReproductionPair pair){ //could be moved to separate class to keep code clean
         int reproductionCost = simulationSettings.energyLostToReproduce();
@@ -103,11 +117,21 @@ public class MapHandler implements DeathListener{
         dyingAnimals.add(animal);
     }
 
-    public List<Animal> getMapAnimals(){
-        return this.aliveAnimals;
+    public void addListener(MapChangeListener listener){
+        this.mapChangeListeners.add(listener);
     }
+
+    public void removeListener(MapChangeListener listener){
+        this.mapChangeListeners.remove(listener);
+    }
+
 
     public MapStatisticsHandler getStatisticsHandler(){
         return this.statisticsHandler;
     }
+
+    public List getMapAnimals(){
+        return aliveAnimals;
+    }
+
 }

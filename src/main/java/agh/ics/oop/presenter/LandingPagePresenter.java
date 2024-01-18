@@ -57,6 +57,8 @@ public class LandingPagePresenter {
     @FXML
     private Spinner<Integer> dayTime;
     @FXML
+    private CheckBox shouldSave;
+    @FXML
     private ChoiceBox<String> savedConfigurations;
     @FXML
     private Button saveCurrentConfigButton;
@@ -91,8 +93,11 @@ public class LandingPagePresenter {
                     return;
                 }
 
+
+
                 Stage stage = new Stage();
                 Scene scene = new Scene(viewRoot);
+
 
                 stage.setScene(scene);
                 stage.setTitle("Simulation at map " + map.getId());
@@ -105,7 +110,7 @@ public class LandingPagePresenter {
                 presenter.setSimulation(simulation);
                 presenter.setWorldMap(map);
 
-                map.addListener(presenter);
+                simulation.addMapListener(presenter);
                 stage.setOnCloseRequest(e -> handleSimulationStageOnCloseRequest(simulation));
 
                 stage.show();
@@ -132,7 +137,8 @@ public class LandingPagePresenter {
                 maxMutations.getValue(),
                 getMutation(),
                 genomeLength.getValue(),
-                getAnimalBehavior()
+                getAnimalBehavior(),
+                 shouldSave.isSelected()
         );
     }
 

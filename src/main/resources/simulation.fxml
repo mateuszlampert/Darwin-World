@@ -40,7 +40,11 @@
     </bottom>
 
     <right>
-        <VBox fx:id="animalStatsVBox" />
+        <VBox>
+            <VBox fx:id="animalStatsVBox" />
+            <VBox fx:id="simulationStats" />
+            <VBox fx:id="simulationStatsChart" />
+        </VBox>
     </right>
 
 </BorderPane>

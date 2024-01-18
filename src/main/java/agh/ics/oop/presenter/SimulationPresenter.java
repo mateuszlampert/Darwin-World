@@ -21,11 +21,14 @@ import java.util.*;
 public class SimulationPresenter implements MapChangeListener, StatsChangeListener, StrongestGenotypeChangedListener {
     private WorldMap map;
     private Simulation simulation;
+
     BooleanProperty paused = new SimpleBooleanProperty(false);
     private final Map<Vector2d, CellVBox> cellVBoxMap = new HashMap<>();
     private CellVBox trackedAnimal = null;
+    private SimulationStatsChart statsChart = new SimulationStatsChart();
     private final Set<Animal> animalsWithStrongestGenotype = new HashSet<>();
     private Genome strongestGenotype = null;
+
 
     @FXML
     private GridPane mapGrid;
@@ -44,7 +47,17 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     @FXML
     private VBox animalStatsVBox;
     @FXML
+    private VBox simulationStats;
+    @FXML
+    private VBox simulationStatsChart;
+    @FXML
     private Button mostFrequentGenotypeButton;
+
+    @FXML
+    public void initialize(){
+        simulationStatsChart.getChildren().add(statsChart.getChart());
+    }
+
 
     public void setWorldMap(WorldMap map){
         this.map = map;
@@ -178,6 +191,12 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         Platform.runLater(this::drawMap);
     }
 
+    @Override
+    public void simulationStatsUpdated(MapStatisticsHandler statisticsHandler,String message) {
+        generateSimulationStats(statisticsHandler);
+        generateSimulationStatsChart(statisticsHandler);
+    }
+
     private void clearGrid() {
         mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0)); // hack to retain visible grid lines
         mapGrid.getColumnConstraints().clear();
@@ -264,6 +283,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         Platform.runLater(this::setAnimalStats);
     }
 
+
     private void resetAnimalStats(){
         Platform.runLater(() -> {
             animalStatsVBox.getChildren().clear();
@@ -274,6 +294,19 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         resetAnimalStats();
         Platform.runLater(() -> {
             animalStatsVBox.getChildren().add(trackedAnimal.getAnimalStats());
+        });
+    }
+
+    private void generateSimulationStats(MapStatisticsHandler statisticsHandler){
+        Platform.runLater(() -> {
+            simulationStats.getChildren().clear();
+            simulationStats.getChildren().add(SimulationLabel.showStats(statisticsHandler));
+        });
+    }
+
+    private void generateSimulationStatsChart(MapStatisticsHandler statisticsHandler){
+        Platform.runLater(() -> {
+            statsChart.updateSeries(statisticsHandler);
         });
     }
 
@@ -327,4 +360,5 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     public void strongestGenotypeChanged(MapStatisticsHandler mapStatisticsHandler) {
         trackStrongestGenotype();
     }
+
 }
