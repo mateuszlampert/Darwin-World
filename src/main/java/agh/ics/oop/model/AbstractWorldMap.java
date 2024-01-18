@@ -156,4 +156,8 @@ abstract public class AbstractWorldMap implements WorldMap{
     }
 
     public PlantGrowing getPlantGrowing(){return plantGrowing;}
+
+    public Set<Animal> getAnimalsAtPos(Vector2d position){
+        return animals.get(position);
+    }
 }

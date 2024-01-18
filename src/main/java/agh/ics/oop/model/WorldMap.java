@@ -2,6 +2,7 @@ package agh.ics.oop.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -40,4 +41,6 @@ public interface WorldMap extends MoveDeterminer {
 
     Grass grassAt(Vector2d position);
     Animal animalAt(Vector2d position);
+
+    Set<Animal> getAnimalsAtPos(Vector2d position);
 }
