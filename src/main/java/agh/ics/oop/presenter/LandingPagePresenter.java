@@ -112,7 +112,7 @@ public class LandingPagePresenter {
             });
 
         } catch (InvalidDataTypeException e) {
-            showAlert(e.toString());
+            showInvalidDataFormatAlert(e.toString());
         }
     }
 
@@ -197,7 +197,7 @@ public class LandingPagePresenter {
                 writer.write("genomeLength:" + genomeLength.getValue() + "\n");
                 writer.write("animalBehavior:" + animalBehavior.getValue());
             } catch (IOException e) {
-                e.printStackTrace();
+                showProblemWithFileAlert("loading from");
             }
         }
     }
@@ -233,11 +233,11 @@ public class LandingPagePresenter {
                 }
             }
         }
-        catch (IOException e){
-            System.out.println();
+        catch (IOException | NullPointerException e){
+            showProblemWithFileAlert("saving to");
         }
         catch (InvalidDataTypeException e){
-            showAlert(e.toString());
+            showInvalidDataFormatAlert(e.toString());
         }
     }
 
@@ -254,10 +254,19 @@ public class LandingPagePresenter {
         choiceBox.setValue(value);
     }
 
-    private void showAlert(String content){
+    private void showInvalidDataFormatAlert(String content){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Invalid data format");
         alert.setContentText(content);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+
+        alert.showAndWait();
+    }
+
+    private void showProblemWithFileAlert(String content){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Problem with file");
+        alert.setContentText("Problem occurred while " + content + " file. Ensure that the selected file is correct");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         alert.showAndWait();
