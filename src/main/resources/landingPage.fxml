@@ -50,10 +50,10 @@
                     <Label text="Way of growing plants: " style="-fx-font-weight: bold"/>
                     <ChoiceBox fx:id="plantsGrowing" >
                         <value>
-                            <String fx:value="Woody Equator" />
+                            <String fx:value="WoodyEquator" />
                         </value>
-                        <String fx:value="Crawling Jungle"/>
-                        <String fx:value="Woody Equator" />
+                        <String fx:value="CrawlingJungle"/>
+                        <String fx:value="WoodyEquator" />
                     </ChoiceBox>
                 </VBox>
                 <VBox>
@@ -94,9 +94,9 @@
                     <Label text="Mutation: " style="-fx-font-weight: bold"/>
                     <ChoiceBox fx:id="mutation" VBox.vgrow="ALWAYS">
                         <value>
-                            <String fx:value="Random Mutation" />
+                            <String fx:value="RandomMutation" />
                         </value>
-                        <String fx:value="Random Mutation" />
+                        <String fx:value="RandomMutation" />
                 </ChoiceBox>
                 </VBox>
                 <VBox>
@@ -107,14 +107,23 @@
                     <Label text="Animal Behavior: " style="-fx-font-weight: bold"/>
                     <ChoiceBox fx:id="animalBehavior" >
                         <value>
-                            <String fx:value="Full Predestination" />
+                            <String fx:value="FullPredestination" />
                         </value>
-                        <String fx:value="Full Predestination" />
-                        <String fx:value="Little Madness" />
+                        <String fx:value="FullPredestination" />
+                        <String fx:value="LittleMadness" />
                     </ChoiceBox>
                 </VBox>
             </VBox>
         </HBox>
     </center>
 
+    <bottom>
+        <VBox alignment="CENTER">
+            <Label text="Load from saved or save current configuration" />
+            <HBox alignment="CENTER">
+                <Button fx:id="loadSavedConfigurationButton" text="LOAD" onAction="#loadFromFile" minWidth="125"/>
+                <Button fx:id="saveCurrentConfigButton" text="SAVE" onAction="#saveToFile" minWidth="125"/>
+            </HBox>
+        </VBox>
+    </bottom>
 </BorderPane>

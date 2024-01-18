@@ -136,13 +136,20 @@ abstract public class AbstractWorldMap implements WorldMap{
     }
 
     public PlantGrowing getPlantGrowing(){return plantGrowing;}
+
     public int getGrassCount(){
         return this.grasses.size();
     }
-    public int getFreeSpaceCount(){
+    public int getFreeSpaceCount() {
         HashSet<Vector2d> takenPositions = new HashSet<>();
         takenPositions.addAll(grasses.keySet());
         takenPositions.addAll(animals.keySet());
         return getCurrentBounds().getBoundarySize() - takenPositions.size();
+
+    }
+
+    public Set<Animal> getAnimalsAtPos(Vector2d position){
+        return animals.get(position);
+
     }
 }

@@ -22,23 +22,26 @@
     <bottom>
         <VBox alignment="CENTER">
             <HBox alignment="CENTER">
-                <Button text="START" onAction="#onSimulationStartClicked" fx:id="startButton" minWidth="45"/>
-                <Button text="STOP" onAction="#onStopClicked" fx:id="stopButton" minWidth="45"/>
+                <Button text="START" onAction="#onSimulationStartClicked" fx:id="startButton" minWidth="75"/>
+                <Button text="STOP" onAction="#onStopClicked" fx:id="stopButton" minWidth="75"/>
             </HBox>
             <HBox alignment="CENTER">
-                <Button text="&#x23F5;" onAction="#onPlayClicked" fx:id="playButton" disable="true" minWidth="30"/>
-                <Button text="&#x23F8;" onAction="#onPauseClicked" fx:id="pauseButton" disable="true" minWidth="30"/>
-                <Button text="&#x21E8;" onAction="#onNextClicked" fx:id="nextButton" disable="true" minWidth="30"/>
+                <Button text="&#x23F5;" onAction="#onPlayClicked" fx:id="playButton" disable="true" minWidth="50"/>
+                <Button text="&#x23F8;" onAction="#onPauseClicked" fx:id="pauseButton" disable="true" minWidth="50"/>
+                <Button text="&#x21E8;" onAction="#onNextClicked" fx:id="nextButton" disable="true" minWidth="50"/>
             </HBox>
             <HBox alignment="CENTER">
-                <Button text="HIGHLIGHT" fx:id="favourableButton" onAction="#highlightFavourablePositions" disable="true" minWidth="90"/>
+                <Button text="SHOW MOST LIKELY GRASS POSITIONS " fx:id="favourableButton" onAction="#highlightFavourablePositions" disable="true" minWidth="150"/>
+            </HBox>
+            <HBox alignment="CENTER">
+                <Button text="SHOW STRONGEST ANIMALS" fx:id="mostFrequentGenotypeButton" onAction="#trackStrongestGenotype" disable="true" minWidth="150"/>
             </HBox>
         </VBox>
     </bottom>
 
     <right>
         <VBox>
-            <VBox fx:id="animalStats" />
+            <VBox fx:id="animalStatsVBox" />
             <VBox fx:id="simulationStats" />
             <VBox fx:id="simulationStatsChart" />
         </VBox>

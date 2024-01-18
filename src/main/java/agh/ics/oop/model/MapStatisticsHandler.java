@@ -1,7 +1,6 @@
 package agh.ics.oop.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapStatisticsHandler {
 
@@ -10,12 +9,13 @@ public class MapStatisticsHandler {
     private int aliveAndDeadAnimals = 0;
     private int grassCount = 0;
     private int freeSpace = 0;
-    private RunningAverage averageDeadLifeSpan = new RunningAverage();
-    private RunningAverage averageEnergyLevel = new RunningAverage();
-    private RunningAverage averageChildrenCount = new RunningAverage();
-    private Map<Genome, Integer> usedGenomeCounter = new HashMap<>();
+    private final RunningAverage averageDeadLifeSpan = new RunningAverage();
+    private final RunningAverage averageEnergyLevel = new RunningAverage();
+    private final RunningAverage averageChildrenCount = new RunningAverage();
+    private final Map<Genome, Integer> usedGenomeCounter = new HashMap<>();
     private Genome topGenome = null;
     private int topGenomeCounter = -1;
+    private final List<StrongestGenotypeChangedListener> strongestGenotypeChangedListeners = new ArrayList<>();
 
     public void animalBorn(Animal animal){
         aliveAnimals += 1;
@@ -74,9 +74,15 @@ public class MapStatisticsHandler {
             topGenomeCounter = newCount;
         }
 
-        if(newCount > topGenomeCounter){
-            topGenomeCounter = newCount;
-            topGenome = genome;
+        Genome topGenomeBefore = topGenome;
+        for (Genome currGenome : usedGenomeCounter.keySet()) {
+            if (usedGenomeCounter.get(currGenome) > topGenomeCounter) {
+                topGenomeCounter = usedGenomeCounter.get(currGenome);
+                topGenome = currGenome;
+            }
+        }
+        if (topGenomeBefore != topGenome){
+            strongestGenotypeChanged();
         }
     }
 
@@ -116,7 +122,7 @@ public class MapStatisticsHandler {
         return freeSpace;
     }
 
-    public String serialize(){
+    public String serialize() {
         StringBuilder serializedStats = new StringBuilder();
         serializedStats.append(simulationAge);
         serializedStats.append(",");
@@ -136,5 +142,18 @@ public class MapStatisticsHandler {
         serializedStats.append(",");
         serializedStats.append(topGenome);
         return serializedStats.toString();
+    }
+    protected void strongestGenotypeChanged(){
+        for(StrongestGenotypeChangedListener listener : this.strongestGenotypeChangedListeners){
+            listener.strongestGenotypeChanged(this);
+        }
+    }
+
+    public void addListener(StrongestGenotypeChangedListener listener){
+        this.strongestGenotypeChangedListeners.add(listener);
+    }
+    public void removeListener(StrongestGenotypeChangedListener listener){
+        this.strongestGenotypeChangedListeners.remove(listener);
+
     }
 }

@@ -74,6 +74,4 @@ public class Genome implements Iterator<Integer> {
     public Integer peekNext() {
         return genes.get(animalBehavior.nextMove(prevMove, genomeLength));
     }
-
-
 }

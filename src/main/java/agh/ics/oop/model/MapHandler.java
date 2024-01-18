@@ -120,8 +120,18 @@ public class MapHandler implements DeathListener{
     public void addListener(MapChangeListener listener){
         this.mapChangeListeners.add(listener);
     }
+
     public void removeListener(MapChangeListener listener){
         this.mapChangeListeners.remove(listener);
+    }
+
+
+    public MapStatisticsHandler getStatisticsHandler(){
+        return this.statisticsHandler;
+    }
+
+    public List getMapAnimals(){
+        return aliveAnimals;
     }
 
 }

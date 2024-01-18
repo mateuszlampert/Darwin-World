@@ -17,15 +17,24 @@ public class Simulation implements Runnable {
     private final String simulationStartDatetime;
 
     public Simulation(WorldMap map, List<Vector2d> positions, SimulationSettings configuration, int dayTime) {
-        this.mapHandler = new MapHandler(map, configuration);
+        this.mapHandler = new MapHandler(map,configuration);
         this.dayTime = dayTime;
         this.shouldSaveStatsToFile = configuration.saveToFile();
         simulationStartDatetime = java.time.LocalTime.now().toString();
 
         for (Vector2d position : positions) {
-            Animal animal = new Animal(position, configuration.genomeLength(), configuration.startingEnergy());
+            Animal animal = new Animal(position,configuration.genomeLength(),configuration.startingEnergy());
             mapHandler.placeAnimal(animal);
         }
+    }
+
+
+    public MapHandler getMapHandler(){
+        return this.mapHandler;
+    }
+
+    public List<Animal> getAnimals() {
+        return Collections.unmodifiableList(mapHandler.getMapAnimals());
 
     }
 
