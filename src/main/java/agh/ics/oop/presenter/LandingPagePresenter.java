@@ -87,7 +87,7 @@ public class LandingPagePresenter {
                     viewRoot = loader.load();
                 } catch (IOException e) {
                     System.out.println("Couldn't load the file!");
-                    e.printStackTrace();
+//                    e.printStackTrace();
                     return;
                 }
 
@@ -197,7 +197,7 @@ public class LandingPagePresenter {
                 writer.write("genomeLength:" + genomeLength.getValue() + "\n");
                 writer.write("animalBehavior:" + animalBehavior.getValue());
             } catch (IOException e) {
-                showProblemWithFileAlert("loading from");
+                showProblemWithFileAlert("saving to");
             }
         }
     }
@@ -230,11 +230,12 @@ public class LandingPagePresenter {
                     case "mutation" -> setChoiceBoxValue(mutation, value, dataLabel);
                     case "genomeLength" -> setSpinnerValue(genomeLength, value, dataLabel);
                     case "animalBehavior" -> setChoiceBoxValue(animalBehavior, value, dataLabel);
+                    default -> throw new InvalidDataTypeException("File formatting is not supported");
                 }
             }
         }
-        catch (IOException | NullPointerException e){
-            showProblemWithFileAlert("saving to");
+        catch (IOException | RuntimeException e){
+            showProblemWithFileAlert("loading from");
         }
         catch (InvalidDataTypeException e){
             showInvalidDataFormatAlert(e.toString());
@@ -250,8 +251,12 @@ public class LandingPagePresenter {
 
     }
 
-    private void setChoiceBoxValue(ChoiceBox<String> choiceBox, String value, String label){
-        choiceBox.setValue(value);
+    private void setChoiceBoxValue(ChoiceBox<String> choiceBox, String value, String label) throws InvalidDataTypeException {
+        try{
+            choiceBox.setValue(value);
+        } catch (RuntimeException e){
+            throw new InvalidDataTypeException(label);
+        }
     }
 
     private void showInvalidDataFormatAlert(String content){

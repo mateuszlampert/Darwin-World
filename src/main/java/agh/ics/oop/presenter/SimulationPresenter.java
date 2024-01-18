@@ -218,6 +218,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
 
     public void onNextClicked() {
         simulation.singleDay();
+        fadeFavourablePositions();
     }
 
     public void highlightFavourablePositions(){
