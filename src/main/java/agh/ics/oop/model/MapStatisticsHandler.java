@@ -13,7 +13,7 @@ public class MapStatisticsHandler {
     private final Map<Genome, Integer> usedGenomeCounter = new HashMap<>();
     private Genome topGenome = null;
     private int topGenomeCounter = -1;
-    private final List<MostFrequentGenotypeChangedListener> mostFrequentGenotypeChangedListeners = new ArrayList<>();
+    private final List<StrongestGenotypeChangedListener> strongestGenotypeChangedListeners = new ArrayList<>();
 
     public void animalBorn(Animal animal){
         aliveAnimals += 1;
@@ -64,10 +64,15 @@ public class MapStatisticsHandler {
             topGenomeCounter = newCount;
         }
 
-        if(newCount > topGenomeCounter){
-            topGenomeCounter = newCount;
-            topGenome = genome;
-            mostFrequentGenotypeChanged();
+        Genome topGenomeBefore = topGenome;
+        for (Genome currGenome : usedGenomeCounter.keySet()) {
+            if (usedGenomeCounter.get(currGenome) > topGenomeCounter) {
+                topGenomeCounter = usedGenomeCounter.get(currGenome);
+                topGenome = currGenome;
+            }
+        }
+        if (topGenomeBefore != topGenome){
+            strongestGenotypeChanged();
         }
     }
 
@@ -100,16 +105,16 @@ public class MapStatisticsHandler {
     }
 
 
-    protected void mostFrequentGenotypeChanged(){
-        for(MostFrequentGenotypeChangedListener listener : this.mostFrequentGenotypeChangedListeners){
-            listener.mostFrequentGenotypeChanged(this);
+    protected void strongestGenotypeChanged(){
+        for(StrongestGenotypeChangedListener listener : this.strongestGenotypeChangedListeners){
+            listener.strongestGenotypeChanged(this);
         }
     }
 
-    public void addListener(MostFrequentGenotypeChangedListener listener){
-        this.mostFrequentGenotypeChangedListeners.add(listener);
+    public void addListener(StrongestGenotypeChangedListener listener){
+        this.strongestGenotypeChangedListeners.add(listener);
     }
-    public void removeListener(MostFrequentGenotypeChangedListener listener){
-        this.mostFrequentGenotypeChangedListeners.remove(listener);
+    public void removeListener(StrongestGenotypeChangedListener listener){
+        this.strongestGenotypeChangedListeners.remove(listener);
     }
 }
