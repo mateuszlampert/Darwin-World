@@ -41,9 +41,11 @@
 
     <right>
         <VBox>
-            <VBox fx:id="animalStatsVBox" />
-            <VBox fx:id="simulationStats" />
             <VBox fx:id="simulationStatsChart" />
+            <Label style="-fx-font-weight: bold"> Current epoch statistics:</Label>
+            <VBox fx:id="simulationStatsVBox" />
+            <Label style="-fx-font-weight: bold"> Tracked animal statistics:</Label>
+            <VBox fx:id="animalStatsVBox" />
         </VBox>
     </right>
 

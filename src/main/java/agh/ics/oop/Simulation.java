@@ -86,16 +86,6 @@ public class Simulation implements Runnable {
         }
     }
 
-    private void saveStatsToFile(){
-        String formattedDatetime = simulationStartDatetime.replace(":", "_");
-        String filename = "./simulation_" + formattedDatetime + ".csv";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
-            writer.write(mapHandler.getSerializedStatistics());
-            writer.newLine();
-        } catch (IOException e) {
-            System.err.println("Error writing statistics to file: " + e.getMessage());
-        }
-    }
 
     public void singleDay() {
         mapHandler.removeDead();
@@ -107,7 +97,17 @@ public class Simulation implements Runnable {
         mapHandler.updateStatistics();
         mapHandler.notifyListeners("DAY PASSED");
 
-        System.out.println(java.time.LocalTime.now());
+    }
+
+    private void saveStatsToFile(){
+        String formattedDatetime = simulationStartDatetime.replace(":", "_");
+        String filename = "./simulation_" + formattedDatetime + ".csv";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+            writer.write(mapHandler.getSerializedStatistics());
+            writer.newLine();
+        } catch (IOException e) {
+            System.err.println("Error writing statistics to file: " + e.getMessage());
+        }
     }
 
     public void addMapListener(MapChangeListener listener){
