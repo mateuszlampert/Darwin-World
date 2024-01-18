@@ -116,5 +116,25 @@ public class MapStatisticsHandler {
         return freeSpace;
     }
 
-
+    public String serialize(){
+        StringBuilder serializedStats = new StringBuilder();
+        serializedStats.append(simulationAge);
+        serializedStats.append(",");
+        serializedStats.append(aliveAnimals);
+        serializedStats.append(",");
+        serializedStats.append(aliveAndDeadAnimals);
+        serializedStats.append(",");
+        serializedStats.append(grassCount);
+        serializedStats.append(",");
+        serializedStats.append(freeSpace);
+        serializedStats.append(",");
+        serializedStats.append(averageDeadLifeSpan.getAverage());
+        serializedStats.append(",");
+        serializedStats.append(averageEnergyLevel.getAverage());
+        serializedStats.append(",");
+        serializedStats.append(averageChildrenCount.getAverage());
+        serializedStats.append(",");
+        serializedStats.append(topGenome);
+        return serializedStats.toString();
+    }
 }

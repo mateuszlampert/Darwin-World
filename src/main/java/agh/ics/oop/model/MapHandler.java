@@ -83,6 +83,10 @@ public class MapHandler implements DeathListener{
         }
     }
 
+    public String getSerializedStatistics(){
+        return statisticsHandler.serialize();
+    }
+
     public void notifyListeners(String message){
         for(MapChangeListener listener : this.mapChangeListeners){
             listener.mapChanged(map, message);
