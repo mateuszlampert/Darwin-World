@@ -13,14 +13,14 @@ public abstract class AbstractPlantGrowing implements PlantGrowing {
     protected AbstractPlantGrowing(int width, int height, int plantsToGrow, int energy) {
         this.width = width;
         this.height = height;
-        this.favourablePlantsToGrow = (int) (0.8 * plantsToGrow);
+        this.favourablePlantsToGrow = (int) Math.ceil (0.8 * plantsToGrow);
         this.plantsToGrow = plantsToGrow;
         this.calories = energy;
     }
 
     public void setPlantsToGrow(int plantsToGrow){
         this.plantsToGrow = plantsToGrow;
-        this.favourablePlantsToGrow = (int) (0.8 * plantsToGrow);
+        this.favourablePlantsToGrow = (int) Math.ceil (0.8 * plantsToGrow);
     }
 
     public void setGrasses(Map<Vector2d, Grass> grasses){
@@ -33,12 +33,14 @@ public abstract class AbstractPlantGrowing implements PlantGrowing {
 
         List<Vector2d> favourablePositionsList = new ArrayList<>(favourablePositions);
         int taken = 0;
+        int takenFavourable = 0;
 
         for (int i = 0; i < favourablePlantsToGrow && i < favourablePositionsList.size(); i++){
             int toSwap = (int) (Math.random()*(favourablePositions.size() - i) + i);
             Collections.swap(favourablePositionsList, toSwap, i);
             newGrassPositions.add(favourablePositionsList.get(i));
             taken += 1;
+            takenFavourable += 1;
         }
 
         List<Vector2d> unfavourablePositionsList = new ArrayList<>(width*height - grasses.size() - favourablePositions.size());
@@ -51,11 +53,20 @@ public abstract class AbstractPlantGrowing implements PlantGrowing {
                 }
             }
         }
-
         for (int i = 0; i < this.plantsToGrow - taken && i < unfavourablePositionsList.size(); i++){
             int toSwap = (int) (Math.random()*(unfavourablePositionsList.size() - i) + i);
             Collections.swap(unfavourablePositionsList, toSwap, i);
             newGrassPositions.add(unfavourablePositionsList.get(i));
+            taken += 1;
+        }
+
+        if (taken < plantsToGrow && takenFavourable < favourablePositionsList.size()){
+            for (int i = takenFavourable; i < favourablePositionsList.size() && taken < plantsToGrow; i++){
+                int toSwap = (int) (Math.random()*(favourablePositions.size() - i) + i);
+                Collections.swap(favourablePositionsList, toSwap, i);
+                newGrassPositions.add(favourablePositionsList.get(i));
+                taken += 1;
+            }
         }
 
         return newGrassPositions;
@@ -78,7 +89,6 @@ public abstract class AbstractPlantGrowing implements PlantGrowing {
                 // to modify later
             }
         }
-//        System.out.println(grasses);
         return newGrassPositions;
     }
 
