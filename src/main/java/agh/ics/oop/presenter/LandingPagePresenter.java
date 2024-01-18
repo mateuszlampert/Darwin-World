@@ -93,8 +93,6 @@ public class LandingPagePresenter {
                     return;
                 }
 
-
-
                 Stage stage = new Stage();
                 Scene scene = new Scene(viewRoot);
 
@@ -118,27 +116,32 @@ public class LandingPagePresenter {
 
         } catch (InvalidDataTypeException e) {
             showInvalidDataFormatAlert(e.toString());
+        } catch (InvalidRangeException e) {
+            showInvalidRangeAlert(e.toString());
         }
     }
 
-    private SimulationSettings createConfiguration() throws InvalidDataTypeException{
+    private SimulationSettings createConfiguration() throws InvalidDataTypeException, InvalidRangeException{
+        if (minMutations.getValue() > maxMutations.getValue()){
+            throw new InvalidRangeException("Mutations");
+        }
          return new SimulationSettings(
-                mapWidth.getValue(),
-                mapHeight.getValue(),
-                startingPlants.getValue(),
-                plantsEnergy.getValue(),
-                plantsPerDay.getValue(),
-                getPlantGrowing(),
-                startingAnimals.getValue(),
-                startingEnergy.getValue(),
-                energyNeededToReproduce.getValue(),
-                energyLostToReproduce.getValue(),
-                minMutations.getValue(),
-                maxMutations.getValue(),
-                getMutation(),
-                genomeLength.getValue(),
-                getAnimalBehavior(),
-                 shouldSave.isSelected()
+            mapWidth.getValue(),
+            mapHeight.getValue(),
+            startingPlants.getValue(),
+            plantsEnergy.getValue(),
+            plantsPerDay.getValue(),
+            getPlantGrowing(),
+            startingAnimals.getValue(),
+            startingEnergy.getValue(),
+            energyNeededToReproduce.getValue(),
+            energyLostToReproduce.getValue(),
+            minMutations.getValue(),
+            maxMutations.getValue(),
+            getMutation(),
+            genomeLength.getValue(),
+            getAnimalBehavior(),
+             shouldSave.isSelected()
         );
     }
 
@@ -276,6 +279,13 @@ public class LandingPagePresenter {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Problem with file");
         alert.setContentText("Problem occurred while " + content + " file. Ensure that the selected file is correct");
+        alert.showAndWait();
+    }
+
+    private void showInvalidRangeAlert(String content){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Problem with range");
+        alert.setContentText(content);
         alert.showAndWait();
     }
 }
