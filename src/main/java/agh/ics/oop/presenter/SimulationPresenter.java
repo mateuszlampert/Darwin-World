@@ -25,7 +25,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     BooleanProperty paused = new SimpleBooleanProperty(false);
     private final Map<Vector2d, CellVBox> cellVBoxMap = new HashMap<>();
     private CellVBox trackedAnimal = null;
-    private SimulationStatsChart statsChart = new SimulationStatsChart();
+    private final SimulationStatsChart statsChart = new SimulationStatsChart();
     private final Set<Animal> animalsWithStrongestGenotype = new HashSet<>();
     private Genome strongestGenotype = null;
 
@@ -47,7 +47,7 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
     @FXML
     private VBox animalStatsVBox;
     @FXML
-    private VBox simulationStats;
+    private VBox simulationStatsVBox;
     @FXML
     private VBox simulationStatsChart;
     @FXML
@@ -299,8 +299,8 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
 
     private void generateSimulationStats(MapStatisticsHandler statisticsHandler){
         Platform.runLater(() -> {
-            simulationStats.getChildren().clear();
-            simulationStats.getChildren().add(SimulationLabel.showStats(statisticsHandler));
+            simulationStatsVBox.getChildren().clear();
+            simulationStatsVBox.getChildren().add(SimulationLabel.showStats(statisticsHandler));
         });
     }
 
