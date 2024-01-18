@@ -34,14 +34,13 @@
                 <Button text="SHOW MOST LIKELY GRASS POSITIONS " fx:id="favourableButton" onAction="#highlightFavourablePositions" disable="true" minWidth="150"/>
             </HBox>
             <HBox alignment="CENTER">
-                <Button text="SHOW STRONGEST ANIMALS" fx:id="mostFrequentGenotypeButton" onAction="#highlightMostFrequentGenotype" disable="true" minWidth="150"/>
+                <Button text="SHOW STRONGEST ANIMALS" fx:id="mostFrequentGenotypeButton" onAction="#trackStrongestGenotype" disable="true" minWidth="150"/>
             </HBox>
-
         </VBox>
     </bottom>
 
     <right>
-        <VBox fx:id="animalStats" />
+        <VBox fx:id="animalStatsVBox" />
     </right>
 
 </BorderPane>
