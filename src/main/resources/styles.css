@@ -1,0 +1,22 @@
+.favourableGrassPosition{
+    -fx-background-color: #5dd38b;
+}
+
+.animalWithStrongestGenotype{
+    -fx-border-color: red;
+    -fx-border-width: 1;
+}
+
+.trackedAnimalCell{
+    -fx-background-color: #484848;
+}
+
+.animalLabel{
+    -fx-text-fill: #e36703;
+    -fx-text-alignment: center;
+}
+
+.grassLabel{
+    -fx-text-fill: green;
+    -fx-text-alignment: center;
+}
