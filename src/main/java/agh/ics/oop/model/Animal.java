@@ -44,7 +44,7 @@ public void decreaseEnergy(int amount){
     }
 
     private void checkIfAlive(){
-        if(this.energy < 0){
+        if(this.energy <= 0){
             for(DeathListener listener : deathListeners){
                 listener.animalDied(this);
             }
@@ -106,8 +106,8 @@ public void decreaseEnergy(int amount){
         return animalStatistics;
     }
 
-    public double getTransparency(){
-        return (double) Math.max(energy, maxEnergy) / maxEnergy;
+    public double getHealthPercentage(){
+        return (double) Math.min(this.energy, this.maxEnergy) / this.maxEnergy;
     }
 }
 

@@ -6,5 +6,4 @@ public interface WorldElement {
     private void setPosition(){};
 
     public String toString();
-
 }
