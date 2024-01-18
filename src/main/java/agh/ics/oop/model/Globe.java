@@ -66,21 +66,22 @@ public class Globe extends AbstractWorldMap{
     @Override
     public AnimalState determineMove(Vector2d position, MapDirection direction) {
         Vector2d newPosition = position.add(direction.toMoveVector());
-        MapDirection newDirection = direction;
 
-        if (!(newPosition.follows(bounds.lowerLeft()) && newPosition.precedes(bounds.upperRight()))){
-            return new AnimalState(position, direction);
+        if (newPosition.follows(bounds.lowerLeft()) && newPosition.precedes(bounds.upperRight())){
+            return new AnimalState(newPosition, direction);
         }
-        else if (newPosition.getY() > bounds.getUpY() || newPosition.getY() < bounds.getDownY()) {
+        if (newPosition.getY() > bounds.getUpY() || newPosition.getY() < bounds.getDownY()) {
             return new AnimalState(position, direction.rotate(4));
         }
-        else{
-            if (newPosition.getX() > bounds.getRightX()){
-                newPosition = new Vector2d(bounds.getLeftX(), newPosition.getY());
-            }
-            else if (newPosition.getX() < bounds.getLeftX()){
-                newPosition = new Vector2d(bounds.getRightX(), newPosition.getY());
-            }
+        else if (newPosition.getX() > bounds.getRightX()){
+            newPosition = new Vector2d(bounds.getLeftX(), newPosition.getY());
+            return new AnimalState(newPosition, direction);
+        }
+        else if (newPosition.getX() < bounds.getLeftX()){
+            newPosition = new Vector2d(bounds.getRightX(), newPosition.getY());
+            return new AnimalState(newPosition, direction);
+        }
+        else {
             return new AnimalState(newPosition, direction);
         }
     }

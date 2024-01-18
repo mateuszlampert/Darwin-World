@@ -269,8 +269,6 @@ public class LandingPagePresenter {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Invalid data format");
         alert.setContentText(content);
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-
         alert.showAndWait();
     }
 
@@ -278,8 +276,6 @@ public class LandingPagePresenter {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Problem with file");
         alert.setContentText("Problem occurred while " + content + " file. Ensure that the selected file is correct");
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-
         alert.showAndWait();
     }
 }

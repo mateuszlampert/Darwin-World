@@ -28,23 +28,23 @@
             <VBox spacing="30">
                 <VBox>
                     <Label text="Width: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="mapWidth" editable="true" initialValue="100" min="0" max="10000"/>
+                    <Spinner fx:id="mapWidth" initialValue="100" min="0" max="10000"/>
                 </VBox>
                 <VBox>
                     <Label text="Height: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="mapHeight" editable="true" initialValue="100" min="0" max="10000"/>
+                    <Spinner fx:id="mapHeight" initialValue="100" min="0" max="10000"/>
                 </VBox>
                 <VBox>
                     <Label text="Plants at the beginning: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="startingPlants" editable="true" initialValue="100" min="0" max="10000"/>
+                    <Spinner fx:id="startingPlants" initialValue="100" min="0" max="10000"/>
                 </VBox>
                 <VBox>
                     <Label text="Energy from eating plants: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="plantsEnergy" editable="true" initialValue="5" min="0" max="10000"/>
+                    <Spinner fx:id="plantsEnergy" initialValue="5" min="0" max="10000"/>
                 </VBox>
                 <VBox>
                     <Label text="Plants growing per day: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="plantsPerDay" editable="true" initialValue="10" min="0" max="10000"/>
+                    <Spinner fx:id="plantsPerDay" initialValue="10" min="0" max="10000"/>
                 </VBox>
                 <VBox>
                     <Label text="Way of growing plants: " style="-fx-font-weight: bold"/>
@@ -58,7 +58,7 @@
                 </VBox>
                 <VBox>
                     <Label text="Duration of the day (ms): " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="dayTime" editable="true" initialValue="500" min="100" max="5000"/>
+                    <Spinner fx:id="dayTime" initialValue="500" min="100" max="5000"/>
                 </VBox>
                 <VBox>
                     <Label text="Save simulation data to file: " style="-fx-font-weight: bold"/>
@@ -68,27 +68,27 @@
             <VBox spacing="30">
                 <VBox>
                     <Label text="Animals at the beginning: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="startingAnimals" editable="true" initialValue="10" min="0" max="10000"/>
+                    <Spinner fx:id="startingAnimals" initialValue="10" min="0" max="10000"/>
                 </VBox>
                 <VBox>
                     <Label text="Starting energy of animals: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="startingEnergy" editable="true" initialValue="200" min="0" max="10000"/>
+                    <Spinner fx:id="startingEnergy" initialValue="200" min="0" max="10000"/>
                 </VBox>
                 <VBox>
                     <Label text="Minimum energy to reproduce: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="energyNeededToReproduce" editable="true" initialValue="50" min="0" max="10000"/>
+                    <Spinner fx:id="energyNeededToReproduce" initialValue="50" min="0" max="10000"/>
                 </VBox>
                 <VBox>
                     <Label text="Energy used to reproduce : " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="energyLostToReproduce" editable="true" initialValue="30" min="0" max="10000"/>
+                    <Spinner fx:id="energyLostToReproduce" initialValue="30" min="0" max="10000"/>
                 </VBox>
                 <VBox>
                     <Label text="Minimum number of mutations: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="minMutations" editable="true" initialValue="0" min="0" max="10000"/>
+                    <Spinner fx:id="minMutations" initialValue="0" min="0" max="100"/>
                 </VBox>
                 <VBox>
                     <Label text="Maximum number of mutations: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="maxMutations" editable="true" initialValue="10" min="0" max="10000"/>
+                    <Spinner fx:id="maxMutations" initialValue="5" min="0" max="100"/>
                 </VBox>
                 <VBox>
                     <Label text="Mutation: " style="-fx-font-weight: bold"/>
@@ -101,7 +101,7 @@
                 </VBox>
                 <VBox>
                     <Label text="Length of genome: " style="-fx-font-weight: bold"/>
-                    <Spinner fx:id="genomeLength" editable="true" initialValue="100" min="0" max="10000"/>
+                    <Spinner fx:id="genomeLength" initialValue="100" min="1" max="100"/>
                 </VBox>
                 <VBox>
                     <Label text="Animal Behavior: " style="-fx-font-weight: bold"/>

@@ -12,7 +12,7 @@ public class Animal implements WorldElement{
     private int energy;
     private final AnimalStatistics animalStatistics = new AnimalStatistics();
 
-    private List<DeathListener> deathListeners = new ArrayList<>();
+    private final List<DeathListener> deathListeners = new ArrayList<>();
 
     public Animal(int startingEnergy){
         this.position = new Vector2d(2,2);
