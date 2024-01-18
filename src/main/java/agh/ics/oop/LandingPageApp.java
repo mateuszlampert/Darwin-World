@@ -1,7 +1,5 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.RectangularMap;
-import agh.ics.oop.presenter.LandingPagePresenter;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
