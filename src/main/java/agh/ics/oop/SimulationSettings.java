@@ -5,7 +5,7 @@ import agh.ics.oop.model.Mutation;
 import agh.ics.oop.model.PlantGrowing;
 
 public record SimulationSettings(
-        int width,
+        int width, // mapWidth
         int height,
         int startingPlants,
         int plantsEnergy,

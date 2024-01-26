@@ -188,7 +188,7 @@ public class LandingPagePresenter {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt"));
         File file = fileChooser.showSaveDialog(new Stage());
 
-        if (file != null) {
+        if (file != null) { // czy to na pewno logika prezentera?
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                 writer.write("width:" + mapWidth.getValue() + "\n");
                 writer.write("height:" + mapHeight.getValue() + "\n");

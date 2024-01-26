@@ -28,7 +28,7 @@ public class Genome implements Iterator<Integer> {
     }
 
     public List<Integer> getGenesList(){
-        return genes;
+        return genes;  // dehermetyzacja
     }
 
     public List<Integer> getGenesBefore(float percent){

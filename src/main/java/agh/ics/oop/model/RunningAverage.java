@@ -1,6 +1,6 @@
 package agh.ics.oop.model;
 
-public class RunningAverage {
+public class RunningAverage {  // co ta klasa właściwie robi?
     private int sum;
     private int count;
 

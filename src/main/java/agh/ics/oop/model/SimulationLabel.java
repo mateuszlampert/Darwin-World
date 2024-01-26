@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
 
 import javax.swing.*;
 
-public class SimulationLabel extends Label {
+public class SimulationLabel extends Label {  // to na pewno część modelu?
 
 
     public static VBox showStats(MapStatisticsHandler mapStatistics){

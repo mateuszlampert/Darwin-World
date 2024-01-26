@@ -6,7 +6,7 @@ import java.util.*;
 
 import static agh.ics.oop.model.MoveDirection.FORWARD;
 
-public class MapHandler implements DeathListener{
+public class MapHandler implements DeathListener{ // niejasna nazwa
     private final WorldMap map;
     private final SimulationSettings simulationSettings;
     private final List<Animal> aliveAnimals = new ArrayList<Animal>();

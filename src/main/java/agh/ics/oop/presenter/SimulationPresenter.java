@@ -361,4 +361,4 @@ public class SimulationPresenter implements MapChangeListener, StatsChangeListen
         trackStrongestGenotype();
     }
 
-}
+}  // duża ta klasa

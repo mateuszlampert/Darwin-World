@@ -38,12 +38,12 @@ public class Animal implements WorldElement{
         this.maxEnergy = startingEnergy;
     }
 
-public void decreaseEnergy(int amount){
+    public void decreaseEnergy(int amount){
         this.energy -= amount;
         checkIfAlive();
     }
 
-    private void checkIfAlive(){
+    private void checkIfAlive(){ // ta metoda jest wywoływana tylko w jednym miejscu; obie metody są na tyle, krókie, że lepiej je połączyć
         if(this.energy <= 0){
             for(DeathListener listener : deathListeners){
                 listener.animalDied(this);
