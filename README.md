@@ -4,7 +4,7 @@ Darwin World is a project carried out as a part of Object Oriented Programming c
 
 Darwin World is a simulation of the evolutionary process with visualization. 
 
-The app allows the simulation parameters to be customised by the user, track statistics of the simulation and animals and save them for futher research.
+The app allows the simulation parameters to be customised by the user, track statistics of the simulation and animals and save them for further research.
 
 The project is an implementation of <a href = "https://github.com/Soamid/obiektowe-lab/blob/master/proj/Readme.md">this task</a>
 
